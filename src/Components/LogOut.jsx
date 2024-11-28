@@ -40,6 +40,9 @@ export default function LogOut({isLightTheme}) {
         setLoading(true)
         try {
             const response = await Post("/logout", {})
+            if(localStorage.getItem('activeLink') !== null) {
+                localStorage.removeItem('activeLink')
+            }
             if(response.msg !== undefined) {
                 setLoading(false)
                 setResponseMessage(response.msg)

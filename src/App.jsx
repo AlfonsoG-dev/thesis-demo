@@ -54,7 +54,8 @@ export default function App() {
     const linkTheme = `links-${isLightTheme ? 'light' : 'dark'}`
 
     const handle_change_active_link = (active_link) => {
-        dispatch({type: active_link})
+        localStorage.setItem('activeLink', active_link)
+        dispatch({type: localStorage.getItem('activeLink')})
     }
 
 
@@ -71,8 +72,6 @@ export default function App() {
         }
     }
 
-    // TODO: change link for button using navigation = useNavigation()
-    // add highlight for the active link using a reducer state.
     return (
         <div className="app-container">
             <div className="navbar">

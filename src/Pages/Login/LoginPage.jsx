@@ -57,14 +57,20 @@ export default function LoginPage() {
         setLoading(true)
         try {
             const prev_session = await Get("/get-auth")
-            if(prev_session.error === undefined) {
-                handle_close_confirm()
+            if(prev_session.error !== undefined) {
+                throw new Error("Sesión no iniciada")
+            }
+            handle_close_confirm()
+            if(localStorage.getItem('activeLink') !== null) {
+                setTimeout(() => {
+                    setLoading(false)
+                    navigate(localStorage.getItem('activeLink'))
+                }, 2000)
+            } else {
                 setTimeout(() => {
                     setLoading(false)
                     navigate("/app")
                 }, 2000)
-            } else {
-                throw new Error("Sesión no iniciada")
             }
         } catch(er) {
             setLoading(false)
