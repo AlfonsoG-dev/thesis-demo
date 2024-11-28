@@ -93,14 +93,22 @@ body.light {
             transition: all 0.5s ease;
         }
         .link {
-            color: #128bcc;
-            font-size: 1.2em;
+            color: white;
             padding: 10px;
-            border: 2px solid black;
+            font-size: 1.2em;
+            border: 1px solid black;
+            border-radius: 0px;
             transition: all 0.5s ease-in-out;
-
         }
-        .link:hover {
+        .link-active {
+            color: red;
+            border-bottom: 1px solid lightblue;
+            border-radius: 0px;
+            font-size: 1.2em;
+            background-color: white;
+            transition: all 0.5s ease-in-out;
+        }
+        .link-active:hover {
             border: 2px solid white;
             padding: 15px;
             font-size: 1.3em;
@@ -137,12 +145,20 @@ body.light {
             color: #668ac4;
             font-size: 1.2em;
             padding: 10px;
-            border: 2px solid white;
+            border-radius: 0px;
+            border: 1px solid white;
             transition: all 0.5s ease-in-out;
-
         }
-        .link:hover {
-            border: 2px solid #242424;
+        .link-active {
+            color: red;
+            border-bottom: 1px solid lightblue;
+            border-radius: 0px;
+            font-size: 1.2em;
+            background-color: #242424;
+            transition: all 0.5s ease-in-out;
+        }
+        .link-active:hover {
+            border: 1px solid #242424;
             padding: 15px;
             font-size: 1.3em;
             transition: all 0.5s ease;

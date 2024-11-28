@@ -1,6 +1,6 @@
 // Dependencies
-import { useEffect, useState } from "react"
-import { Link, Outlet, useLoaderData } from "react-router-dom"
+import { useEffect, useReducer, useState } from "react"
+import { useNavigate, Outlet, useLoaderData } from "react-router-dom"
 
 // Icons
 import { FaHome } from "react-icons/fa"
@@ -11,7 +11,11 @@ import { MdDarkMode } from "react-icons/md"
 import { PiFolderSimpleUserFill } from "react-icons/pi"
 import { WiTime10 } from "react-icons/wi"
 
+// compoenents
 import LogOut from "./Components/LogOut.jsx"
+
+// hooks
+import activeLinkReducer from "./Hooks/activeLinkHook.js"
 
 // styles
 import "./App.css"
@@ -27,8 +31,17 @@ import light_escudo from "/universidad_excudo_light.jpg"
 */
 export default function App() {
     const usuario = useLoaderData()
+    const navigate = useNavigate()
     const getInitialTheme = () => localStorage.getItem('theme') || 'light'
     const [isLightTheme, setIsLightTheme] = useState(getInitialTheme() === 'light')
+
+    const get_initial_active = () => localStorage.getItem('activeLink') || '/app'
+    const [activeState, dispatch] = useReducer(activeLinkReducer, {
+        activeHome: get_initial_active() === '/app',
+        activePaciente: get_initial_active() === '/app/paciente',
+        activeUsuario: get_initial_active() === '/app/usuario',
+        activeHistorias: get_initial_active() === '/app/historias'
+    })
 
     const handleToggleTheme = () => {
         setIsLightTheme((prev) => {
@@ -39,6 +52,10 @@ export default function App() {
         })
     }
     const linkTheme = `links-${isLightTheme ? 'light' : 'dark'}`
+
+    const handle_change_active_link = (active_link) => {
+        dispatch({type: active_link})
+    }
 
 
     useEffect(() => {
@@ -54,6 +71,8 @@ export default function App() {
         }
     }
 
+    // TODO: change link for button using navigation = useNavigation()
+    // add highlight for the active link using a reducer state.
     return (
         <div className="app-container">
             <div className="navbar">
@@ -62,23 +81,35 @@ export default function App() {
                     <span onClick={handleToggleTheme} className="theme-changer">
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                     </span>
-                    <Link className="link" to="/app">
+                    <button className={activeState.activeHome ? 'link-active':'link'} onClick={() => {
+                        handle_change_active_link('/app')
+                        navigate("/app")
+                    }}>
                         Home | <FaHome />
-                    </Link>
-                    <Link className="link" to="/app/paciente">
+                    </button>
+                    <button className={activeState.activePaciente ? 'link-active':'link'} onClick={() => {
+                        handle_change_active_link('/app/paciente')
+                        navigate("/app/paciente")
+                    }}>
                         Pacientes | <FaUserInjured />
-                    </Link>
+                    </button>
                     {
                         usuario.rol === "admin" && 
                         (
-                            <Link className="link" to="/app/usuario">
+                            <button className={activeState.activeUsuario ? 'link-active':'link'} onClick={() => {
+                                handle_change_active_link('/app/usuario')
+                                navigate("/app/usuario")
+                            }}>
                                 Usuarios | <FaUserMd />
-                            </Link>
+                            </button>
                         )
                     }
-                    <Link className="link" to={"/app/historias"}>
+                    <button className={activeState.activeHistorias ? 'link-active':'link'} onClick={() => {
+                        handle_change_active_link('/app/historias')
+                        navigate("/app/historias")
+                    }}>
                         Historias | <PiFolderSimpleUserFill/>
-                    </Link>
+                    </button>
                     {
                         usuario.rol === "transitorio" && (
                             <span className={`time-${isLightTheme ? 'light':'dark'}`}>
