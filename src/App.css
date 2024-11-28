@@ -157,8 +157,6 @@ body.light {
         }
         .link-active:hover {
             border: 1px solid #242424;
-            padding: 15px;
-            font-size: 1.3em;
             transition: all 0.5s ease;
         }
         img {
