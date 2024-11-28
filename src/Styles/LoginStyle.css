@@ -1,0 +1,48 @@
+.container {
+    min-height:300px;
+    max-width:450px;
+    margin: 20% auto;
+    text-align: center;
+    background: #4397d1;
+    display:flex;
+    flex-direction: column;
+    border-radius: 5px;
+    h1 {
+        color: white;
+        text-align: center;
+    }
+    input {
+        border: 1px solid black;
+        width: 90%;
+        height:40px;
+    }
+    button {
+        padding: 10px;
+        margin: 5px;
+        width: fit-content;
+        height: 60px;
+        color: white;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #3a60a4;
+        cursor: pointer;
+    }
+    .recover-password {
+        background-color: #4397d1;
+        color: black;
+        text-decoration: underline;
+        width: fit-content;
+        height: fit-content;
+    }
+    button:hover {
+        border: 1px solid white;
+    }
+    button:disabled {
+        color: grey;
+        cursor: auto;
+    }
+}
