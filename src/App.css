@@ -1,0 +1,181 @@
+body.dark {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+    a {
+        font-weight: 500;
+        color: #646cff;
+        text-decoration: inherit;
+    }
+    button {
+        color: white;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #1a1a1a;
+        cursor: pointer;
+        transition: border-color 0.25s;
+    }
+    button:hover {
+        border-color: #646cff;
+    }
+    a:hover {
+        color: #535bf2;
+    }
+}
+body.light {
+    background-color: white;
+    color: black;
+    button {
+        color: white;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 0.6em 1.2em;
+        font-size: 1em;
+        font-weight: 500;
+        font-family: inherit;
+        background-color: #3a60a4;
+        cursor: pointer;
+        transition: border-color 0.25s;
+    }
+    button:hover {
+        border-color: #f3f3f3;
+    }
+    a:hover {
+        color: #535bf2;
+    }
+}
+.navbar {
+    margin-top: 20px;
+    text-align: center;
+    /*border: 2px solid black;*/
+    .time-light {
+        position: absolute;
+        top: 2%;
+        left: 10%;
+        font-size: 1.1em;
+        border: 2px solid black;
+        border-radius: 5px;
+        width: 150px;
+        .time-icon {
+            font-size: 1.3em;
+        }
+    }
+    .time-dark {
+        position: absolute;
+        top: 2%;
+        left: 8px;
+        font-size: 1.1em;
+        border: 2px solid white;
+        border-radius: 5px;
+        width: 150px;
+        .time-icon {
+            font-size: 1.3em;
+        }
+    }
+    .links-light {
+        width: fit-content;
+        height: 80px;
+        margin: 10px auto;
+        padding-top: 20px;
+        .theme-changer {
+            transition: all 1s ease;
+            color: black;
+            font-size: 1.2em;
+            padding: 10px;
+        }
+        .theme-changer:hover {
+            cursor: pointer;
+            padding: 15px;
+            font-size: 1.3em;
+            transition: all 0.5s ease;
+        }
+        .link {
+            color: #128bcc;
+            font-size: 1.2em;
+            padding: 10px;
+            border: 2px solid black;
+            transition: all 0.5s ease-in-out;
+
+        }
+        .link:hover {
+            border: 2px solid white;
+            padding: 15px;
+            font-size: 1.3em;
+            transition: all 0.5s ease;
+        }
+        img {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 125px;
+            height: 125px;
+            border-radius: 5px;
+        }
+    }
+
+    .links-dark {
+        width: fit-content;
+        height: 80px;
+        margin: 10px auto;
+        padding-top: 20px;
+        .theme-changer {
+            transition: all 1s ease;
+            color: white;
+            font-size: 1.2em;
+            padding: 10px;
+        }
+        .theme-changer:hover {
+            cursor: pointer;
+            padding: 15px;
+            font-size: 1.3em;
+            transition: all 0.5s ease;
+        }
+        .link {
+            color: #668ac4;
+            font-size: 1.2em;
+            padding: 10px;
+            border: 2px solid white;
+            transition: all 0.5s ease-in-out;
+
+        }
+        .link:hover {
+            border: 2px solid #242424;
+            padding: 15px;
+            font-size: 1.3em;
+            transition: all 0.5s ease;
+        }
+        img {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 125px;
+            height: 125px;
+            border-radius: 5px;
+        }
+    }
+    .log-out-light {
+        position: absolute;
+        font-size: 1.2em;
+        top: 1em;
+        right: 1.2em;
+        color: white;
+        transition: all 0.5s ease;
+    }
+    .log-out-light:hover {
+        transform:translateX(2px);
+    }
+    .log-out-dark {
+        position: absolute;
+        font-size: 1.2em;
+        top: 1em;
+        right: 1.2em;
+        color: red;
+        transition: all 0.5s ease;
+    }
+    .log-out-dark:hover {
+        transform:translateX(2px);
+    }
+}
