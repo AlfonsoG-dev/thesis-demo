@@ -110,8 +110,6 @@ body.light {
         }
         .link-active:hover {
             border: 2px solid white;
-            padding: 15px;
-            font-size: 1.3em;
             transition: all 0.5s ease;
         }
         img {
