@@ -181,9 +181,13 @@ export default function LoginPage() {
                         <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
                             Ingresar | <IoIosLogIn />
                         </button>
-                        <button className="recover-password" onClick={handle_recover_password}>
-                            Recuperar contraseña
-                        </button >
+                        {
+                            import.meta.env.VITE_NODE_ENV === "development" && (
+                                <button className="recover-password" onClick={handle_recover_password}>
+                                    Recuperar contraseña
+                                </button >
+                            )
+                        }
                     </form >
                     <ModalRegister
                         show={showModal}
