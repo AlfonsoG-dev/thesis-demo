@@ -1,0 +1,46 @@
+.recover {
+    width: 60%;
+    margin: auto;
+    h1 {
+        text-align: center;
+    }
+    .options {
+        text-align: center;
+        color: white;
+        border-radius: 5px;
+        button {
+            padding: 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 8px;
+            background-color: #128bcc;
+            color: white;
+            font-size: 1.3em;
+            width: 150px;
+            height: 70px;
+            cursor: pointer;
+        }
+        button:hover {
+            border: 2px solid white;
+        }
+        button:disabled {
+            color: grey;
+        }
+    }
+    input {
+        border: 2px solid grey;
+        height: 50px;
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        background-color: #f8f8f8;
+        color: black;
+    }
+    input:disabled {
+        background-color: #f3f3f3;
+    }
+    input:readOnly {
+        background-color: #f3f3f3;
+    }
+}
