@@ -1,0 +1,35 @@
+.text_group {
+    margin: auto;
+    width: 50%;
+    height: 50%;
+    text-align: center;
+    background-color: rgb(0.0, 0.0, 0.0, 0.9);
+    .error_status {
+        font-size: 10em;
+        box-sizing: border-box;
+        color: white;
+    }
+    .error_text {
+        font-size: 2em;
+        line-height: 50px;
+        box-sizing: border-box;
+        color: red;
+    }
+}
+.error-container {
+    button {
+        background-color: black;
+        color: white;
+        margin-top: 10px;
+        margin-left: 90%;
+        border: 2px solid red;
+        height: 40px;
+        border-radius: 5px;
+        transition: all 3s ease;
+    }
+    button:hover {
+        border: 2px solid blue;
+        transform: translateX(5px);
+        transition: all 3s ease;
+    }
+}
