@@ -12,22 +12,22 @@ export default function ScrollOptions() {
         window.scrollTo({top: document.documentElement.scrollHeight, behavior: 'smooth'})
     }
     const my_handler = () => {
-        const handleScroll = () => {
-            const scrollPosition = window.scrollY
-            const documentHeight = document.documentElement.scrollHeight
-            const windowHeight = window.innerHeight
+        const handle_scroll = () => {
+            const scroll_position = window.scrollY
+            const document_height = document.documentElement.scrollHeight
+            const window_height = window.innerHeight
 
-            setShowScrollToTop(scrollPosition > windowHeight / 2)
-            setShowScrollToBottom(scrollPosition < documentHeight - windowHeight - 50)
+            setShowScrollToTop(scroll_position > window_height / 2)
+            setShowScrollToBottom(scroll_position < document_height - window_height - 50)
         }
 
-        window.addEventListener('scroll', handleScroll)
+        window.addEventListener('scroll', handle_scroll)
 
         // Initial check
-        handleScroll()
+        handle_scroll()
 
         return () => {
-            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('scroll', handle_scroll)
         }
     }
     useEffect(() => {

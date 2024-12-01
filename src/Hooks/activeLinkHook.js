@@ -1,4 +1,4 @@
-export default function activeLinkReducer(activeState, action) {
+export default function activeLinkReducer(action) {
     switch(action.type) {
         case "/app":
             return {
