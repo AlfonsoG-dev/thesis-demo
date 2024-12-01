@@ -83,7 +83,7 @@ export default function LoginPage() {
     }
 
     // submit handler action
-    const login_submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -114,7 +114,7 @@ export default function LoginPage() {
         }
     }
     // handle the login data form
-    const handleChange = (e) => {
+    const handle_change = (e) => {
         const {name, value} = e.target
         setLoginData((prev) => ({
             ...prev,
@@ -151,7 +151,7 @@ export default function LoginPage() {
             handle_close={handle_close_notification}
         />
     }
-    const validate_ent = () => {
+    const validate_login = () => {
         if(!isCompleted) {
             return (
                 <div className="container">
@@ -161,7 +161,7 @@ export default function LoginPage() {
                             <input
                                 name="identificacion"
                                 placeholder="Identificación usuario"
-                                onChange={handleChange}
+                                onChange={handle_change}
                             />
                         </label>
                         <label>
@@ -169,7 +169,7 @@ export default function LoginPage() {
                                 name="password"
                                 type="password"
                                 placeholder="password"
-                                onChange={handleChange}
+                                onChange={handle_change}
                             />
                         </label>
                         <button
@@ -193,12 +193,12 @@ export default function LoginPage() {
                         show={showConfirm}
                         message={"Estas iniciando sesión"}
                         handle_close={handle_close_confirm}
-                        handle_confirm={login_submit_handler}
+                        handle_confirm={handle_submit}
                     />
                     <Outlet/>
                 </div>
             )
         }
     }
-    return validate_ent()
+    return validate_login()
 }

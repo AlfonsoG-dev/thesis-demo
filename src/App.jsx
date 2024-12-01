@@ -32,8 +32,8 @@ import light_escudo from "/universidad_excudo_light.jpg"
 export default function App() {
     const usuario = useLoaderData()
     const navigate = useNavigate()
-    const getInitialTheme = () => localStorage.getItem('theme') || 'light'
-    const [isLightTheme, setIsLightTheme] = useState(getInitialTheme() === 'light')
+    const get_initial_theme = () => localStorage.getItem('theme') || 'light'
+    const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
 
     const get_initial_active = () => localStorage.getItem('activeLink') || '/app'
     const [activeState, dispatch] = useReducer(activeLinkReducer, {
@@ -45,13 +45,13 @@ export default function App() {
 
     const handleToggleTheme = () => {
         setIsLightTheme((prev) => {
-            const newTheme = !prev
-            localStorage.setItem('theme', newTheme ? 'light' : 'dark')
-            document.body.className = newTheme ? 'light' : 'dark'
-            return newTheme
+            const new_theme = !prev
+            localStorage.setItem('theme', new_theme ? 'light' : 'dark')
+            document.body.className = new_theme ? 'light' : 'dark'
+            return new_theme
         })
     }
-    const linkTheme = `links-${isLightTheme ? 'light' : 'dark'}`
+    const link_theme_name = `links-${isLightTheme ? 'light' : 'dark'}`
 
     const handle_change_active_link = (active_link) => {
         localStorage.setItem('activeLink', active_link)
@@ -75,7 +75,7 @@ export default function App() {
     return (
         <div className="app-container">
             <div className="navbar">
-                <div className={linkTheme}>
+                <div className={link_theme_name}>
                     {header_escudo()}
                     <span onClick={handleToggleTheme} className="theme-changer">
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}

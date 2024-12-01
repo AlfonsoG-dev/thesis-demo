@@ -20,7 +20,7 @@ export function Component() {
         password: ""
     })
 
-    const search_user_from_API = async(e) => {
+    const fetch_data = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -54,7 +54,7 @@ export function Component() {
     return (
         <div className="recover">
             <h1>Recuperar contraseña</h1>
-            <form onSubmit={search_user_from_API}>
+            <form onSubmit={fetch_data}>
                 <label>
                     Nombre
                     <input
