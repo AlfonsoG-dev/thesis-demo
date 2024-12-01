@@ -48,7 +48,7 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get data from the end-point server
-    const fetchData = useCallback( async(page) => {
+    const fetch_data = useCallback( async(page) => {
         try {
             if(offset > 0) {
                 const response = await Get(`/paciente/all/${limit}/${page}`)
@@ -74,17 +74,17 @@ export function Component() {
     }, [offset])
 
     useEffect(() => {
-        fetchData(offset)
-    }, [offset, fetchData])
+        fetch_data(offset)
+    }, [offset, fetch_data])
 
-    const handlePagination = (page) => {
+    const handle_pagination = (page) => {
         if(page > 0 || page == 0) {
             setOffset(page)
         }
     }
 
     // search paciente by identificación
-    const paciente_search_handler = async(e) => {
+    const handle_search_paciente = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -103,7 +103,7 @@ export function Component() {
         }
     }
 
-    const buscado_change_handler = (e) => {
+    const handle_change_searched = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setBuscado(() => ({
@@ -129,13 +129,13 @@ export function Component() {
         <div className="table-page">
             <br/>
             <div className={`search-${isLightTheme ? 'light' : 'dark'}`}>
-                <form onSubmit={paciente_search_handler}>
+                <form onSubmit={handle_search_paciente}>
                     <input
                         name="identificacion"
                         type="number"
                         placeholder="Identificación del paciente"
                         value={buscado.identificacion > 0 && buscado.identificacion}
-                        onChange={buscado_change_handler}
+                        onChange={handle_change_searched}
                         autoFocus={true}
                     />
                     <button
@@ -151,14 +151,14 @@ export function Component() {
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handlePagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-limit)}
                     disabled={offset==0}
                 >
                     <GiPlayerPrevious/>
                 </button>
                 <button
                     type="button"
-                    onClick={() => handlePagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+limit)}
                     disabled={pacientes.error}
                 >
                     <GiPlayerNext/>

@@ -73,7 +73,7 @@ export function Component() {
         }
     }
 
-    const submit_handler= async(e) => {
+    const handle_submit= async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -115,7 +115,7 @@ export function Component() {
         }
     }, [isCompleted])
 
-    const usuario_change_handler = (e) => {
+    const handle_change_user = (e) => {
         e.preventDefault()
         const{name, value} = e.target
         setUsuario((prev) => ({
@@ -149,7 +149,7 @@ export function Component() {
                             required={true}
                             placeholder="Nombre del usuario"
                             defaultValue={usuario.name}
-                            onChange={usuario_change_handler}
+                            onChange={handle_change_user}
                         />
                     </label>
                     <label>
@@ -160,7 +160,7 @@ export function Component() {
                             required={true}
                             placeholder="Identificación de usuario"
                             defaultValue={usuario.identificacion}
-                            onChange={usuario_change_handler}
+                            onChange={handle_change_user}
                         />
                     </label>
 
@@ -180,13 +180,13 @@ export function Component() {
                             required={true}
                             placeholder="Contraseña del usuario"
                             defaultValue={usuario.password}
-                            onChange={usuario_change_handler}
+                            onChange={handle_change_user}
                         />
                     </label>
 
                     <label>
                         Rol
-                        <select name="rol" onChange={usuario_change_handler}>
+                        <select name="rol" onChange={handle_change_user}>
                             <option>{usuario.rol !== "" ? usuario.rol : "select a rol..."}</option >
                             <option key={"admin"}>admin</option >
                             <option key={"personal"}>personal</option >
@@ -199,7 +199,7 @@ export function Component() {
                                     <input
                                         name="time_limit"
                                         type="datetime-local"
-                                        onChange={usuario_change_handler}
+                                        onChange={handle_change_user}
                                     />
                                 </label>
                         }
@@ -216,7 +216,7 @@ export function Component() {
                 show={showConfirm}
                 message={"Estas por register un usuario, Confirma esta acción"}
                 handle_close={handle_close_confirm}
-                handle_confirm={submit_handler}
+                handle_confirm={handle_submit}
             />
             {<ModalBlocker isCompleted={isCompleted}/>}
         </div>

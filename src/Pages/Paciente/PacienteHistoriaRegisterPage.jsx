@@ -159,7 +159,7 @@ export function Component() {
         }
     }
 
-    const anamnesis_change_handler = (e) => {
+    const handle_change_anamnesis = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setAnamnesis((prev)=>({
@@ -167,7 +167,7 @@ export function Component() {
             [name]: value
         }))
     }
-    const signos_change_handler = (e) => {
+    const handle_change_signos = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setSignos((prev)=>({
@@ -175,7 +175,7 @@ export function Component() {
             [name]: value
         }))
     }
-    const examen_change_handler = (e) => {
+    const handle_change_examen = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setExamen((prev)=>({
@@ -207,7 +207,7 @@ export function Component() {
                             type="date"
                             placeholder="fecha_ingreso"
                             defaultValue={anamnesis.fecha_ingreso !== null ? ComputeDate(anamnesis.fecha_ingreso) : ""}
-                            onChange={anamnesis_change_handler}
+                            onChange={handle_change_anamnesis}
                         />
                     </label>
                     <label>
@@ -217,7 +217,7 @@ export function Component() {
                             type="time"
                             placeholder="hora_ingreso"
                             defaultValue={anamnesis.hora_ingreso}
-                            onChange={anamnesis_change_handler}
+                            onChange={handle_change_anamnesis}
                         />
                     </label>
                 </div>
@@ -234,19 +234,19 @@ export function Component() {
                 <AnamnesisForm
                     anamnesis={anamnesis}
                     isDisable={false}
-                    onChangeHandler={anamnesis_change_handler}
+                    onChangeHandler={handle_change_anamnesis}
                 />
                 <h1>Signos vitales</h1>
                 <SignosForm
                     signos={signos}
                     isDisable={false}
-                    onChangeHandler={signos_change_handler}
+                    onChangeHandler={handle_change_signos}
                 />
                 <h1>Examen Físico</h1>
                 <ExamenForm
                     examen={examen}
                     isDisable={false}
-                    onChangeHandler={examen_change_handler}
+                    onChangeHandler={handle_change_examen}
                 />
 
                 <div className="options">

@@ -96,7 +96,7 @@ export function Component() {
             setOffset(page)
         }
     }
-    const buscado_change_handler = (e) => {
+    const handle_change_searched = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setBuscado((prev) => ({
@@ -132,7 +132,7 @@ export function Component() {
                         type="number"
                         defaultValue={buscado.id_pk > 0 && buscado.id_pk}
                         placeholder="ID"
-                        onChange={buscado_change_handler}
+                        onChange={handle_change_searched}
                         autoFocus={true}
                     />
                     <button

@@ -55,7 +55,7 @@ export function Component() {
 
 
     // get data from end-point server
-    const fetchData = useCallback( async() => {
+    const fetch_data = useCallback( async() => {
         setLoading(true)
         try {
             if(historia.paciente_if_fk !== null) {
@@ -83,8 +83,8 @@ export function Component() {
     }, [historia.anamnesis_id_fk, historia.examen_fisico_id_fk, historia.paciente_id_fk, historia.paciente_if_fk, historia.signos_vitales_id_fk, setAnamnesis, setExamen, setPaciente, setSignos])
 
     useEffect(() => {
-        fetchData()
-    }, [fetchData])
+        fetch_data()
+    }, [fetch_data])
 
     if(loading) {
         return <div className="loader"></div>

@@ -180,21 +180,21 @@ export function Component() {
         }
     }
 
-    const anamnesis_change_handler = (e) => {
+    const handle_change_anamnesis = (e) => {
         const {name, value} = e.target
         setAnamnesis((prev) => ({
             ...prev,
             [name]: value
         }))
     }
-    const signos_change_handler = (e) => {
+    const handle_change_signos = (e) => {
         const {name, value} = e.target
         setSignos((prev) => ({
             ...prev,
             [name]: value
         }))
     }
-    const examen_change_handler = (e) => {
+    const handle_change_examen = (e) => {
         const {name, value} = e.target
         setExamen((prev) => ({
             ...prev,
@@ -228,7 +228,7 @@ export function Component() {
                                 type="date"
                                 placeholder="fecha_ingreso"
                                 defaultValue={anamnesis.fecha_ingreso !== null ? ComputeDate(anamnesis.fecha_ingreso) : ""}
-                                onChange={anamnesis_change_handler}
+                                onChange={handle_change_anamnesis}
                             />
                         </label>
                         <label>
@@ -238,7 +238,7 @@ export function Component() {
                                 type="time"
                                 placeholder="hora_ingreso"
                                 defaultValue={anamnesis.hora_ingreso}
-                                onChange={anamnesis_change_handler}
+                                onChange={handle_change_anamnesis}
                             />
                         </label>
                     </div>
@@ -276,7 +276,7 @@ export function Component() {
                                 <AnamnesisForm
                                     anamnesis={anamnesis}
                                     isDisable={!myState.enableAnamnesis}
-                                    onChangeHandler={anamnesis_change_handler}
+                                    onChangeHandler={handle_change_anamnesis}
                                 />
                             </>
                         }
@@ -300,7 +300,7 @@ export function Component() {
                                 <SignosForm
                                     signos={signos}
                                     isDisable={!myState.enableSignos}
-                                    onChangeHandler={signos_change_handler}
+                                    onChangeHandler={handle_change_signos}
                                 />
                             </>
                         }
@@ -324,7 +324,7 @@ export function Component() {
                                 <ExamenForm
                                     examen={examen}
                                     isDisable={!myState.enableExamen}
-                                    onChangeHandler={examen_change_handler}
+                                    onChangeHandler={handle_change_examen}
                                 />
                             </>
                         }

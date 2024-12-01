@@ -56,7 +56,7 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point server
-    const fetchData = useCallback( async (page) => {
+    const fetch_data = useCallback( async (page) => {
         try {
             if(offset > 0) {
                 const response = await Get(
@@ -85,10 +85,10 @@ export function Component() {
     }, [offset])
 
     useEffect(() => {
-        fetchData(offset)
-    }, [offset, fetchData, id_paciente])
+        fetch_data(offset)
+    }, [offset, fetch_data, id_paciente])
 
-    const handlePagination = (page) => {
+    const handle_pagination = (page) => {
         if(page > 0 || page == 0) {
             setOffset(page)
         }
@@ -135,7 +135,7 @@ export function Component() {
             <HistoriaTableComponent data={historias} type={"paciente"} isLightTheme={isLightTheme}/>
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button 
-                    onClick={() => handlePagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-limit)}
                     disabled={offset==0}
                 >
                     <GrFormPreviousLink/>
@@ -143,7 +143,7 @@ export function Component() {
                 </button>
 
                 <button
-                    onClick={() => handlePagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+limit)}
                     disabled={historias.error}
                 >
                     <GrFormNextLink/>

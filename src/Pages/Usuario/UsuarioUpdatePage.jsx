@@ -87,7 +87,7 @@ export function Component() {
     }
 
     // user field value change handler
-    const modified_user_change_handler = (e) => {
+    const handle_change_modified_user = (e) => {
         e.preventDefault()
         const {name, value} = e.target
         setModifiedUser((prev) => ({
@@ -97,7 +97,7 @@ export function Component() {
     }
 
     // user submit handler
-    const submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -132,7 +132,7 @@ export function Component() {
             handle_close={handle_close_notification}
             />
     }
-    const time_limit_show = () => {
+    const show_time_limit = () => {
         if(modifiedUser !== null && modifiedUser.rol === "transitorio") {
             return <label>
                 Tiempo limite
@@ -140,7 +140,7 @@ export function Component() {
                     type="datetime-local"
                     name="time_limit"
                     required={true}
-                    onChange={modified_user_change_handler}
+                    onChange={handle_change_modified_user}
                     disabled={disableEdition}
                 />
             </label>
@@ -151,7 +151,7 @@ export function Component() {
                     type="datetime-local"
                     name="time_limit"
                     required={true}
-                    onChange={modified_user_change_handler}
+                    onChange={handle_change_modified_user}
                     disabled={disableEdition}
                 />
             </label>
@@ -183,7 +183,7 @@ export function Component() {
                         name="name"
                         defaultValue={usuario.name}
                         required={true}
-                        onChange={modified_user_change_handler}
+                        onChange={handle_change_modified_user}
                         disabled={disableEdition}
                     />
                 </label>
@@ -194,7 +194,7 @@ export function Component() {
                         name="identificacion"
                         defaultValue={usuario.identificacion}
                         required={true}
-                        onChange={modified_user_change_handler}
+                        onChange={handle_change_modified_user}
                         disabled={disableEdition}
                     />
                 </label>
@@ -202,7 +202,7 @@ export function Component() {
                     Rol
                     {
                         usuario.rol &&
-                            <select name="rol" onChange={modified_user_change_handler} disabled={disableEdition}>
+                            <select name="rol" onChange={handle_change_modified_user} disabled={disableEdition}>
                                 <option key={usuario.rol}>{usuario.rol}</option>
                                 {
                                     roles.map((r) => (
@@ -212,7 +212,7 @@ export function Component() {
                                 }
                             </select>
                     }
-                    {time_limit_show()}
+                    {show_time_limit()}
                 </label>
                 <div className="options">
                     <h1>Opciones</h1>
@@ -223,7 +223,7 @@ export function Component() {
                 show={showConfirmModal}
                 message={"Estas por actualizar los datos del usuario, Confirma esta acción"}
                 handle_close={handle_close_confirm}
-                handle_confirm={submit_handler}
+                handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isComplete}/>
         </div>

@@ -46,7 +46,7 @@ export function Component() {
 
 
     // register modal handlers
-    const hidden_modal = () => setShowConfirm(false)
+    const handle_close_confirm = () => setShowConfirm(false)
     const handle_show_confirm = (e) => {
         e.preventDefault()
         setShowConfirm(true)
@@ -61,14 +61,14 @@ export function Component() {
             setIsCompleted(true)
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
-            hidden_modal()
+            handle_close_confirm()
             setNotification(true)
         } else {
             setRetry(() => retry+1)
         }
     }
 
-    const submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -78,7 +78,7 @@ export function Component() {
                 setIsCompleted(true)
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
-                hidden_modal()
+                handle_close_confirm()
                 setNotification(true)
             } else {
                 throw new Error(response.error)
@@ -88,7 +88,7 @@ export function Component() {
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            hidden_modal()
+            handle_close_confirm()
             setNotification(true)
             console.error(er)
         }
@@ -143,8 +143,8 @@ export function Component() {
             <ModalRegister
                 show={showConfirm}
                 message={"Estas por eliminar el usuario, Confirma esta acción"}
-                handle_close={hidden_modal}
-                handle_confirm={submit_handler}
+                handle_close={handle_close_confirm}
+                handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
         </div>

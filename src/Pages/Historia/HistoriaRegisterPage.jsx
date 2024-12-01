@@ -95,7 +95,7 @@ export function Component() {
         }
     }
 
-    const historia_submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -186,28 +186,29 @@ export function Component() {
             setExamen(JSON.parse(localStorage.getItem("register_historia")).examen_fisico)
         }
     }, [isCompleted, setAnamnesis, setExamen, setPaciente, setSignos])
-    const anamnesis_change_handler = (e) => {
+
+    const handle_change_anamnesis = (e) => {
         const {name, value} = e.target
         setAnamnesis((prev)=>({
             ...prev,
             [name]: value
         }))
     }
-    const signos_change_handler = (e) => {
+    const handle_change_signos = (e) => {
         const {name, value} = e.target
         setSignos((prev)=>({
             ...prev,
             [name]: value
         }))
     }
-    const examen_change_handler = (e) => {
+    const handle_change_examen = (e) => {
         const {name, value} = e.target
         setExamen((prev)=>({
             ...prev,
             [name]: value
         }))
     }
-    const paciente_change_handler = (e) => {
+    const handle_change_paciente = (e) => {
         const {name, value} = e.target
         setPaciente((prev)=>({
             ...prev,
@@ -238,7 +239,7 @@ export function Component() {
                             type="date"
                             placeholder="fecha_ingreso"
                             defaultValue={anamnesis.fecha_ingreso !== null ? ComputeDate(anamnesis.fecha_ingreso) : ""}
-                            onChange={anamnesis_change_handler}
+                            onChange={handle_change_anamnesis}
                         />
                     </label>
                     <label>
@@ -248,32 +249,32 @@ export function Component() {
                             type="time"
                             placeholder="hora_ingreso"
                             defaultValue={anamnesis.hora_ingreso}
-                            onChange={anamnesis_change_handler}
+                            onChange={handle_change_anamnesis}
                         />
                     </label>
                 </div>
                 <h1>Paciente</h1>
                 <PacienteForm
                     paciente={paciente}
-                    onChangeHandler={paciente_change_handler}
+                    onChangeHandler={handle_change_paciente}
                 />
                 <h1>Anamnesis</h1>
                 <AnamnesisForm 
                     anamnesis={anamnesis}
                     isDisable={false}
-                    onChangeHandler={anamnesis_change_handler}
+                    onChangeHandler={handle_change_anamnesis}
                 />
                 <h1>Signos vitales</h1>
                 <SignosForm
                     signos={signos}
                     isDisable={false}
-                    onChangeHandler={signos_change_handler}
+                    onChangeHandler={handle_change_signos}
                 />
                 <h1>Examen Físico</h1>
                 <ExamenForm
                     examen={examen}
                     isDisable={false}
-                    onChangeHandler={examen_change_handler}
+                    onChangeHandler={handle_change_examen}
                 />
                 <div className="options">
                     <h1>Opciones</h1>
@@ -288,7 +289,7 @@ export function Component() {
                 show={showConfirm}
                 message={"Estas por registrar una historia, Confirma está acción"}
                 handle_close={handle_close_confirm}
-                handle_confirm={historia_submit_handler}
+                handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
         </div>

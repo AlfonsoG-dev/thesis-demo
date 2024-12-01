@@ -57,7 +57,7 @@ export function Component() {
     const enable_name = enableBorder === true ? "chk_enable":"chk_disable"
 
     // data form handler
-    const modified_paciente_change_handler = (e) => {
+    const handle_change_modified_paciente = (e) => {
         const {name, value} = e.target
         setModifiedPaciente((prev) => ({
             ...prev,
@@ -79,8 +79,8 @@ export function Component() {
     }
     const handle_close_confirm = () => setConfirmModal(false)
 
-    // notificar modal
-    const handle_close_notificar = () => setNotification(false)
+    // notification modal
+    const handle_close_notification = () => setNotification(false)
 
     // disable edition change handler
     const handle_change_disable_edition = () => {
@@ -101,7 +101,7 @@ export function Component() {
         }
     }
 
-    const submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -138,7 +138,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notificar}
+            handle_close={handle_close_notification}
         />
     }
     return (
@@ -167,7 +167,7 @@ export function Component() {
                         name="identificacion"
                         defaultValue={paciente.identificacion}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -178,7 +178,7 @@ export function Component() {
                         name="nombres"
                         defaultValue={paciente.nombres}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -189,7 +189,7 @@ export function Component() {
                         name="apellidos"
                         defaultValue={paciente.apellidos}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -200,7 +200,7 @@ export function Component() {
                         name="fecha_nacimiento"
                         defaultValue={ComputeDate(paciente.fecha_nacimiento)}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -209,7 +209,7 @@ export function Component() {
                     {
                         paciente.genero &&
                             <select name="genero"
-                                onChange={modified_paciente_change_handler}
+                                onChange={handle_change_modified_paciente}
                                 disabled={disableEdition}
                             >
                                 <option key={paciente.genero}>{paciente.genero}</option>
@@ -231,7 +231,7 @@ export function Component() {
                                 name="genero1"
                                 placeholder="Genero paciente"
                                 required={true}
-                                onChange={modified_paciente_change_handler}
+                                onChange={handle_change_modified_paciente}
                             />
                         </label>
                 }
@@ -242,7 +242,7 @@ export function Component() {
                         name="procedencia"
                         defaultValue={paciente.procedencia}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -253,7 +253,7 @@ export function Component() {
                         name="residencia"
                         defaultValue={paciente.residencia}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -264,7 +264,7 @@ export function Component() {
                         name="acudiente"
                         defaultValue={paciente.acudiente}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -275,7 +275,7 @@ export function Component() {
                         name="celular"
                         defaultValue={paciente.celular}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -286,7 +286,7 @@ export function Component() {
                         name="parentesco"
                         defaultValue={paciente.parentesco}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -295,7 +295,7 @@ export function Component() {
                     {
                         paciente.facultad && 
                             <select name='facultad'
-                                onChange={modified_paciente_change_handler}
+                                onChange={handle_change_modified_paciente}
                                 disabled={disableEdition}
                             >
                                 <option key={paciente.facultad}>{paciente.facultad}</option>
@@ -313,7 +313,7 @@ export function Component() {
                     {
                         paciente.programa &&
                             <select name="programa"
-                                onChange={modified_paciente_change_handler}
+                                onChange={handle_change_modified_paciente}
                                 disabled={disableEdition}
                             >
                                 {
@@ -344,7 +344,7 @@ export function Component() {
                         name="eps"
                         defaultValue={paciente.eps}
                         required={true}
-                        onChange={modified_paciente_change_handler}
+                        onChange={handle_change_modified_paciente}
                         disabled={disableEdition}
                     />
                 </label>
@@ -380,7 +380,7 @@ export function Component() {
                 show={confirmModal}
                 message={"Estas apunto de actualizar paciente, Confirma esta acción"}
                 handle_close={handle_close_confirm}
-                handle_confirm={submit_handler}
+                handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isComplete}/>
         </div>
