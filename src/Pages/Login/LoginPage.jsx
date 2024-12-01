@@ -32,7 +32,7 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [isCompleted, setIsCompleted] = useState(false)
     // modal register
-    const [showModal, setShowModal] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
     // modal notificación
     const {
         notification, setNotification,
@@ -45,9 +45,9 @@ export default function LoginPage() {
     // confirm modal
     const handle_show_confirm = (e) =>{
         e.preventDefault()
-        setShowModal(true)
+        setShowConfirm(true)
     }
-    const handle_close_confirm = () => setShowModal(false)
+    const handle_close_confirm = () => setShowConfirm(false)
 
     // notificación modal
     const handle_notification_close = () => {
@@ -190,7 +190,7 @@ export default function LoginPage() {
                         }
                     </form >
                     <ModalRegister
-                        show={showModal}
+                        show={showConfirm}
                         message={"Estas iniciando sesión"}
                         handle_close={handle_close_confirm}
                         handle_confirm={login_submit_handler}

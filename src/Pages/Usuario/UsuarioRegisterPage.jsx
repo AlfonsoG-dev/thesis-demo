@@ -37,7 +37,7 @@ export function Component() {
     const [isCompleted, setIsCompleted] = useState(false)
 
     // Modals
-    const [showModal, setShowModal] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
     const {
         notification, setNotification,
         notificationType, setNotificationType,
@@ -52,10 +52,10 @@ export function Component() {
     const handle_show_password = () => setShowPassword(!showPassword)
 
     // register modal handlers
-    const hide_modal = () => setShowModal(false)
-    const show_modal = (e) => {
+    const handle_close_confirm = () => setShowConfirm(false)
+    const handle_show_confirm = (e) => {
         e.preventDefault()
-        setShowModal(true)
+        setShowConfirm(true)
     }
     // notificación modal handlers
     const handle_notification_close = () => setNotification(false)
@@ -66,7 +66,7 @@ export function Component() {
             setIsCompleted(true)
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
-            hide_modal()
+            handle_close_confirm()
             setNotification(true)
         } else {
             setRetry(() => retry+1)
@@ -92,7 +92,7 @@ export function Component() {
                     setLoading(false)
                     setResponseMessage(response.msg)
                     setNotificationType("msg")
-                    hide_modal()
+                    handle_close_confirm()
                     setNotification(true)
                 } else {
                     throw new Error(response.error)
@@ -105,7 +105,7 @@ export function Component() {
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            hide_modal()
+            handle_close_confirm()
             setNotification(true)
         }
     }
@@ -139,7 +139,7 @@ export function Component() {
     return(
         <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
             <h1>Crear usuario</h1>
-            <form onSubmit={show_modal}>
+            <form onSubmit={handle_show_confirm}>
                 <div className="usuario">
                     <label>
                         Nombre
@@ -213,9 +213,9 @@ export function Component() {
                 </div>
             </form >
             <ModalRegister
-                show={showModal}
+                show={showConfirm}
                 message={"Estas por register un usuario, Confirma esta acción"}
-                handle_close={hide_modal}
+                handle_close={handle_close_confirm}
                 handle_confirm={submit_handler}
             />
             {<ModalBlocker isCompleted={isCompleted}/>}

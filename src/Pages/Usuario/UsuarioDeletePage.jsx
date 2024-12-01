@@ -37,7 +37,7 @@ export function Component() {
     const [isCompleted, setIsCompleted] = useState(false)
 
     // Modals
-    const [showModal, setShowModal] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
     const {
         notification, setNotification,
         notificationType, setNotificationType,
@@ -46,10 +46,10 @@ export function Component() {
 
 
     // register modal handlers
-    const hidden_modal = () => setShowModal(false)
-    const show_modal = (e) => {
+    const hidden_modal = () => setShowConfirm(false)
+    const handle_show_confirm = (e) => {
         e.preventDefault()
-        setShowModal(true)
+        setShowConfirm(true)
     }
 
     // Notificación modal handlers
@@ -107,7 +107,7 @@ export function Component() {
     return(
         <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
             <h2>¡Continua solo si estas seguro de eliminar el usuario!</h2>
-            <form onSubmit={show_modal}>
+            <form onSubmit={handle_show_confirm}>
                 <label>
                     Nombre
                     <input
@@ -137,11 +137,11 @@ export function Component() {
                 </label>
                 <div className="options">
                     <h1>Opciones</h1>
-                    <button onClick={show_modal} disabled={isCompleted}>Eliminar</button>
+                    <button onClick={handle_show_confirm} disabled={isCompleted}>Eliminar</button>
                 </div>
             </form >
             <ModalRegister
-                show={showModal}
+                show={showConfirm}
                 message={"Estas por eliminar el usuario, Confirma esta acción"}
                 handle_close={hidden_modal}
                 handle_confirm={submit_handler}

@@ -46,7 +46,7 @@ export function Component() {
     const [retry, setRetry] = useState(0)
 
     // modals
-    const[showModal, setShowModal] = useState(false)
+    const[showConfirm, setShowConfirm] = useState(false)
     const {
         notification, setNotification,
         notificationType, setNotificationType,
@@ -69,11 +69,11 @@ export function Component() {
     }, [anamnesis, examen, signos]))
 
     // register modal handlers
-    const show_modal = (e) => {
+    const handle_show_confirm = (e) => {
         e.preventDefault()
-        setShowModal(true)
+        setShowConfirm(true)
     }
-    const hide_modal = () => setShowModal(false)
+    const handle_close_confirm = () => setShowConfirm(false)
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
@@ -109,7 +109,7 @@ export function Component() {
             setIsCompleted(true)
             setResponseMessage("Se acabaron los intentos intenta recargando la página")
             setNotificationType("error")
-            hide_modal()
+            handle_close_confirm()
             setNotification(true)
         } else {
             setIsCompleted(false)
@@ -144,7 +144,7 @@ export function Component() {
                 setLoading(false)
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
-                hide_modal()
+                handle_close_confirm()
                 setNotification(true)
             } else {
                 throw new Error(response.error)
@@ -154,7 +154,7 @@ export function Component() {
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            hide_modal()
+            handle_close_confirm()
             setNotification(true)
         }
     }
@@ -197,7 +197,7 @@ export function Component() {
     return (
         <div className={`form-container-${isLIghtTheme ? 'light': 'dark'}`}>
             <ScrollOptions/>
-            <form onSubmit={show_modal}>
+            <form onSubmit={handle_show_confirm}>
                 <div className="atencion">
                     <h1>Atención</h1>
                     <label>
@@ -259,9 +259,9 @@ export function Component() {
                 </div>
             </form>
             <ModalRegister
-                show={showModal}
+                show={showConfirm}
                 message={"Estas por registrar una historia para el paciente, Confirma esta acción"}
-                handle_close={hide_modal}
+                handle_close={handle_close_confirm}
                 handle_confirm={historia_submit_handler}
             />
             <ModalBlocker isCompleted={isCompleted}/>
