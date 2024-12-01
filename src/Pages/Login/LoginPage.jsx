@@ -50,7 +50,7 @@ export default function LoginPage() {
     const handle_close_confirm = () => setShowConfirm(false)
 
     // notificación modal
-    const handle_notification_close = () => {
+    const handle_close_notification = () => {
         setNotification(false)
     }
     const fetch_data = async() => {
@@ -148,7 +148,7 @@ export default function LoginPage() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_notification_close}
+            handle_close={handle_close_notification}
         />
     }
     const validate_ent = () => {

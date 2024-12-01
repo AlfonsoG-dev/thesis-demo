@@ -49,7 +49,7 @@ export function Component() {
     const limit = 5
 
     // notificación modal handlers
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point of server
     const fetchData = useCallback( async(page) => {
@@ -96,7 +96,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_notification_close}
+                handle_close={handle_close_notification}
             />
         )
     }

@@ -12,14 +12,14 @@ import "../../Styles/TableStyle.css"
 
 export default function UsuarioTableComponent({data, isLightTheme}) {
     const [notification, setNotification] = useState(true)
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
     if(data.error) {
         return(
             <ModalNotification
                 show={notification}
                 message={data.error}
                 type={"error"}
-                handle_close={handle_notification_close}
+                handle_close={handle_close_notification}
             />
         )
     }

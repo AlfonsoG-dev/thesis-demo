@@ -65,7 +65,7 @@ export function Component() {
     }
 
     // notification modal
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
 
     // enable/disable checkbox
     const handle_change_enable_edition = () => {
@@ -129,7 +129,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_notification_close}
+            handle_close={handle_close_notification}
             />
     }
     const time_limit_show = () => {

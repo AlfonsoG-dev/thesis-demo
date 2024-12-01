@@ -39,7 +39,7 @@ export function Component() {
 
     const limit = 10
 
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
 
     const fetch_data = useCallback(async(page) => {
         setLoading(true)
@@ -118,7 +118,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_notification_close}
+            handle_close={handle_close_notification}
         />
     }
 
@@ -170,13 +170,13 @@ export function Component() {
 
 function HistoriasTableComponent({historias, isLightTheme}) {
     const [notification, setNotification ] = useState(true)
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
     if(historias.length === 0) {
         return <ModalNotification
             show={notification}
             message={"Error: Vacío"}
             type={"msg"}
-            handle_close={handle_notification_close}
+            handle_close={handle_close_notification}
         />
     }
     return (

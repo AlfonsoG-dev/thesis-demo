@@ -62,7 +62,7 @@ export function Component() {
     }
 
     // modal notificación
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
 
     // user change field handler
     const handle_change_user = (e) => {
@@ -116,7 +116,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_notification_close}
+            handle_close={handle_close_notification}
         />
     }
     return (

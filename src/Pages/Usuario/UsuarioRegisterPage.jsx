@@ -58,7 +58,7 @@ export function Component() {
         setShowConfirm(true)
     }
     // notificación modal handlers
-    const handle_notification_close = () => setNotification(false)
+    const handle_close_notification = () => setNotification(false)
 
     // allow 3 attempts before block page
     const validate_retry = () => {
@@ -132,7 +132,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_notification_close}
+                handle_close={handle_close_notification}
             />
         )
     }
