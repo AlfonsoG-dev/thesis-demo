@@ -3,15 +3,12 @@ import { useCallback, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import {
     Page, Text, Document, StyleSheet,
-    PDFViewer, PDFDownloadLink, Image
+    PDFViewer, PDFDownloadLink
 } from "@react-pdf/renderer"
 
 // Hooks
 import useFormState from "../../Hooks/Form/FormHook"
 import { Get } from "../../Hooks/Requests"
-
-// Images
-import light_escudo from "/universidad_excudo_light.jpg"
 
 // utils
 import ComputeEdad from "../../Utils/ComputeEdad.js"
@@ -178,7 +175,6 @@ export function Component() {
         <Document>
             <Page size="A3" >
                 {/* paciente, encabezado data */}
-                <Image src={light_escudo} style={styles.escudo}/>
                 <Text
                     style={styles.title}
                 >

@@ -22,9 +22,6 @@ import "./App.css"
 import "./Styles/ErrorStyle.css"
 import "./Styles/LoginStyle.css"
 
-// Images
-import light_escudo from "/universidad_excudo_light.jpg"
-
 /**
  * main app that represents the navigation bar with options.
  * it has home as default page
@@ -63,20 +60,10 @@ export default function App() {
         document.body.className = isLightTheme ? 'light':'dark'
     }, [isLightTheme])
 
-
-    const header_escudo = () => {
-        if(isLightTheme) {
-            return(
-                <img src={light_escudo} alt="escudo"/>
-            )
-        }
-    }
-
-    return (
+    return(
         <div className="app-container">
             <div className="navbar">
                 <div className={link_theme_name}>
-                    {header_escudo()}
                     <span onClick={handleToggleTheme} className="theme-changer">
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                     </span>

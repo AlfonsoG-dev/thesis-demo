@@ -12,15 +12,6 @@ import './index.css'
 import App from "./App"
 import LoginPage from './Pages/Login/LoginPage.jsx'
 
-// Error Components
-import ErrorAuthentication from "./Components/Errors/ErrorAuthentication"
-import ErrorLoadServer from "./Components/Errors/ErrorLoadServer"
-
-// loaders
-import AuthLoader from "./Hooks/AuthLoader"
-import Serverloader from "./Hooks/ServerLoader"
-
-
 // client routes
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,8 +19,6 @@ const router = createBrowserRouter(
             <Route
                 path='/'
                 element={<LoginPage/>}
-                loader={Serverloader}
-                errorElement={<ErrorLoadServer/>}
             />
             <Route
                 path='/password-recover'
@@ -38,8 +27,6 @@ const router = createBrowserRouter(
             <Route
                 path='/app'
                 element={<App/>}
-                loader={AuthLoader}
-                errorElement={<ErrorAuthentication/>}
             >
                 { /* home pages */}
                 <Route index lazy={() => import('./Pages/Home/Home')} />

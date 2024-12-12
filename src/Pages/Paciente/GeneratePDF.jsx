@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import {
     Page, Text, Document, StyleSheet,
-    PDFViewer, PDFDownloadLink, Image
+    PDFViewer, PDFDownloadLink
 } from "@react-pdf/renderer"
 
 // Hooks
@@ -17,12 +17,6 @@ import {
     examen_model
 }from "../../Utils/Formats/Models"
 import ComputeEdad from "../../Utils/ComputeEdad"
-
-// Style
-
-
-// Images
-import light_escudo from "/universidad_excudo_light.jpg"
 
 export function Component() {
     const {state} = useLocation()
@@ -165,7 +159,6 @@ export function Component() {
     const MyDocument = () => (
         <Document>
             <Page size="A3">
-                <Image src={light_escudo} style={styles.escudo}/>
                 <Text
                     style={styles.title}
                 >
