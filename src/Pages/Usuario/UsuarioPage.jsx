@@ -15,6 +15,9 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import { Get } from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
+// data
+import { get_users } from "../../../back-end/user.js"
+
 // style
 import '../../Styles/Paciente.css'
 import '../../Styles/LoadingStyle.css'
@@ -48,25 +51,26 @@ export function Component() {
     // get the users from the end-point in server
     const fetch_data = useCallback( async(page) => {
         try {
-            if(offset > 0) {
-                const response = await Get(`/user/all/${limit}/${page}`)
-                if(response.length > 0) {
-                    setUsuarios(response)
-                    setLoading(false)
-                } else {
-                    setOffset(offset-limit)
-                    throw new Error(response.error)
-                }
-            } else {
-                const response = await Get(`/user/all/${limit}/${page}`)
+            const response = get_users(page, limit)
+            if(response.length > 0) {
                 setUsuarios(response)
                 setLoading(false)
+            } else {
+                setOffset(() => {
+                    if(offset >= limit) {
+                        return offset-limit
+                    } else {
+                        return 0
+                    }
+                })
+                throw new Error("No hay usuarios")
             }
         } catch(er) {
             setLoading(false)
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            console.error(er)
         }
     }, [offset])
 
@@ -81,24 +85,24 @@ export function Component() {
             setOffset(page)
         }
     }
-    
     // search user by identificación
     const handle_search_user = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Get(`/user/by-identificacion/${buscado.identificacion}`)
+            const response = usuarios.filter(u => u.rol !== "admin" && u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setUsuarios(response)
                 setLoading(false)
             } else {
-                throw new Error(response.error)
+                throw new Error("Usuario no encontrado")
             }
         } catch(er) {
             setLoading(false)
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            console.error(er)
         }
     }
 

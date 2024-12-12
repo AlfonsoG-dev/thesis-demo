@@ -12,11 +12,10 @@ import PacienteTableComponent from "../../Components/Tables/PacienteTableCompone
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 
 // hooks
-import {Get} from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
-import { get_pacientes, pacientes } from "../../../back-end/paciente"
+import { get_pacientes } from "../../../back-end/paciente"
 
 // style 
 import "../../Styles/Paciente.css"
@@ -51,7 +50,7 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get data from the end-point server
-    const fetch_data = useCallback( async(page) => {
+    const fetch_data = useCallback((page) => {
         try {
             const response = get_pacientes(page, limit)
             if(response.length > 0) {
@@ -116,6 +115,7 @@ export function Component() {
     }
 
     if(loading) {
+        console.errorer
         return <div className="loader"></div>
     }
 

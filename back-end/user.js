@@ -34,6 +34,10 @@ export const users = [
 const current = new Date(Date.now())
 const tomorrow = new Date(current.getDate() + 1)
 
+
+export function get_users(start=0, end=0) {
+    return users.filter(u => u.rol !== 'admin').slice(start, end)
+}
 export function login(log_user={identificacion:0, password:""}) {
     return users.filter(u => u.identificacion === Number.parseInt(log_user.identificacion) && u.password === log_user.password)
 }
