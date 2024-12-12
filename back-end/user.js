@@ -79,3 +79,17 @@ export function update(identificacion=0, usuario) {
         error
     }
 }
+export function delete_user(identificacion=0, password) {
+    const user = users.filter(u => u.identificacion === Number.parseInt(identificacion) && u.password === password)
+    let error, msg = ""
+    if(user.length > 0) {
+        users.pop(user[0])
+        msg = "Usuario eliminado"
+    } else {
+        error = "El usuario no se pudo eliminar"
+    }
+    return {
+        msg,
+        error
+    }
+}

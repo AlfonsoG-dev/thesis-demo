@@ -11,6 +11,9 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 import { Delete } from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
+// data
+import { delete_user } from "../../../back-end/user.js"
+
 // Styles
 import "../../Styles/Register.css"
 import "../../Styles/LoadingStyle.css"
@@ -72,7 +75,7 @@ export function Component() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Delete("/user/delete-user", usuario)
+            const response = delete_user(usuario.identificacion, usuario.password)
             if(response.msg) {
                 setLoading(false)
                 setIsCompleted(true)
