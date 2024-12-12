@@ -8,8 +8,10 @@ import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
 
 // hooks
-import { Post, Get } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+
+// data
+import {users, register} from "../../../back-end/user.js"
 
 // styles
 import "../../Styles/ErrorStyle.css"
@@ -73,7 +75,7 @@ export function Component() {
         }
     }
 
-    const handle_submit= async(e) => {
+    const handle_submit= (e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -81,24 +83,22 @@ export function Component() {
             if(usuario.time_limit !== null && new Date(usuario.time_limit).getTime() < cur_date.getTime()) {
                 throw new Error("Fecha limite incorrecta")
             }
-            const search_user = await Get(
-                `/user/by-identificacion/${usuario.identificacion}`
-            )
-            if(search_user.error && usuario.rol !== '') {
-                const response = await Post("/user/post-user", usuario)
-                if(response.error === undefined) {
-                    localStorage.removeItem("register_user")
+            const search_user = users.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
+            if(search_user.length === 0 && usuario.rol !== ''){
+                const result = register(usuario)
+                if(result > 0) {
+                    localStorage.removeItem('register_user')
                     setIsCompleted(true)
                     setLoading(false)
-                    setResponseMessage(response.msg)
-                    setNotificationType("msg")
                     handle_close_confirm()
+                    setNotificationType("message")
+                    setResponseMessage("Usuario registrado")
                     setNotification(true)
                 } else {
-                    throw new Error(response.error)
+                    throw new Error("No se pudo registrar el usuario")
                 }
             } else {
-                throw new Error("El usuario ya esta registrado.")
+                    throw new Error("El usuario ya se encuentra registrado")
             }
         } catch(er) {
             setLoading(false)
@@ -107,6 +107,7 @@ export function Component() {
             setNotificationType("error")
             handle_close_confirm()
             setNotification(true)
+            console.error(er)
         }
     }
     useEffect(() => {
@@ -115,6 +116,7 @@ export function Component() {
         }
     }, [isCompleted])
 
+    console.log(users)
     const handle_change_user = (e) => {
         e.preventDefault()
         const{name, value} = e.target

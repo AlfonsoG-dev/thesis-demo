@@ -31,6 +31,23 @@ export const users = [
     }
 ]
 
+const current = new Date(Date.now())
+const tomorrow = new Date(current.getDate() + 1)
+
 export function login(log_user={identificacion:0, password:""}) {
     return users.filter(u => u.identificacion === Number.parseInt(log_user.identificacion) && u.password === log_user.password)
+}
+export function register(user) {
+    if(!(user instanceof Object)) {
+        throw new Error("Non object provided")
+    }
+    const m_time_limit = user.rol === 'transitorio' ? tomorrow : null
+    const comp_user = {
+        id_pk: users.length + 1,
+        ...user,
+        time_limit: m_time_limit,
+        create_at: new Date(Date.now()),
+        update_at: null
+    }
+    return users.push(comp_user)
 }

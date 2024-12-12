@@ -1,4 +1,4 @@
-# Thesis application Demo.
+# Degree thesis application DEMO.
 - This is a front-end only demo.
 - You have limited functionality available to test and try the application.
 - In this demo the authentication system is overlook.
