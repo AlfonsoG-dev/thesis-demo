@@ -55,7 +55,7 @@ export default function App() {
 
     const handle_change_active_link = (active_link) => {
         localStorage.setItem('activeLink', active_link)
-        const current_active = localStorage.getItem('activeLink') || "/app"
+        const current_active = localStorage.getItem('activeLink')
         dispatch({type: current_active})
     }
 

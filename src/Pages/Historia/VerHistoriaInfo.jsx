@@ -17,8 +17,13 @@ import ScrollOptions from "../../Components/ScrollOptions"
 import ComputeDate from "../../Utils/ComputeDate"
 
 // Hooks
-import { Get } from "../../Hooks/Requests"
 import useFormState from "../../Hooks/Form/FormHook"
+
+// data
+import { pacientes } from "../../../back-end/paciente"
+import { anamnesis_list } from "../../../back-end/anamnesis"
+import { examenes } from "../../../back-end/examen_fisico"
+import { signos_list } from "../../../back-end/signos_vitales"
 
 // Styles
 import "../../Styles/LoadingStyle.css"
@@ -55,24 +60,24 @@ export function Component() {
 
 
     // get data from end-point server
-    const fetch_data = useCallback( async() => {
+    const fetch_data = useCallback(() => {
         setLoading(true)
         try {
             if(historia.paciente_if_fk !== null) {
-                const [res_paciente] = await Get(`/paciente/by-id/${historia.paciente_id_fk}`)
+                const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(historia.paciente_id_fk))
                 setPaciente(res_paciente)
                 setEncabezado(res_paciente)
             }
             if(historia.anamnesis_id_fk !== null) {
-                const [res_anamnesis] = await Get(`/anamnesis/${historia.anamnesis_id_fk}`)
+                const [res_anamnesis] = anamnesis_list.filter(a => a.id_pk === Number.parseInt(historia.anamnesis_id_fk))
                 setAnamnesis(res_anamnesis)
             }
             if(historia.signos_vitales_id_fk !== null) {
-                const [res_signos] = await Get(`/signos/${historia.signos_vitales_id_fk}`)
+                const [res_signos] = signos_list.filter(s => s.id_pk === Number.parseInt(historia.signos_vitales_id_fk))
                 setSignos(res_signos)
             }
             if(historia.examen_fisico_id_fk !== null) {
-                const [res_examen] = await Get(`/examen/${historia.examen_fisico_id_fk}`)
+                const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(historia.examen_fisico_id_fk))
                 setExamen(res_examen)
             }
             setLoading(false)
