@@ -19,6 +19,9 @@ import useNotificationState from "../../Hooks/Modal/NotificationHook"
 // Utils
 import TitleFormat from "../../Utils/Formats/Title"
 
+// data
+import {get_historias_by_paciente} from "../../../back-end/historia.js"
+
 // styles
 import "../../Styles/TableStyle.css"
 import "../../Styles/Paciente.css"
@@ -56,31 +59,29 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point server
-    const fetch_data = useCallback( async (page) => {
+    const fetch_data = useCallback((page) => {
+        setLoading(true)
         try {
-            if(offset > 0) {
-                const response = await Get(
-                    `/historia/paciente/${id_paciente}/${limit}/${page}`
-                )
-                if(response.length > 0) {
-                    setHistorias(response)
-                    setLoading(false)
-                } else {
-                    setOffset(offset-limit)
-                    throw new Error(response.error)
-                }
-            } else {
-                const response = await Get(
-                    `/historia/paciente/${id_paciente}/${limit}/${page}`
-                )
-                setHistorias(response)
+            const response = get_historias_by_paciente(id_paciente, page, limit)
+            if(response.length > 0) {
                 setLoading(false)
+                setHistorias(response)
+            } else {
+                setOffset(() => {
+                    if(offset >= limit) {
+                        return offset-limit
+                    } else {
+                        return 0
+                    }
+                })
+                throw new Error("El paciente no tiene más historias")
             }
         } catch(er) {
             setLoading(false)
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            console.error(er)
         }
     }, [offset])
 

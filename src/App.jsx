@@ -35,7 +35,7 @@ export default function App() {
     const get_initial_theme = () => localStorage.getItem('theme') || 'light'
     const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
 
-    const get_initial_active = () => localStorage.getItem('activeLink')
+    const get_initial_active = () => localStorage.getItem('activeLink') || "/app"
     const [activeState, dispatch] = useReducer(activeLinkReducer, {
         activeHome: get_initial_active() === '/app',
         activePaciente: get_initial_active() === '/app/paciente',
