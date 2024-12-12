@@ -11,12 +11,14 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import ScrollOptions from "../../Components/ScrollOptions"
 
 // hooks
-import { Post } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import useCarreraState from "../../Hooks/Form/CarreraHook"
 
 // Utils
 import ComputeDate from "../../Utils/ComputeDate"
+
+// data
+import { update_paciente } from "../../../back-end/paciente"
 
 // styles
 import '../../Styles/Register.css'
@@ -110,7 +112,7 @@ export function Component() {
                 modifiedPaciente.genero = modifiedPaciente.genero1
                 delete modifiedPaciente.genero1
             }
-            const response = await Post("/paciente/put-paciente", modifiedPaciente)
+            const response = update_paciente(state.identificacion,modifiedPaciente)
             if(response.msg !== undefined) {
                 setLoading(false)
                 setIsComplete(true)
@@ -128,6 +130,7 @@ export function Component() {
             setNotificationType("error")
             handle_close_confirm()
             setNotification(true)
+            console.error(er)
         }
     }
     if(loading) {

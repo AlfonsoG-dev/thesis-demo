@@ -13,7 +13,6 @@ import HistoriaTableComponent from "../../Components/Tables/HistoriaTableCompone
 import ModalNotification from "../../Components/Modals/ModalNotification"
 
 // hooks
-import { Get } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 
 // Utils
