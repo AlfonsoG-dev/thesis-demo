@@ -1,20 +1,20 @@
-export default function activeLinkReducer(action) {
+export default function activeLinkReducer(state, action) {
     switch(action.type) {
         case "/app":
             return {
-                activeHome: true
+                activeHome: !state.activeHome
             }
         case "/app/paciente":
             return {
-                activePaciente: true
+                activePaciente: !state.activePaciente
             }
         case "/app/usuario":
             return {
-                activeUsuario: true
+                activeUsuario: !state.activeUsuario
             }
         case "/app/historias":
             return {
-                activeHistorias: true
+                activeHistorias: !state.activeHistorias
             }
     }
 }

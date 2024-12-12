@@ -35,7 +35,7 @@ export default function App() {
     const get_initial_theme = () => localStorage.getItem('theme') || 'light'
     const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
 
-    const get_initial_active = () => localStorage.getItem('activeLink') || '/app'
+    const get_initial_active = () => localStorage.getItem('activeLink')
     const [activeState, dispatch] = useReducer(activeLinkReducer, {
         activeHome: get_initial_active() === '/app',
         activePaciente: get_initial_active() === '/app/paciente',
@@ -55,9 +55,9 @@ export default function App() {
 
     const handle_change_active_link = (active_link) => {
         localStorage.setItem('activeLink', active_link)
-        dispatch({type: localStorage.getItem('activeLink')})
+        const current_active = localStorage.getItem('activeLink') || "/app"
+        dispatch({type: current_active})
     }
-
 
     useEffect(() => {
         document.body.className = isLightTheme ? 'light':'dark'
@@ -71,13 +71,17 @@ export default function App() {
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                     </span>
                     <button className={activeState.activeHome ? 'link-active':'link'} onClick={() => {
-                        handle_change_active_link('/app')
+                        if(!activeState.activeHome) {
+                            handle_change_active_link('/app')
+                        }
                         navigate("/app")
                     }}>
                         Home | <FaHome />
                     </button>
                     <button className={activeState.activePaciente ? 'link-active':'link'} onClick={() => {
-                        handle_change_active_link('/app/paciente')
+                        if(!activeState.activePaciente) {
+                            handle_change_active_link('/app/paciente')
+                        }
                         navigate("/app/paciente")
                     }}>
                         Pacientes | <FaUserInjured />
@@ -86,7 +90,9 @@ export default function App() {
                         usuario.rol === "admin" && 
                         (
                             <button className={activeState.activeUsuario ? 'link-active':'link'} onClick={() => {
-                                handle_change_active_link('/app/usuario')
+                                if(!activeState.activeUsuario) {
+                                    handle_change_active_link('/app/usuario')
+                                }
                                 navigate("/app/usuario")
                             }}>
                                 Usuarios | <FaUserMd />
@@ -94,7 +100,9 @@ export default function App() {
                         )
                     }
                     <button className={activeState.activeHistorias ? 'link-active':'link'} onClick={() => {
-                        handle_change_active_link('/app/historias')
+                        if(!activeState.activeHistorias) {
+                            handle_change_active_link('/app/historias')
+                        }
                         navigate("/app/historias")
                     }}>
                         Historias | <PiFolderSimpleUserFill/>
