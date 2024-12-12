@@ -14,8 +14,10 @@ import { MdOutlinePersonSearch } from "react-icons/md"
 import { FaBookMedical } from "react-icons/fa"
 
 // Hooks
-import { Get } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+
+// data
+import { get_historias } from "../../../back-end/historia"
 
 // Style
 import "../../Styles/TableStyle.css"
@@ -41,26 +43,22 @@ export function Component() {
 
     const handle_close_notification = () => setNotification(false)
 
-    const fetch_data = useCallback(async(page) => {
+    const fetch_data = useCallback((page) => {
         setLoading(true)
         try {
-            if(offset > 0) {
-                const response = await Get(`/historia/all/${limit}/${page}`)
-                if(response.error === undefined) {
-                    setLoading(false)
-                    setHistorias(response)
-                } else {
-                    setOffset(offset-limit)
-                    throw new Error(response.error)
-                }
+            const response = get_historias(page, limit)
+            if(response.length > 0) {
+                setLoading(false)
+                setHistorias(response)
             } else {
-                const response = await Get(`/historia/all/${limit}/${page}`)
-                if(response.error === undefined) {
-                    setLoading(false)
-                    setHistorias(response)
-                } else {
-                    setLoading(false)
-                }
+                setOffset(() => {
+                    if(offset >= limit) {
+                        return offset-limit
+                    } else {
+                        return 0
+                    }
+                })
+                throw new Error("No hay historias")
             }
         } catch(er) {
             setLoading(false)
@@ -71,16 +69,16 @@ export function Component() {
         }
     }, [offset])
 
-    const handle_search_historia = async(e) => {
+    const handle_search_historia = (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Get(`/historia/by-id/${buscado.id_pk}`)
-            if(response.error === undefined) {
+            const response = historias.filter(h => h.id_pk === Number.parseInt(buscado.id_pk))
+            if(response.length > 0) {
                 setLoading(false)
                 setHistorias(response)
             } else {
-                throw new Error(response.error)
+                throw new Error("Historia no encontrada")
             }
         } catch(er) {
             setLoading(false)

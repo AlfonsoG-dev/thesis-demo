@@ -49,7 +49,7 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get the users from the end-point in server
-    const fetch_data = useCallback( async(page) => {
+    const fetch_data = useCallback((page) => {
         try {
             const response = get_users(page, limit)
             if(response.length > 0) {

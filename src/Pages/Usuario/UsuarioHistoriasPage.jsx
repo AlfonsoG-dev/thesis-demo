@@ -17,7 +17,7 @@ import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 import TitleFormat from "../../Utils/Formats/Title"
 
 // data
-import { get_historias } from "../../../back-end/historia"
+import { get_historias_by_user } from "../../../back-end/historia"
 
 // style
 import "../../Styles/TableStyle.css"
@@ -56,7 +56,7 @@ export function Component() {
     // get the data from the end-point of server
     const fetch_data = useCallback((page) => {
         setLoading(true)
-        const m_historias = get_historias(id_usuario, page, limit)
+        const m_historias = get_historias_by_user(id_usuario, page, limit)
         if(m_historias.length > 0) {
             setLoading(false)
             setHistorias(m_historias)

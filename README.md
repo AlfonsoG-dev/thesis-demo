@@ -23,7 +23,17 @@ VITE_APP_API='HOST_NAME:PORT' # server URL or domain
 ```shell
 npm run dev
 ```
+
+# TODO
+- [ ] offset not working properly
+- [ ] add paciente options
+- [ ] add create historia
+- [ ] add usuario options
+- [ ] add historia options
+- [ ] verify **pdf** generation
+
 ----
+
 
 # Disclaimer
 - This project is for educational purposes.
