@@ -30,3 +30,15 @@ export const signos_list = [
         talla: 80.0
     }
 ]
+
+export function register_signos(signos) {
+    const comp_signos = {
+        id_pk: signos_list.length + 1,
+        ...signos
+    }
+    signos_list.push(comp_signos)
+    return {
+        msg: "Signos vitales registrados",
+        register: comp_signos
+    }
+}

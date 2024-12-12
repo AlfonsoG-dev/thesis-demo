@@ -1,8 +1,8 @@
 import {users} from "./user.js"
-import {pacientes} from "./paciente.js"
-import { anamnesis_list as anamnesis } from "./anamnesis.js"
-import { examenes } from "./examen_fisico.js"
-import {signos_list} from "./signos_vitales.js"
+import {pacientes, register_paciente} from "./paciente.js"
+import { anamnesis_list, register_anamnesis } from "./anamnesis.js"
+import { examenes, register_exam } from "./examen_fisico.js"
+import {signos_list, register_signos} from "./signos_vitales.js"
 export const historias = [
     {
         id_pk: 1,
@@ -10,7 +10,7 @@ export const historias = [
         paciente_name: pacientes[0].nombres,
         usuario_id_fk: users[0].id_pk,
         user_name: users[0].name,
-        anamnesis_id_fk: anamnesis[0].id_pk,
+        anamnesis_id_fk: anamnesis_list[0].id_pk,
         examen_fisico_id_fk: examenes[0].id_pk,
         signos_vitales_id_fk: signos_list[0].id_pk,
         referencia: null,
@@ -24,7 +24,7 @@ export const historias = [
         paciente_name: pacientes[1].nombres,
         usuario_id_fk: users[0].id_pk,
         user_name: users[0].name,
-        anamnesis_id_fk: anamnesis[1].id_pk,
+        anamnesis_id_fk: anamnesis_list[1].id_pk,
         examen_fisico_id_fk: examenes[1].id_pk,
         signos_vitales_id_fk: signos_list[1].id_pk,
         referencia: null,
@@ -38,7 +38,7 @@ export const historias = [
         paciente_name: pacientes[0].nombres,
         usuario_id_fk: users[1].id_pk,
         user_name: users[1].name,
-        anamnesis_id_fk: anamnesis[2].id_pk,
+        anamnesis_id_fk: anamnesis_list[2].id_pk,
         examen_fisico_id_fk: examenes[2].id_pk,
         signos_vitales_id_fk: signos_list[2].id_pk,
         referencia: null,
@@ -58,4 +58,32 @@ export function get_historias_by_paciente(id_paciente=0, start=0, end=0) {
 }
 export function get_historias(start=0, end=0) {
     return historias.slice(start, end)
+}
+
+export function register_historia(historia, usuario) {
+    const {paciente, anamnesis, examen_fisico, signos_vitales} = historia
+    const res_paciente = register_paciente(paciente).register
+    const res_anamnesis = register_anamnesis(anamnesis).register
+    const res_examen = register_exam(examen_fisico).register
+    const res_signos = register_signos(signos_vitales).register
+
+    const comp_historia = {
+        id_pk: historias.length + 1,
+        paciente_id_fk: res_paciente.id_pk,
+        paciente_name: res_paciente.nombres,
+        usuario_id_fk: usuario.id_pk,
+        user_name: usuario.name,
+        anamnesis_id_fk: res_anamnesis.id_pk,
+        examen_fisico_id_fk: res_examen.id_pk,
+        signos_vitales_id_fk: res_signos.id_pk,
+        referencia: 0,
+        update_by: 0,
+        create_at: new Date(Date.now()),
+        update_at: null
+    }
+    historias.push(comp_historia)
+    return {
+        msg: "Historia registrada",
+        register: comp_historia
+    }
 }

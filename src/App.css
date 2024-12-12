@@ -99,6 +99,7 @@ body.light {
             border: 1px solid black;
             border-radius: 0px;
             transition: all 0.5s ease-in-out;
+            background-color: #1164ad;
         }
         .link-active {
             color: red;

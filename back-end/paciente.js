@@ -45,6 +45,28 @@ export function get_pacientes(start=0, end=0) {
     return m
 }
 
+export function register_paciente(paciente) {
+    const s = pacientes.filter(p => p.identificacion === Number.parseInt(paciente.identificacion))
+    let error, msg = "", p
+    if(s.length === 0) {
+        const comp_paciente = {
+            id_pk: pacientes.length + 1,
+            ...paciente,
+            create_at: new Date(Date.now()),
+            update_at: null
+        }
+        p = comp_paciente
+        pacientes.push(comp_paciente)
+        msg = "Paciente registrado"
+    } else {
+        error = "No se pudo registrar paciente"
+    }
+    return {
+        msg, 
+        error,
+        register: p
+    }
+}
 export function update_paciente(identificacion, paciente) {
     const res = pacientes.filter(p => p.identificacion === Number.parseInt(identificacion))
     let error = ""

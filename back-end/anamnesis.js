@@ -33,3 +33,15 @@ export const anamnesis_list = [
         hora_ingreso: "10:30:55"
     }
 ]
+
+export function register_anamnesis(anamnesis) {
+    const comp_anamnesis = {
+        id_pk: anamnesis_list.length + 1,
+        ...anamnesis
+    }
+    anamnesis_list.push(comp_anamnesis)
+    return {
+        msg: "Anamnesis registrada",
+        register: comp_anamnesis
+    }
+}

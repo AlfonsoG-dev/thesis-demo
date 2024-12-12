@@ -60,3 +60,15 @@ export const examenes = [
 
     }
 ]
+
+export function register_exam(examen) {
+    const comp_exam = {
+        id_pk: examenes.length + 1,
+        ...examen
+    }
+    examenes.push(comp_exam)
+    return {
+        msg: "Examen registrado",
+        register: comp_exam
+    }
+}

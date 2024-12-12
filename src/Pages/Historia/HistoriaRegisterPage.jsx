@@ -17,11 +17,14 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 import useFormState from "../../Hooks/Form/FormHook.js"
-import { Post, Get } from "../../Hooks/Requests.jsx"
 
 // utils
 import ComputeEdad from "../../Utils/ComputeEdad.js"
 import ComputeDate from "../../Utils/ComputeDate.js"
+
+// data
+import { register_historia } from "../../../back-end/historia.js"
+import { pacientes } from "../../../back-end/paciente.js"
 
 // Styles
 import "../../Styles/Register.css"
@@ -32,7 +35,7 @@ import "../../Styles/Register.css"
  * If the paciente is register from here and it already exists only the identificación field will be used.
 */
 export function Component() {
-    const [, isLightTheme] = useOutletContext()
+    const [user, isLightTheme] = useOutletContext()
     // form data state
     const {
         paciente, setPaciente,
@@ -111,8 +114,8 @@ export function Component() {
                 paciente.facultad = null
                 paciente.programa = null
             }
-            const exists_paciente = await Get(`/paciente/${paciente.identificacion}`)
-            if(exists_paciente.error && ComputeEdad(paciente.fecha_nacimiento)) {
+            const exists_paciente = pacientes.filter(p => p.identificacion === Number.parseInt(paciente.identificacion))
+            if(exists_paciente.length === 0 && ComputeEdad(paciente.fecha_nacimiento)) {
                 const historia_object = {
                     paciente: {
                         ...paciente
@@ -127,7 +130,7 @@ export function Component() {
                         ...signos
                     }
                 }
-                const response = await Post("/historia/post-without-paciente", historia_object)
+                const response = register_historia(historia_object, user)
                 if(response.msg !== undefined) {
                     alert("El paciente no existe, será registrado")
                     setIsCompleted(true)
@@ -136,6 +139,7 @@ export function Component() {
                     setResponseMessage(response.msg)
                     handle_close_confirm()
                     setNotification(true)
+                    localStorage.removeItem('register_historia')
                 } else {
                     throw new Error(response.error)
                 }
@@ -155,7 +159,7 @@ export function Component() {
                         ...signos
                     }
                 }
-                const response = await Post("/historia/post-with-paciente", historia_object)
+                const response = register_historia(historia_object)
                 if(response.msg !== undefined) {
                     setIsCompleted(true)
                     setLoading(false)
@@ -163,6 +167,7 @@ export function Component() {
                     setResponseMessage(response.msg)
                     handle_close_confirm()
                     setNotification(true)
+                    localStorage.removeItem('register_historia')
                 } else {
                     throw new Error(response.error)
                 }
