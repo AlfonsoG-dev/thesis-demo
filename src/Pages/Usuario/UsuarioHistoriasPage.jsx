@@ -11,11 +11,13 @@ import HistoriaTableComponent from "../../Components/Tables/HistoriaTableCompone
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 
 // hooks
-import {Get} from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // utils
 import TitleFormat from "../../Utils/Formats/Title"
+
+// data
+import { get_historias } from "../../../back-end/historia"
 
 // style
 import "../../Styles/TableStyle.css"
@@ -27,15 +29,15 @@ import "../../Styles/LoadingStyle.css"
 */
 export function Component() {
     const [, isLightTheme] = useOutletContext()
+    const {id_usuario} = useParams()
     // state: usuario
-    const { id_usuario } = useParams()
     const {state} = useLocation()
     const user_name = TitleFormat(state.name)
 
     // list of historias
     const [historias, setHistorias] = useState([])
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     // modals
     const {
@@ -52,29 +54,29 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point of server
-    const fetch_data = useCallback( async(page) => {
-        try {
-            if(offset > 0) {
-                const response = await Get(`/historia/usuario/${id_usuario}/${limit}/${page}`)
-                if(response.length > 0) {
-                    setHistorias(response)
-                    setLoading(false)
-                } else {
-                    setOffset(offset-limit)
-                    throw new Error(response.error)
-                }
-            } else {
-                const response = await Get(`/historia/usuario/${id_usuario}/${limit}/${page}`)
-                setHistorias(response)
-                setLoading(false)
-            }
-        } catch(er) {
+    // TODO: use the local storage and the historias from back-end folder.
+    const fetch_data = useCallback((page) => {
+        setLoading(true)
+        const m_historias = get_historias(id_usuario, page, limit)
+        if(m_historias.length > 0) {
             setLoading(false)
-            setResponseMessage(er.toString())
+            setHistorias(m_historias)
+        } else {
+            setOffset(() => {
+                if(offset >= limit) {
+                    return offset-limit
+                } else {
+                    return 0
+                }
+            })
             setNotificationType("error")
+            setResponseMessage("El usuario no tiene historias")
             setNotification(true)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000)
         }
-    }, [offset])
+    }, [id_usuario])
 
     useEffect(() => {
         fetch_data(offset)

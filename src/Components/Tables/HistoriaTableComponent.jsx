@@ -11,7 +11,7 @@ import ModalNotification from "../Modals/ModalNotification"
 import PropTypes from "prop-types"
 
 export default function HistoriaTableComponent({data, type, isLightTheme}) {
-    const [notification, setNotification] = useState(true)
+    const [notification, setNotification] = useState(false)
     const handle_close_notification = () => setNotification(false)
     if(data.error) {
         return(
@@ -66,7 +66,7 @@ export default function HistoriaTableComponent({data, type, isLightTheme}) {
                             <td>{item.referencia}</td>
                             <td>{item.update_by}</td>
                             <td>{new Date(item.create_at).toLocaleString()}</td>
-                            <td>{item.update_at !== null && new Date(item.update_at).toLocaleString()}</td>
+                            <td>{item.update_at !== null && (new Date(item.update_at).toLocaleString())}</td>
                             <td>
                                 <table className="options">
                                     <OptionsTable historia={item}/>
