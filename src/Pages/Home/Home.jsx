@@ -12,10 +12,6 @@ import { FaDownload } from "react-icons/fa"
 // Styles
 import "../../Styles/Home/HomeStyle.css"
 
-// docs
-import consentimiento from "/docs/CONSENTIMIENTO_Y_DISENTIMIENTO.pdf"
-
-
 /**
  * Home page that has the user functions like create user, list historia, etc.
 */
@@ -55,7 +51,7 @@ export function Component() {
                     </button>
                 }
                 <button className="btn-option">
-                    <a href={consentimiento} download>
+                    <a href={"not implemented yet"} download>
                         Descargar permiso <FaDownload/>
                     </a>
                 </button>

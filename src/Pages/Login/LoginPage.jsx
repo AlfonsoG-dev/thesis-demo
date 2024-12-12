@@ -10,11 +10,10 @@ import ModalRegister from "../../Components/Modals/ModalRegister.jsx"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 
 // hooks
-import { Post } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
-import {users} from "../../../back-end/user.js"
+import {login} from "../../../back-end/user.js"
 
 
 // styles
@@ -75,17 +74,18 @@ export default function LoginPage() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Post("/login", loginData)
-            if(response.error === undefined) {
-                handle_close_confirm()
-                setIsCompleted(true)
-                setTimeout(() => {
-                    setLoading(false)
-                    navigate("/app")
-                }, 2000)
-            } else {
-                throw new Error(response.error)
+            const user = login(loginData)
+            if(user.length === 0) {
+                throw new Error("User not found")
             }
+            handle_close_confirm()
+            setIsCompleted(true)
+            setTimeout(() => {
+                setLoading(false)
+                navigate("/app", {
+                    state: user[0]
+                })
+            }, 2000)
         } catch(er) {
             setLoading(false)
             setIsCompleted(false)
@@ -93,12 +93,12 @@ export default function LoginPage() {
             setResponseMessage(er.toString())
             handle_close_confirm()
             setNotification(true)
-            console.error(er)
             setTimeout(() => {
                 navigate("/", {
                     replace: true
                 })
             }, 2000)
+            console.error(er)
         }
     }
     // handle the login data form
@@ -109,8 +109,7 @@ export default function LoginPage() {
             [name]: value
         }))
     }
-    const handle_recover_password = (e) => {
-        e.preventDefault()
+    const handle_recover_password = () => {
         setLoading(true)
         try {
             setIsCompleted(true)
@@ -139,54 +138,49 @@ export default function LoginPage() {
             handle_close={handle_close_notification}
         />
     }
-    const validate_login = () => {
-        if(!isCompleted) {
-            return (
-                <div className="container">
-                    <h1>Iniciar sesión</h1 >
-                    <form onSubmit={handle_show_confirm}>
-                        <label>
-                            <input
-                                name="identificacion"
-                                placeholder="Identificación usuario"
-                                onChange={handle_change}
-                            />
-                        </label>
-                        <label>
-                            <input
-                                name="password"
-                                type="password"
-                                placeholder="password"
-                                onChange={handle_change}
-                            />
-                        </label>
-                        <button
-                            type="submit"
-                            disabled={loginData.identificacion === 0 && loginData.password === ""}
-                        >
-                            Iniciar sesión
-                        </button>
-                        <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
-                            Ingresar | <IoIosLogIn />
-                        </button>
-                        {
-                            import.meta.env.VITE_NODE_ENV === "development" && (
-                                <button className="recover-password" onClick={handle_recover_password}>
-                                    Recuperar contraseña
-                                </button >
-                            )
-                        }
-                    </form >
-                    <ModalRegister
-                        show={showConfirm}
-                        message={"Estas iniciando sesión"}
-                        handle_close={handle_close_confirm}
-                        handle_confirm={handle_submit}
+    return (
+        <div className="container">
+            <h1>Iniciar sesión</h1 >
+            <form onSubmit={handle_show_confirm}>
+                <label>
+                    <input
+                        name="identificacion"
+                        placeholder="Identificación usuario"
+                        onChange={handle_change}
                     />
-                    <Outlet/>
-                </div>
-            )
-        }
-    }
-    return validate_login()
+                </label>
+                <label>
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="password"
+                        onChange={handle_change}
+                    />
+                </label>
+                <button
+                    type="submit"
+                    disabled={loginData.identificacion === 0 && loginData.password === ""}
+                >
+                    Iniciar sesión
+                </button>
+                <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
+                    Ingresar | <IoIosLogIn />
+                </button>
+                {
+                    import.meta.env.VITE_NODE_ENV === "development" && (
+                        <button className="recover-password" onClick={handle_recover_password}>
+                            Recuperar contraseña
+                        </button >
+                    )
+                }
+            </form >
+            <ModalRegister
+                show={showConfirm}
+                message={"Estas iniciando sesión"}
+                handle_close={handle_close_confirm}
+                handle_confirm={handle_submit}
+            />
+            <Outlet/>
+        </div>
+    )
 }
