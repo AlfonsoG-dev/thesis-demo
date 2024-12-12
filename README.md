@@ -17,7 +17,7 @@ npm install
 3. create environment variables.
 >- In the root folder create the file: **.env** file.
 ```env
-VITE_APP_API='localhost' # server URL or domain
+VITE_APP_API='HOST_NAME:PORT' # server URL or domain
 ```
 4. start the project
 ```shell

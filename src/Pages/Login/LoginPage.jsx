@@ -10,8 +10,11 @@ import ModalRegister from "../../Components/Modals/ModalRegister.jsx"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 
 // hooks
-import { Post, Get } from "../../Hooks/Requests"
+import { Post } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+
+// data
+import {users} from "../../../back-end/user.js"
 
 
 // styles
@@ -53,33 +56,18 @@ export default function LoginPage() {
     const handle_close_notification = () => {
         setNotification(false)
     }
-    const fetch_data = async() => {
+    const fetch_data = () => {
+        // TODO: validate previous session on localstorage
         setLoading(true)
-        try {
-            const prev_session = await Get("/get-auth")
-            if(prev_session.error !== undefined) {
-                throw new Error("Sesión no iniciada")
-            }
-            handle_close_confirm()
-            if(localStorage.getItem('activeLink') !== null) {
-                setTimeout(() => {
-                    setLoading(false)
-                    navigate(localStorage.getItem('activeLink'))
-                }, 2000)
-            } else {
-                setTimeout(() => {
-                    setLoading(false)
-                    navigate("/app")
-                }, 2000)
-            }
-        } catch(er) {
+        handle_close_confirm()
+        // TODO: when there is an active link navigate to its URL
+        setNotificationType("msg")
+        setResponseMessage("For Now access without credentials")
+        setNotification(true)
+        setTimeout(() => {
             setLoading(false)
-            setNotificationType("error")
-            setResponseMessage("Sesión no iniciada")
-            handle_close_confirm()
-            setNotification(true)
-            console.error(er)
-        }
+            navigate("/app")
+        }, 2000)
     }
 
     // submit handler action
