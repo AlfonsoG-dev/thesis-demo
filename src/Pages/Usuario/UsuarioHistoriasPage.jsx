@@ -54,7 +54,6 @@ export function Component() {
     const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point of server
-    // TODO: use the local storage and the historias from back-end folder.
     const fetch_data = useCallback((page) => {
         setLoading(true)
         const m_historias = get_historias(id_usuario, page, limit)

@@ -15,6 +15,9 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import {Get} from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
+// data
+import { get_pacientes, pacientes } from "../../../back-end/paciente"
+
 // style 
 import "../../Styles/Paciente.css"
 import "../../Styles/LoadingStyle.css"
@@ -50,19 +53,19 @@ export function Component() {
     // get data from the end-point server
     const fetch_data = useCallback( async(page) => {
         try {
-            if(offset > 0) {
-                const response = await Get(`/paciente/all/${limit}/${page}`)
-                if(response.length > 0) {
-                    setPacientes(response)
-                    setLoading(false)
-                } else {
-                    setOffset(offset-limit)
-                    throw new Error(response.error)
-                }
-            } else {
-                const response = await Get(`/paciente/all/${limit}/${page}`)
+            const response = get_pacientes(page, limit)
+            if(response.length > 0) {
                 setPacientes(response)
                 setLoading(false)
+            } else {
+                setOffset(() => {
+                    if(offset >= limit) {
+                        return offset-limit
+                    } else {
+                        return 0
+                    }
+                })
+                throw new Error("No hay pacientes")
             }
         } catch(er) {
             setLoading(false)
@@ -88,18 +91,19 @@ export function Component() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Get(`/paciente/${buscado.identificacion}`)
+            const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setPacientes(response)
                 setLoading(false)
             } else {
-                throw new Error(response.error)
+                throw new Error("Paciente no encontrado")
             }
         } catch(er) {
             setLoading(false)
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            console.error(er)
         }
     }
 

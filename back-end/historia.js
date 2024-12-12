@@ -36,7 +36,7 @@ export const historias = [
     }
 ]
 
-export function get_historias(id_usuario=0, limit=0, offset=0) {
-    const m = historias.filter(h => h.usuario_id_fk === Number.parseInt(id_usuario)).slice(limit, offset)
+export function get_historias(id_usuario=0, start=0, end=0) {
+    const m = historias.filter(h => h.usuario_id_fk === Number.parseInt(id_usuario)).slice(start, end)
     return m
 }
