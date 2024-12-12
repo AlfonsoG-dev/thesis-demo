@@ -8,7 +8,9 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
-import { Get, Post } from "../../Hooks/Requests"
+
+// data
+import { users, change_password } from "../../../back-end/user"
 
 // Style
 import "../../Styles/Register.css"
@@ -78,21 +80,22 @@ export function Component() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Get(`/user/to-change-password/${usuario.name}/${usuario.identificacion}`)
-            if(response.error === undefined) {
-                const change_password_response = await Post("/user/put-user-password", usuario)
-                if(change_password_response.msg !== undefined) {
+            const response = users.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
+            if(response.length > 0) {
+                const change_password_response = change_password(usuario.identificacion, usuario.password)
+                if(change_password_response !== "") {
+                    localStorage.removeItem('change_password')
                     setIsCompleted(true)
                     setLoading(false)
-                    setResponseMessage(change_password_response.msg)
+                    setResponseMessage(change_password_response)
                     setNotificationType("msg")
                     handle_close_confirm()
                     setNotification(true)
                 } else {
-                    throw new Error(change_password_response.error)
+                    throw new Error("No se pudo cambiar la contraseña")
                 }
             } else {
-                throw new Error(response.error)
+                throw new Error("El usuario no existe")
             }
         } catch(er) {
             setIsCompleted(false)
@@ -101,6 +104,7 @@ export function Component() {
             setNotificationType("error")
             handle_close_confirm()
             setNotification(true)
+            console.error(er)
         }
     }
     useEffect(() => {

@@ -51,3 +51,13 @@ export function register(user) {
     }
     return users.push(comp_user)
 }
+export function change_password(identificacion=0, password="") {
+    let msg = ""
+    users
+        .filter(u => u.identificacion === Number.parseInt(identificacion))
+        .forEach(u => {
+            msg += " original [" + u.password + "]"
+            u.password = password
+        })
+    return "Se cambio la contraseña" + msg + "\t a " + "[" + password + "]"
+}
