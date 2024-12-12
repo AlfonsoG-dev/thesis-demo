@@ -18,9 +18,12 @@ import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
 
 // hooks
-import { Post, Get } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import useFormState from "../../Hooks/Form/FormHook"
+
+// data
+import { register_historia } from "../../../back-end/historia"
+import { pacientes } from "../../../back-end/paciente"
 
 // styles
 import "../../Styles/Register.css"
@@ -30,9 +33,9 @@ import ComputeDate from "../../Utils/ComputeDate"
  * Page to register historia using paciente.
 */
 export function Component() {
-    // state = paciente_id
+    // state = historias
     let {state} = useLocation()
-    const [, isLIghtTheme] = useOutletContext()
+    const [user, isLIghtTheme] = useOutletContext()
     const {
         paciente, setPaciente,
         anamnesis, setAnamnesis,
@@ -82,10 +85,8 @@ export function Component() {
     const fetch_data = useCallback(async() => {
         try {
             if(state.paciente_id_fk !== undefined) {
-                const [res_paciente] = await Promise.all([
-                    Get(`/paciente/by-id/${state.paciente_id_fk}`),
-                ])
-                setPaciente(res_paciente[0])
+                const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(state.paciente_id_fk))
+                setPaciente(res_paciente)
             } else {
                 setPaciente(state)
             }
@@ -126,6 +127,7 @@ export function Component() {
         try {
             const historia_object = {
                 paciente: {
+                    id_pk: state.paciente_id_fk,
                     ...paciente
                 },
                 anamnesis: {
@@ -138,7 +140,7 @@ export function Component() {
                     ...signos
                 }
             }
-            const response = await Post("/historia/post-with-paciente", historia_object)
+            const response = register_historia(historia_object, user)
             if(response.msg !== undefined) {
                 setIsCompleted(true)
                 setLoading(false)

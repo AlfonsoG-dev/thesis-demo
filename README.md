@@ -26,10 +26,10 @@ npm run dev
 
 # TODO
 - [ ] offset not working properly
-- [ ] add paciente options
-- [ ] add create historia
-- [ ] add usuario options
-- [ ] add historia options
+- [x] add paciente options
+- [x] add create historia
+- [x] add usuario options
+- [x] add historia options
 - [ ] verify **pdf** generation
 
 ----
