@@ -56,17 +56,30 @@ export default function LoginPage() {
         setNotification(false)
     }
     const fetch_data = () => {
-        // TODO: validate previous session on localstorage
         setLoading(true)
-        handle_close_confirm()
-        // TODO: when there is an active link navigate to its URL
-        setNotificationType("msg")
-        setResponseMessage("For Now access without credentials")
-        setNotification(true)
-        setTimeout(() => {
-            setLoading(false)
-            navigate("/app")
-        }, 2000)
+        // validate previous session on localstorage
+        const prev_log_user = localStorage.getItem('log_user')
+        const init_url = localStorage.getItem('active_link') || "/app"
+        if(prev_log_user !== null) {
+            handle_close_confirm()
+            setNotificationType("msg")
+            setResponseMessage("¡ Bienvenido !")
+            setNotification(true)
+            setTimeout(() => {
+                setLoading(false)
+                navigate(init_url, {
+                    state: JSON.parse(prev_log_user)
+                })
+            }, 2000)
+        } else {
+            handle_close_confirm()
+            setNotificationType("msg")
+            setResponseMessage("No hay sesión previa")
+            setNotification(true)
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000)
+        }
     }
 
     // submit handler action
@@ -78,13 +91,12 @@ export default function LoginPage() {
             if(user.length === 0) {
                 throw new Error("User not found")
             }
+            localStorage.setItem('log_user', JSON.stringify(user[0]))
             handle_close_confirm()
             setIsCompleted(true)
             setTimeout(() => {
                 setLoading(false)
-                navigate("/app", {
-                    state: user[0]
-                })
+                navigate("/app")
             }, 2000)
         } catch(er) {
             setLoading(false)

@@ -11,7 +11,6 @@ import ModalRegister from "./Modals/ModalRegister"
 import ModalNotification from "./Modals/ModalNotification"
 
 // Hooks
-import { Post } from "../Hooks/Requests.jsx"
 import useNotificationState from "../Hooks/Modal/NotificationHook"
 
 
@@ -36,35 +35,26 @@ export default function LogOut({isLightTheme}) {
 
     const handle_close_notification = () => setNotification(false)
 
-    const log_out_handler = async () => {
+    const log_out_handler = () => {
         setLoading(true)
-        try {
-            const response = await Post("/logout", {})
-            if(localStorage.getItem('activeLink') !== null) {
-                localStorage.removeItem('activeLink')
-            }
-            if(response.msg !== undefined) {
-                setLoading(false)
-                setResponseMessage(response.msg)
-                setNotificationType("msg")
-                handle_close_confirm()
-                setNotification(true)
-                setTimeout(() => {
-                    navigate("/", {
-                        replace: true
-                    })
-                }, 2000)
-            } else {
-                throw new Error(response.error)
-            }
-        } catch(er) {
-            setLoading(false)
-            setResponseMessage(er.toString())
-            setNotificationType("error")
-            handle_close_confirm()
-            setNotification(true)
-            console.error(er)
+
+        if(localStorage.getItem('activeLink') !== null) {
+            localStorage.removeItem('activeLink')
         }
+        // delete the log user in the local storage
+        if(localStorage.getItem('log_user') !== null) {
+            localStorage.removeItem('log_user')
+        }
+        setLoading(false)
+        setResponseMessage("Cerrando sesión")
+        setNotificationType("msg")
+        handle_close_confirm()
+        setNotification(true)
+        setTimeout(() => {
+            navigate("/", {
+                replace: true
+            })
+        }, 2000)
     }
 
     if (loading) {

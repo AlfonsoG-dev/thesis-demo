@@ -18,6 +18,9 @@ import "../../Styles/Home/HomeStyle.css"
 export function Component() {
     const navigate = useNavigate()
     const[usuario, isLightTheme] = useOutletContext()
+    const handle_download_permission = () => {
+        alert("Not implemented in DEMO")
+    }
     return(
         <div className="card-container">
             <div className={`create-${isLightTheme ? 'light':'dark'}`}>
@@ -50,10 +53,8 @@ export function Component() {
                         Cambiar contraseña <FaUserLock/>
                     </button>
                 }
-                <button className="btn-option">
-                    <a href={"not implemented yet"} download>
-                        Descargar permiso <FaDownload/>
-                    </a>
+                <button className="btn-option" onClick={handle_download_permission}>
+                    Descargar permiso <FaDownload/>
                 </button>
             </div>
         </div >

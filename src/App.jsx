@@ -1,6 +1,6 @@
 // Dependencies
 import { useEffect, useReducer, useState } from "react"
-import { useNavigate, Outlet, useLoaderData } from "react-router-dom"
+import { useNavigate, Outlet } from "react-router-dom"
 
 // Icons
 import { FaHome } from "react-icons/fa"
@@ -17,6 +17,9 @@ import LogOut from "./Components/LogOut.jsx"
 // hooks
 import activeLinkReducer from "./Hooks/activeLinkHook.js"
 
+// data
+import {users} from "../back-end/user.js"
+
 // styles
 import "./App.css"
 import "./Styles/ErrorStyle.css"
@@ -27,7 +30,7 @@ import "./Styles/LoginStyle.css"
  * it has home as default page
 */
 export default function App() {
-    const usuario = useLoaderData()
+    const usuario = JSON.parse(localStorage.getItem('log_user')) || users[1]
     const navigate = useNavigate()
     const get_initial_theme = () => localStorage.getItem('theme') || 'light'
     const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
