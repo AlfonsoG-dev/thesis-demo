@@ -65,3 +65,17 @@ export function change_password(identificacion=0, password="") {
         })
     return "Se cambio la contraseña" + msg + "\t a " + "[" + password + "]"
 }
+export function update(identificacion=0, usuario) {
+    const user = users.filter(u => u.identificacion === Number.parseInt(identificacion))
+    let error, msg = ""
+    if(user.length > 0) {
+        user[0] = usuario
+        msg = "Usuario actualizado"
+    } else {
+        error = "No se pudo actualizar el usuario"
+    }
+    return {
+        msg,
+        error
+    }
+}

@@ -11,6 +11,9 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import { Post } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 
+// data
+import {update} from "../../../back-end/user.js"
+
 //style
 import "../../Styles/LoadingStyle.css"
 import "../../Styles/Register.css"
@@ -101,7 +104,7 @@ export function Component() {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await Post("/user/put-user", modifiedUser)
+            const response = update(state.identificacion, modifiedUser)
             if(response.msg !== undefined) {
                 setIsComplete(true)
                 setLoading(false) 
