@@ -94,9 +94,7 @@ export function Component() {
         }
     }
     const handle_copy_HCE = () => {
-        navigate("/app/paciente/copy-pdf", {
-            state: id_paciente
-        })
+        alert("No implementado para esta ¡ demostración !")
     }
 
     if(loading) {

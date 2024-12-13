@@ -121,7 +121,7 @@ export function Component() {
      * post anamnesis, examen, signos at the same time and uses the id_pk of the response as the values
      * for the historias fields
     */
-    const historia_submit_handler = async(e) => {
+    const handle_submit = async(e) => {
         e.preventDefault()
         setLoading(true)
         try {
@@ -264,7 +264,7 @@ export function Component() {
                 show={showConfirm}
                 message={"Estas por registrar una historia para el paciente, Confirma esta acción"}
                 handle_close={handle_close_confirm}
-                handle_confirm={historia_submit_handler}
+                handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
         </div>

@@ -8,14 +8,16 @@ import {
 
 // Hooks
 import useFormState from "../../Hooks/Form/FormHook"
-import { Get } from "../../Hooks/Requests"
 
 // utils
 import ComputeEdad from "../../Utils/ComputeEdad.js"
 
-/**
- * Page for pdf generation using a download button.
-*/
+// data
+import { pacientes } from "../../../back-end/paciente"
+import { anamnesis_list } from "../../../back-end/anamnesis"
+import { signos_list } from "../../../back-end/signos_vitales"
+import { examenes } from "../../../back-end/examen_fisico"
+
 export function Component() {
     // data state
     const {state} = useLocation()
@@ -65,11 +67,11 @@ export function Component() {
     })
 
     // get the data from end-point server
-    const fetch_data = useCallback(async() => {
+    const fetch_data = useCallback(() => {
         try {
             if(state.id_pk !== undefined) {
                 if(state.paciente_if_fk !== null) {
-                    const [res_paciente] = await Get(`/paciente/by-id/${state.paciente_id_fk}`)
+                    const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(state.paciente_id_fk))
                     setPaciente(res_paciente)
                     setEncabezado(() => ({
                         codigo: res_paciente.identificacion,
@@ -79,15 +81,15 @@ export function Component() {
                     }))
                 }
                 if(state.anamnesis_id_fk !== null) {
-                    const [res_anamnesis] = await Get(`/anamnesis/${state.anamnesis_id_fk}`)
+                    const [res_anamnesis] = anamnesis_list.filter(a => a.id_pk === Number.parseInt(state.anamnesis_id_fk))
                     setAnamnesis(res_anamnesis)
                 }
                 if(state.signos_vitales_id_fk !== null) {
-                    const [res_signos] = await Get(`/signos/${state.signos_vitales_id_fk}`)
+                    const [res_signos] = signos_list.filter(s => s.id_pk === Number.parseInt(state.signos_vitales_id_fk))
                     setSignos(res_signos)
                 }
                 if(state.examen_fisico_id_fk !== null) {
-                    const [res_examen] = await Get(`/examen/${state.examen_fisico_id_fk}`)
+                    const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(state.examen_fisico_id_fk))
                     setExamen(res_examen)
                 }
             } else {
