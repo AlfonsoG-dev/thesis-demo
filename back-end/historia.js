@@ -87,3 +87,34 @@ export function register_historia(historia, usuario) {
         register: comp_historia
     }
 }
+export function update_historia(historia, usuario, prev_historia=0) {
+    const {paciente, anamnesis, examen_fisico, signos_vitales} = historia
+    const res_anamnesis = register_anamnesis(anamnesis).register
+    const res_examen = register_exam(examen_fisico).register
+    const res_signos = register_signos(signos_vitales).register
+
+
+    const comp_historia = {
+        id_pk: historias.length + 1,
+        paciente_id_fk: paciente.id_pk,
+        paciente_name: paciente.nombres,
+        usuario_id_fk: usuario.id_pk,
+        user_name: usuario.name,
+        anamnesis_id_fk: res_anamnesis.id_pk,
+        examen_fisico_id_fk: res_examen.id_pk,
+        signos_vitales_id_fk: res_signos.id_pk,
+        referencia: null,
+        update_by: null,
+        create_at: new Date(Date.now()),
+        update_at: null
+    }
+    const [prev] = historias.filter(h => h.id_pk === Number.parseInt(prev_historia))
+    prev.referencia = comp_historia.id_pk
+    prev.update_by = usuario.id_pk
+    prev.update_at = new Date(Date.now())
+    historias.push(comp_historia)
+    return {
+        msg: "Historia actualizada",
+        register: comp_historia
+    }
+}

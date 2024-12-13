@@ -21,20 +21,20 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 // Hooks
 import useFormState from "../../Hooks/Form/FormHook"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
-import { Get, Post } from "../../Hooks/Requests"
 import enableEditionReducer from "../../Hooks/Form/updateHook"
 
 //styles
 import "../../Styles/Register.css"
 import "../../Styles/LoadingStyle.css"
 
-
-/**
- * Page for update the historia registers.
- * when updating historia registers this will create another historia with only the updated data.
-*/
+// data
+import {pacientes} from "../../../back-end/paciente.js"
+import {anamnesis_list} from "../../../back-end/anamnesis.js"
+import {signos_list} from "../../../back-end/signos_vitales.js"
+import {examenes} from "../../../back-end/examen_fisico.js"
+import { update_historia } from "../../../back-end/historia"
 export function Component() {
-    const [, isLightTheme] = useOutletContext()
+    const [user, isLightTheme] = useOutletContext()
     // data state
     const {state} = useLocation()
     const {
@@ -112,16 +112,14 @@ export function Component() {
         setLoading(true)
         try {
             if(state.update_at === null) {
-                const [res_paciente, res_anamnesis, res_examen, res_signos] = await Promise.all([
-                    Get(`/paciente/by-id/${paciente_id_fk}`),
-                    Get(`/anamnesis/${anamnesis_id_fk}`),
-                    Get(`/examen/${examen_fisico_id_fk}`),
-                    Get(`/signos/${signos_vitales_id_fk}`)
-                ])
-                setPaciente(res_paciente[0])
-                setAnamnesis(res_anamnesis[0])
-                setSignos(res_signos[0])
-                setExamen(res_examen[0])
+                const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(paciente_id_fk))
+                setPaciente(res_paciente)
+                const [res_anamnesis] = anamnesis_list.filter(a => a.id_pk === Number.parseInt(anamnesis_id_fk))
+                setAnamnesis(res_anamnesis)
+                const [res_signos] = signos_list.filter(s => s.id_pk === Number.parseInt(signos_vitales_id_fk))
+                setSignos(res_signos)
+                const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(examen_fisico_id_fk))
+                setExamen(res_examen)
                 setLoading(false)
             } else {
                 setLoading(false)
@@ -143,9 +141,6 @@ export function Component() {
         try {
             anamnesis.fecha_ingreso = ComputeDate(new Date(anamnesis.fecha_ingreso))
             const historia_object = {
-                historia: {
-                    id_pk: state.id_pk
-                },
                 paciente: {
                     ...paciente
                 },
@@ -159,7 +154,7 @@ export function Component() {
                     ...signos
                 }
             }
-            const response = await Post("/historia/put-historia", historia_object)
+            const response = update_historia(historia_object, user, state.id_pk)
             if(response.msg !== undefined) {
                 setIsCompleted(true)
                 setLoading(false)
@@ -177,6 +172,7 @@ export function Component() {
             setNotificationType("error")
             handle_close_confirm()
             setNotification(true)
+            console.error(er)
         }
     }
 
