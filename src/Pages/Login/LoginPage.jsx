@@ -60,13 +60,13 @@ export default function LoginPage() {
         // validate previous session on localstorage
         const prev_log_user = localStorage.getItem('log_user')
         const init_url = localStorage.getItem('activeLink') || "/app"
-        if(prev_log_user !== null) {
+        if(prev_log_user !== null && isCompleted === false) {
+            setLoading(false)
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("¡ Bienvenido !")
             setNotification(true)
             setTimeout(() => {
-                setLoading(false)
                 navigate(init_url, {
                     state: JSON.parse(prev_log_user)
                 })
