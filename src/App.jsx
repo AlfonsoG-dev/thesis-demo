@@ -43,7 +43,7 @@ export default function App() {
         activeHistorias: get_initial_active() === '/app/historias'
     })
 
-    const handleToggleTheme = () => {
+    const handle_change_theme = () => {
         setIsLightTheme((prev) => {
             const new_theme = !prev
             localStorage.setItem('theme', new_theme ? 'light' : 'dark')
@@ -67,7 +67,7 @@ export default function App() {
         <div className="app-container">
             <div className="navbar">
                 <div className={link_theme_name}>
-                    <span onClick={handleToggleTheme} className="theme-changer">
+                    <span onClick={handle_change_theme} className="theme-changer">
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                     </span>
                     <button className={activeState.activeHome ? 'link-active':'link'} onClick={() => {
