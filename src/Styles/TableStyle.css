@@ -3,26 +3,14 @@ table {
     border-collapse: collapse;
     font-size: 1.1em;
     margin: auto;
-}
-table.light {
-    a {
-        color: #3a60a4;
-    }
+
     th, td {
-        border: 1px solid #ddd;
         padding: 8px;
     }
 
     th {
-        background-color: #f3f3f3;
-        color: black;
         text-align: center;
         width: fit-content;
-    }
-    .options-head {
-        th {
-            width: 120px;
-        }
     }
     .options-head {
         th:first-child {
@@ -32,6 +20,7 @@ table.light {
             border: none;
         }
         th {
+            width: 120px;
             border-top: none;
             border-bottom: none;
         }
@@ -50,6 +39,21 @@ table.light {
             text-align: center;
             transition: all 1s ease;
         }
+    }
+}
+table.light {
+    a {
+        color: #3a60a4;
+    }
+    th, td {
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f3f3f3;
+        color: black;
+    }
+    .options {
         td:hover {
             background-color: #ddd;
             transform: rotateY(30deg) scale(1);
@@ -64,45 +68,12 @@ table.dark {
     }
     th, td {
         border: 1px solid #ddd;
-        padding: 8px;
     }
 
     th {
         background-color: grey;
-        text-align: center;
-        width: fit-content;
-    }
-    .options-head {
-        th {
-            width: 120px;
-        }
-    }
-    .options-head {
-        th:first-child {
-            border: none;
-        }
-        th:last-child {
-            border: none;
-        }
-        th {
-            border-top: none;
-            border-bottom: none;
-        }
     }
     .options {
-        td:first-child {
-            border: none;
-        }
-        td:last-child {
-            border: none;
-        }
-        td {
-            width: 120px;
-            border-top: none;
-            border-bottom: none;
-            text-align: center;
-            transition: all 1s ease;
-        }
         td:hover {
             background-color: #3d3a3a;
             transform: rotateY(30deg) scale(1);
