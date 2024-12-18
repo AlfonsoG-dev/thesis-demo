@@ -25,7 +25,7 @@ export const users = [
         identificacion: 304050,
         password: "abc",
         rol: "transitorio",
-        time_limit: new Date("12-12-2024 23:59:00"),
+        time_limit: new Date("18-12-2024 23:59:00"),
         create_at: new Date("05-02-2024 14:25:30"),
         update_at: null
     }

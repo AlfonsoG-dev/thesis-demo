@@ -81,7 +81,7 @@ export default function LogOut({isLightTheme}) {
             <form onSubmit={handle_show_confirm}>
                 <button 
                     type="submit"
-                    className={`log-out-${isLightTheme ? 'light' : 'dark'}`}
+                    className={`log-out-${isLightTheme ? 'light' : 'dark'} logout`}
                 >
                     Salir | <IoIosLogOut />
                 </button>

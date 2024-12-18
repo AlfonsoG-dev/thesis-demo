@@ -51,7 +51,7 @@ export default function App() {
             return new_theme
         })
     }
-    const link_theme_name = `links-${isLightTheme ? 'light' : 'dark'}`
+    const link_theme_name = `links-${isLightTheme ? 'light' : 'dark'} links`
 
     const handle_change_active_link = (active_link) => {
         localStorage.setItem('activeLink', active_link)
@@ -109,7 +109,7 @@ export default function App() {
                     </button>
                     {
                         usuario.rol === "transitorio" && (
-                            <span className={`time-${isLightTheme ? 'light':'dark'}`}>
+                            <span className={`time-${isLightTheme ? 'light':'dark'} time-frame`}>
                                 <WiTime10 className="time-icon"/>
                                 <p>{new Date(usuario.time_limit).toLocaleString()}</p>
                             </span>
