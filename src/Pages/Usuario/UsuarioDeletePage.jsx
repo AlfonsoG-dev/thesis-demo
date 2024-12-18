@@ -8,7 +8,6 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 
 // Hooks
-import { Delete } from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
@@ -108,7 +107,7 @@ export function Component() {
         />
     }
     return(
-        <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
+        <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <h2>¡Continua solo si estas seguro de eliminar el usuario!</h2>
             <form onSubmit={handle_show_confirm}>
                 <label>

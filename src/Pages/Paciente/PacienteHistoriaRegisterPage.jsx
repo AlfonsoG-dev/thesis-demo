@@ -197,7 +197,7 @@ export function Component() {
         />
     }
     return (
-        <div className={`form-container-${isLIghtTheme ? 'light': 'dark'}`}>
+        <div className={`form-container-${isLIghtTheme ? 'light': 'dark'} form-container`}>
             <ScrollOptions/>
             <form onSubmit={handle_show_confirm}>
                 <div className="atencion">

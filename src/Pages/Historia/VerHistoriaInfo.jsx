@@ -95,7 +95,7 @@ export function Component() {
         return <div className="loader"></div>
     }
     return(
-        <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
+        <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <ScrollOptions/>
             <button onClick={() => {
                 navigate("/app/historia/pdf", {

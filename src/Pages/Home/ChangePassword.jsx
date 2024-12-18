@@ -124,7 +124,7 @@ export function Component() {
         />
     }
     return (
-        <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
+        <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <form onSubmit={handle_show_confirm}>
                 <h2>Cambiar de contraseña</h2>
                 <label className={editionBorder === true ? "chk_enable":""}>

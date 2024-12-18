@@ -232,7 +232,7 @@ export function Component() {
             />
     }
     return(
-        <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
+        <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <ScrollOptions/>
             <form onSubmit={handle_show_confirm}>
                 <div className="atencion">

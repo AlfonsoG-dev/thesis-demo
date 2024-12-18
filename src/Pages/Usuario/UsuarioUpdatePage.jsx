@@ -8,7 +8,6 @@ import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
 
 //Hooks
-import { Post } from "../../Hooks/Requests"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 
 // data
@@ -161,7 +160,7 @@ export function Component() {
         }
     }
     return(
-        <div className={`form-container-${isLightTheme ? 'light':'dark'}`}>
+        <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <h1>Actualizar usuario</h1>
             <form onSubmit={handle_show_confirm}>
                 <label className={chk_name}>
