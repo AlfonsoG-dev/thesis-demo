@@ -7,13 +7,11 @@
     h1 {
         text-align: center;
     }
-    .create-light {
+    .options {
         margin: auto;
         margin-top: 10%;
         margin-bottom: 10%;
         width: 60%;
-        border: 2px solid white;
-        border-bottom: 2px solid black;
         border-radius: 4px;
         align-items: center;
         text-align: center;
@@ -29,35 +27,19 @@
         .btn-option:hover {
             transition: all 0.5s ease;
         }
+    }
+    .create-light {
+        border: 2px solid white;
+        border-bottom: 2px solid black;
     }
     .create-light:hover {
         border: 2px solid black;
         transform: translateX(-10px);
         transition: all 0.5s ease-in-out;
     }
-
     .create-dark {
-        margin: auto;
-        margin-top: 10%;
-        margin-bottom: 10%;
-        width: 60%;
         border: 2px solid #242424;
         border-bottom: 2px solid white;
-        border-radius: 4px;
-        align-items: center;
-        text-align: center;
-        transition: all 1s ease-in-out;
-        .btn-option {
-            font-size: 0.9em;
-            width: 180px;
-            height: 120px;
-            margin: 5px;
-            padding: 10px;
-            transition: all 1s ease;
-        }
-        .btn-option:hover {
-            transition: all 0.5s ease;
-        }
     }
     .create-dark:hover {
         border: 2px solid white;

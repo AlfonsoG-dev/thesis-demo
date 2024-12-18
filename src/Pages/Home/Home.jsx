@@ -23,7 +23,7 @@ export function Component() {
     }
     return(
         <div className="card-container">
-            <div className={`create-${isLightTheme ? 'light':'dark'}`}>
+            <div className={`create-${isLightTheme ? 'light':'dark'} options`}>
                 <h1>Opciones | <FaUsersCog/></h1>
                 {
                     usuario.rol === "admin" &&
