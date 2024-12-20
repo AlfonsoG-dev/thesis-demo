@@ -116,7 +116,6 @@ export function Component() {
         }
     }, [isCompleted])
 
-    console.log(users)
     const handle_change_user = (e) => {
         e.preventDefault()
         const{name, value} = e.target
