@@ -1,6 +1,9 @@
 // Dependencies
 import { useNavigate, useOutletContext } from "react-router-dom"
 
+// components
+import { HelpHome } from "../Help/HelpHome"
+
 //Icons
 import { FaUserPlus } from "react-icons/fa"
 import { FaHospitalUser } from "react-icons/fa6"
@@ -11,6 +14,7 @@ import { FaDownload } from "react-icons/fa"
 
 // Styles
 import "../../Styles/Home/HomeStyle.css"
+import {useState} from "react"
 
 /**
  * Home page that has the user functions like create user, list historia, etc.
@@ -18,6 +22,10 @@ import "../../Styles/Home/HomeStyle.css"
 export function Component() {
     const navigate = useNavigate()
     const[usuario, isLightTheme] = useOutletContext()
+    const [showHelp, setShowHelp] = useState(false)
+
+    const handel_close_help = () => setShowHelp(false)
+
     const handle_download_permission = () => {
         alert("Not implemented in DEMO")
     }
@@ -57,6 +65,13 @@ export function Component() {
                     Descargar permiso <FaDownload/>
                 </button>
             </div>
-        </div >
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpHome
+                show={showHelp}
+                handle_close={handel_close_help}
+            />
+        </div>
     )
 }

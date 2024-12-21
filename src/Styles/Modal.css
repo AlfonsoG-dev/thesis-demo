@@ -44,6 +44,32 @@
   padding: 20px;
   border-radius: 8px;
 }
+.help-modal-main {
+    position: fixed;
+    background: white;
+    width: 40%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border-radius: 10px;
+    .list {
+        li {
+            text-align: left;
+        }
+    }
+    h1 {
+        color: grey;
+    }
+    p {
+        font-size: 1.1em;
+    }
+    img {
+        width: 600px;
+        height: auto;
+    }
+}
 
 .close {
   position: absolute;
