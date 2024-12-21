@@ -3,6 +3,19 @@
     font-size: 1.4em;
     max-width: 60%;
     margin: auto;
+    .help {
+        position: fixed;
+        left: 20px;
+        bottom: 10px;
+        margin: 0px;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        width: 90px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 18px;
+    }
     .atencion {
         width: 50%;
         margin: auto;

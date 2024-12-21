@@ -8,6 +8,7 @@ import ExamenForm from '../../Components/Forms/ExamenForm.jsx'
 import AnamnesisForm from '../../Components/Forms/AnamnesisForm.jsx'
 import PacienteForm from '../Usuario/Components/PacienteForm.jsx'
 import ScrollOptions from "../../Components/ScrollOptions.jsx"
+import { HelpCrearHistoria } from "../Help/HelpCrearHistoria.jsx"
 
 // modals
 import ModalRegister from "../../Components/Modals/ModalRegister.jsx"
@@ -57,6 +58,8 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     useBeforeUnload(useCallback(() => {
         const historia_object = {
             paciente: {
@@ -84,6 +87,8 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
@@ -233,6 +238,9 @@ export function Component() {
     }
     return(
         <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ScrollOptions/>
             <form onSubmit={handle_show_confirm}>
                 <div className="atencion">
@@ -297,6 +305,10 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
+            <HelpCrearHistoria 
+                show={showHelp}
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

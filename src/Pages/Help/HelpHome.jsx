@@ -4,11 +4,11 @@ import PropTypes from "prop-types"
 
 
 // data
-import crear_usuario from "../../../public/docs/images/home/crear_usuario.png"
-import cambiar_contraseña from "../../../public/docs/images/home/cambiar_contraseña.png"
-import crear_historia from "../../../public/docs/images/home/crear_historia.png"
-import mis_historias from "../../../public/docs/images/home/mis_historias.png"
-import descarga_permiso from "../../../public/docs/images/home/descarga_permiso.png"
+import crear_usuario from "/docs/images/home/crear_usuario.png"
+import cambiar_contraseña from "/docs/images/home/cambiar_contraseña.png"
+import crear_historia from "/docs/images/home/crear_historia.png"
+import mis_historias from "/docs/images/home/mis_historias.png"
+import descarga_permiso from "/docs/images/home/descarga_permiso.png"
 
 
 // style
