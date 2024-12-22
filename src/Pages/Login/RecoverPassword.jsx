@@ -24,6 +24,7 @@ export function Component() {
         e.preventDefault()
         setLoading(true)
         try {
+            // TODO: change to local static data
             const response = await Get(`/recover-password/${buscado.name}/${buscado.identificacion}`)
             if(response.error === undefined) {
                 setIsCompleted(true)

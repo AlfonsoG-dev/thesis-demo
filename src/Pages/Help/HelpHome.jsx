@@ -36,7 +36,7 @@ export function HelpHome({show, handle_close}) {
                                 </>
                             )
                         }
-                        <li>Crear historia: con esta opción se realiza el registro del pacinete y se abre historia clínica.</li>
+                        <li>Crear historia: con esta opción se realiza el registro del paciente y se abre historia clínica.</li>
                         <img src={crear_historia} alt="crear_historia_option"/>
                         <li>Mis historias: esta opción listas las historias que tu creaste</li>
                         <img src={mis_historias} alt="listar historias"/>

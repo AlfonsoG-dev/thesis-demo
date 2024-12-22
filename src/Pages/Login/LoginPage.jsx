@@ -8,6 +8,7 @@ import { IoIosLogIn } from "react-icons/io"
 // Modal components
 import ModalRegister from "../../Components/Modals/ModalRegister.jsx"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
+import { HelpLogin } from "../Help/HelpLogin.jsx"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
@@ -41,6 +42,7 @@ export default function LoginPage() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage,
     } = useNotificationState()
+    const [showHelp, setShowHelp] = useState(false)
     // navigate system
     const navigate = useNavigate()
 
@@ -50,6 +52,8 @@ export default function LoginPage() {
         setShowConfirm(true)
     }
     const handle_close_confirm = () => setShowConfirm(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // notificación modal
     const handle_close_notification = () => {
@@ -152,8 +156,11 @@ export default function LoginPage() {
     }
     return (
         <div className="container">
-            <h1>Iniciar sesión</h1 >
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <form onSubmit={handle_show_confirm}>
+                <h1>Iniciar sesión</h1 >
                 <label>
                     <input
                         name="identificacion"
@@ -191,6 +198,10 @@ export default function LoginPage() {
                 message={"Estas iniciando sesión"}
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
+            />
+            <HelpLogin
+                show={showHelp}
+                handle_close={handle_close_help}
             />
             <Outlet/>
         </div>
