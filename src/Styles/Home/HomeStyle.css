@@ -29,7 +29,7 @@
         }
     }
     .help {
-        position: absolute;
+        position: fixed;
         width: 50;
         height: 50;
         right: 10px;
