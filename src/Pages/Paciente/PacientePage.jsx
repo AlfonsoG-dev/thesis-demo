@@ -10,6 +10,7 @@ import { FaUserInjured } from "react-icons/fa"
 // Components
 import PacienteTableComponent from "../../Components/Tables/PacienteTableComponent"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
+import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
@@ -41,6 +42,8 @@ export function Component() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage
     } = useNotificationState()
+    
+    const[showHelp, setShowHelp] = useState(false)
 
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
@@ -48,6 +51,8 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // get data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -168,6 +173,13 @@ export function Component() {
                     <GiPlayerNext/>
                 </button>
             </div>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpPaciente
+                show={showHelp}
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }
