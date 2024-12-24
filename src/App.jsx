@@ -59,7 +59,7 @@ export default function App() {
     useEffect(() => {
         document.body.className = isLightTheme ? 'light':'dark'
         dispatch({type: location.pathname})
-    }, [isLightTheme, location])
+    }, [isLightTheme, location.pathname])
 
     return(
         <div className="app-container">
