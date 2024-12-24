@@ -23,6 +23,29 @@ VITE_APP_API='HOST_NAME:PORT' # server URL or domain
 ```shell
 npm run dev
 ```
+5. Use one of the following users in the login.
+>- Remember that each one of the users have different roles.
+```json
+{
+    "name": "Mario Mendoza",
+    "rol": "admin",
+    "identificacion": 102030,
+    "password": 123,
+}
+{
+
+    "name": "Lizet Velazquez",
+    "rol": "personal",
+    "identificacion": 203040,
+    "password": "asd",
+}
+{
+    "name": "Maritza Rodriguez",
+    "rol": "transitorio",
+    "identificacion": 304050,
+    "password": "abc",
+}
+```
 
 # TODO
 - [ ] offset not working properly
