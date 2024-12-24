@@ -9,7 +9,7 @@ import registrar from "/docs/images/historia_registro/registrar_button.png"
 // style
 import "../../Styles/HelpModal.css"
 
-export function HelpCrearHistoria ({show, handle_close}) {
+export function HelpCrearHistoria({show, type, handle_close}) {
     const show_hidden = show ? "modal display-block" : "modal display-none"
 
     return(
@@ -20,17 +20,28 @@ export function HelpCrearHistoria ({show, handle_close}) {
                 </span>
                 <div className="content">
                     <h1>Ayuda</h1>
-                    <p>En esta sección se realiza el registro del paciente y se abre la historia clínica.</p>
+                    {
+                        type === "paciente" ?
+                            <h1>Se reutiliza la ayuda del registro de la historia y paciente.</h1>
+                            :
+                            <p>En esta sección se realiza el registro del paciente y se abre la historia clínica.</p>
+                    }
                     <ul className="list">
                         <li>Atención: indica la fecha y hora de ingreso del paciente.</li>
                         <img src={crear_historia_paciente} alt="Registro historia y paciente"/>
-                        <li>Paciente: indica el registro de los datos para el paciente.</li>
-                        <ul>
-                            <li>Estado civil y genero tiene una opción adicional *otro*.</li>
-                            <img src={paciente_estado_genero} alt="Registro estado civil y genero"/>
-                            <li>Al seleccionar facultad despliega adicional el programa.</li>
-                            <img src={paciente_facultad_programa} alt="Registro facultad y programa"/>
-                        </ul>
+                        {
+                            type !== "paciente" && (
+                                <>
+                                    <li>Paciente: indica el registro de los datos para el paciente.</li>
+                                    <ul>
+                                        <li>Estado civil y genero tiene una opción adicional *otro*.</li>
+                                        <img src={paciente_estado_genero} alt="Registro estado civil y genero"/>
+                                        <li>Al seleccionar facultad despliega adicional el programa.</li>
+                                        <img src={paciente_facultad_programa} alt="Registro facultad y programa"/>
+                                    </ul>
+                                </>
+                            )
+                        }
                         <li>Anamnesis: registro de los datos esenciales en la consulta.</li>
                         <li>Signos Vitales tomados al paciente al momento de ingresar.</li>
                         <li>Examen físico tomado al paciente al momento de ingresar.</li>
@@ -45,5 +56,6 @@ export function HelpCrearHistoria ({show, handle_close}) {
 
 HelpCrearHistoria.propTypes = {
     show: PropTypes.bool,
+    type: PropTypes.string,
     handle_close: PropTypes.func
 }

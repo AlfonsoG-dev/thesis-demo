@@ -16,6 +16,7 @@ import ScrollOptions from "../../Components/ScrollOptions"
 import ModalRegister from "../../Components/Modals/ModalRegister"
 import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
+import { HelpCrearHistoria } from "../Help/HelpCrearHistoria"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -56,6 +57,8 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     useBeforeUnload(useCallback(() => {
         const historia_object = {
             anamnesis: {
@@ -80,6 +83,8 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // get the paciente data using state.id_pk
     const fetch_data = useCallback(async() => {
@@ -260,6 +265,9 @@ export function Component() {
                     </button>
                 </div>
             </form>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister
                 show={showConfirm}
                 message={"Estas por registrar una historia para el paciente, Confirma esta acción"}
@@ -267,6 +275,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
+            <HelpCrearHistoria
+                show={showHelp}
+                type="paciente"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

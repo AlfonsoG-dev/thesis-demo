@@ -307,6 +307,7 @@ export function Component() {
             <ModalBlocker isCompleted={isCompleted}/>
             <HelpCrearHistoria 
                 show={showHelp}
+                type="historia"
                 handle_close={handle_close_help}
             />
         </div>
