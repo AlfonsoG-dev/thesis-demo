@@ -1,7 +1,7 @@
 export const users = [
     {
         id_pk: 1,
-        name: "Mario Mendoza",
+        name: "user admin",
         identificacion: 102030,
         password: "123",
         rol: "admin",
@@ -11,7 +11,7 @@ export const users = [
     },
     {
         id_pk: 2,
-        name: "Lizet Velazquez",
+        name: "user personal",
         identificacion: 203040,
         password: "asd",
         rol: "personal",
@@ -21,7 +21,7 @@ export const users = [
     },
     {
         id_pk: 3,
-        name: "Maritza Rodriguez",
+        name: "user transitorio",
         identificacion: 304050,
         password: "abc",
         rol: "transitorio",

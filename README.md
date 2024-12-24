@@ -27,20 +27,20 @@ npm run dev
 >- Remember that each one of the users have different roles.
 ```json
 {
-    "name": "Mario Mendoza",
+    "name": "user admin",
     "rol": "admin",
     "identificacion": 102030,
     "password": 123,
 }
 {
 
-    "name": "Lizet Velazquez",
+    "name": "user personal",
     "rol": "personal",
     "identificacion": 203040,
     "password": "asd",
 }
 {
-    "name": "Maritza Rodriguez",
+    "name": "user transitorio",
     "rol": "transitorio",
     "identificacion": 304050,
     "password": "abc",
