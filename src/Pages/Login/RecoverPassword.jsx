@@ -4,6 +4,9 @@ import { useState } from "react"
 // hooks
 import { Get } from "../../Hooks/Requests"
 
+// data
+import { users } from "../../../back-end/user"
+
 // styles
 import "../../Styles/LoginStyle.css"
 import "../../Styles/RecoverPage.css"
@@ -20,18 +23,17 @@ export function Component() {
         password: ""
     })
 
-    const fetch_data = async(e) => {
+    const fetch_data = (e) => {
         e.preventDefault()
         setLoading(true)
         try {
-            // TODO: change to local static data
-            const response = await Get(`/recover-password/${buscado.name}/${buscado.identificacion}`)
-            if(response.error === undefined) {
+            const response = users.filter(u => u.name === buscado.name && u.identificacion === Number.parseInt(buscado.identificacion))
+            if(response.length > 0) {
                 setIsCompleted(true)
                 setLoading(false)
                 setUsuario(response[0])
             } else {
-                throw new Error(response.error)
+                throw new Error("Usuario no encontrado")
             }
         } catch(er) {
             setIsCompleted(true)

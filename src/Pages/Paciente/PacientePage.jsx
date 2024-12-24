@@ -178,6 +178,7 @@ export function Component() {
             </button>
             <HelpPaciente
                 show={showHelp}
+                type="paciente"
                 handle_close={handle_close_help}
             />
         </div>

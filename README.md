@@ -30,7 +30,7 @@ npm run dev
 - [x] add create historia
 - [x] add usuario options
 - [x] add historia options
-- [ ] verify **pdf** generation
+- [x] verify **pdf** generation
 
 ----
 
