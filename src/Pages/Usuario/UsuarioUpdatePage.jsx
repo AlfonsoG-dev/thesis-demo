@@ -6,6 +6,7 @@ import { useLocation, useOutletContext } from "react-router-dom"
 import ModalRegister from "../../Components/Modals/ModalRegister"
 import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
+import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 //Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -49,6 +50,8 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     // using state to change the style of the page.
     const chk_name = editionBorder === false ? "chk_disable" : "chk_enable"
 
@@ -68,6 +71,8 @@ export function Component() {
 
     // notification modal
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // enable/disable checkbox
     const handle_change_enable_edition = () => {
@@ -221,6 +226,9 @@ export function Component() {
                     <button type="submit" disabled={isComplete}>Actualizar</button>
                 </div>
             </form>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister 
                 show={showConfirmModal}
                 message={"Estas por actualizar los datos del usuario, Confirma esta acción"}
@@ -228,6 +236,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isComplete}/>
+            <HelpRegisterUser
+                show={showHelp}
+                type="update"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

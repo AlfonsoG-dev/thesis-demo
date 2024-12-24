@@ -6,6 +6,7 @@ import { useLocation, useOutletContext } from "react-router-dom"
 import ModalRegister from "../../Components/Modals/ModalRegister.jsx"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
+import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser.jsx"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
@@ -46,6 +47,8 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
 
     // register modal handlers
     const handle_close_confirm = () => setShowConfirm(false)
@@ -56,6 +59,8 @@ export function Component() {
 
     // Notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
@@ -142,6 +147,9 @@ export function Component() {
                     <button onClick={handle_show_confirm} disabled={isCompleted}>Eliminar</button>
                 </div>
             </form >
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister
                 show={showConfirm}
                 message={"Estas por eliminar el usuario, Confirma esta acción"}
@@ -149,6 +157,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
+            <HelpRegisterUser
+                show={showHelp}
+                type="delete"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

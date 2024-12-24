@@ -6,6 +6,7 @@ import { useOutletContext, useBeforeUnload } from "react-router-dom"
 import ModalRegister from "../../Components/Modals/ModalRegister"
 import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
+import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -46,6 +47,8 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     useBeforeUnload(useCallback(() => {
         localStorage.register_user = JSON.stringify(usuario)
     }, [usuario]))
@@ -61,6 +64,8 @@ export function Component() {
     }
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before block page
     const validate_retry = () => {
@@ -213,6 +218,9 @@ export function Component() {
                     </button>
                 </div>
             </form >
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister
                 show={showConfirm}
                 message={"Estas por register un usuario, Confirma esta acción"}
@@ -220,6 +228,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             {<ModalBlocker isCompleted={isCompleted}/>}
+            <HelpRegisterUser
+                show={showHelp}
+                type="register"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

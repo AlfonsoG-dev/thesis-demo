@@ -5,6 +5,7 @@ import { useOutletContext, useBeforeUnload } from "react-router-dom"
 import ModalRegister from "../../Components/Modals/ModalRegister"
 import ModalNotification from "../../Components/Modals/ModalNotification"
 import ModalBlocker from "../../Components/Modals/ModalBlocker"
+import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -38,6 +39,8 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     useBeforeUnload(useCallback(() => {
         localStorage.change_password = JSON.stringify(usuario)
     }, [usuario]))
@@ -65,6 +68,8 @@ export function Component() {
 
     // modal notificación
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // user change field handler
     const handle_change_user = (e) => {
@@ -192,6 +197,9 @@ export function Component() {
                     </button>
                 </div>
             </form>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister
                 show={showConfirm}
                 message={"Estas por modificar la contraseña, Confirma esta acción"}
@@ -199,6 +207,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isCompleted}/>
+            <HelpRegisterUser
+                show={showHelp}
+                type="update_password"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }
