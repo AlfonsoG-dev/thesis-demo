@@ -3,22 +3,22 @@ export default function activeLinkReducer(state, action) {
         case "/app":
             saveLink('/app')
             return {
-                activeHome: !state.activeHome
+                activeHome: true
             }
         case "/app/paciente":
             saveLink('/app/paciente')
             return {
-                activePaciente: !state.activePaciente
+                activePaciente: true
             }
         case "/app/usuario":
             saveLink('/app/usuario')
             return {
-                activeUsuario: !state.activeUsuario
+                activeUsuario: true
             }
         case "/app/historias":
             saveLink('/app/historias')
             return {
-                activeHistorias: !state.activeHistorias
+                activeHistorias: true
             }
         default: 
             return {
