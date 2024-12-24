@@ -4,10 +4,26 @@ import { GoEyeClosed } from "react-icons/go"
 
 // data
 
+// paciente
 import buscar_paciente from "/docs/images/list_pages/paciente/buscar_paciente_2.png"
 import listar_historias from "/docs/images/list_pages/paciente/listar_historias.png"
 import actualizar_paciente from "/docs/images/list_pages/paciente/actualizar_paciente.png"
 import registrar_historia_paciente from "/docs/images/list_pages/paciente/registrar_historia_paciente.png"
+
+// usuario
+import buscar_usuario from "/docs/images/list_pages/usuario/buscar_usuario.png"
+import listar_historias_usuario from "/docs/images/list_pages/usuario/listar_historias_usuario.png"
+import actualizar_usuario from "/docs/images/list_pages/usuario/actualizar_usuario.png"
+import eliminar_usuario from "/docs/images/list_pages/usuario/eliminar_usuario.png"
+
+// historias
+
+import registrar_historia_control from "/docs/images/list_pages/historias/registrar_historia_control.png"
+import generar_pdf from "/docs/images/list_pages/historias/generar_pdf.png"
+import ver_historia from "/docs/images/list_pages/historias/ver_historia.png"
+import actualizar_historia from "/docs/images/list_pages/historias/actualizar_historia.png"
+import generar_pdf_individual from "/docs/images/list_pages/historias/generar_pdf_individual.png"
+
 
 // style
 import "../../Styles/HelpModal.css"
@@ -41,6 +57,14 @@ export default function HelpPaciente({show, type, handle_close}) {
             <>
                 <p>En esta sección se encuentra la descripción de las opciones presentes en la página usuarios.</p>
                 <ul className="list">
+                    <li>Buscar usuario por identificación</li>
+                    <img src={buscar_usuario} alt="Buscar usuario"/>
+                    <li>Listar historias del usuario, las historias del usuario administrador solo se muestran en la página Home</li>
+                    <img src={listar_historias_usuario} alt="Historias del usuario"/>
+                    <li>Actualizar información usuario</li>
+                    <img src={actualizar_usuario} alt="Actualizar usuario"/>
+                    <li>Eliminar usuario</li>
+                    <img src={eliminar_usuario} alt="Eliminar usuario"/>
                 </ul>
             </>
         )
@@ -50,6 +74,16 @@ export default function HelpPaciente({show, type, handle_close}) {
             <>
                 <p>En esta sección se encuentra la descripción de las opciones presentes en la página historias.</p>
                 <ul className="list">
+                    <li>Registrar historia clínica cita de control</li>
+                    <img src={registrar_historia_control} alt="Registrar hoja control"/>
+                    <li>Generar PDF - para cuando el paciente tiene más de una historia clínica</li>
+                    <img src={generar_pdf} alt="Generar pdf"/>
+                    <li>Ver el contenido de la historia clínica</li>
+                    <img src={ver_historia} alt="Ver historia"/>
+                    <li>Actualizar historia clínica</li>
+                    <img src={actualizar_historia} alt="Actualizar historia"/>
+                    <li>Generar PDF de la historia individual, es decir, de cada una</li>
+                    <img src={generar_pdf_individual} alt="Generar pdf individual"/>
                 </ul>
             </>
         )

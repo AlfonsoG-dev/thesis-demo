@@ -10,9 +10,9 @@ import { FaUserMd } from "react-icons/fa"
 // Modal components
 import UsuarioTableComponent from "../../Components/Tables/UsuarioTableComponent.jsx"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
+import HelpPaciente from "../Help/HelpPaciente.jsx"
 
 // Hooks
-import { Get } from "../../Hooks/Requests.jsx"
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
@@ -41,12 +41,16 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     // quantity to show
     const [offset, setOffset] = useState(0)
     const limit = 5
 
     // modal notificación handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // get the users from the end-point in server
     const fetch_data = useCallback((page) => {
@@ -169,6 +173,14 @@ export function Component() {
                     <GiPlayerNext />
                 </button>
             </div >
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpPaciente
+                show={showHelp}
+                type="usuario"
+                handle_close={handle_close_help}
+            />
         </div >
     )
 }

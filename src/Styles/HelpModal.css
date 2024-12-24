@@ -51,10 +51,14 @@
         overflow-y: auto;
         max-height: 600px;
         padding: 10px;
+        text-align: center;
         h1 {
             color: grey;
         }
         .list {
+            li {
+                text-align: left;
+            }
             img {
                 max-width: 100%;
             }

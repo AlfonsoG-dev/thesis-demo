@@ -11,6 +11,7 @@ import { MdOutlinePictureAsPdf } from "react-icons/md"
 // Components
 import HistoriaTableComponent from "../../Components/Tables/HistoriaTableComponent"
 import ModalNotification from "../../Components/Modals/ModalNotification"
+import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -50,12 +51,16 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
     const limit = 5
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // get the data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -146,7 +151,15 @@ export function Component() {
                 >
                     <GrFormNextLink/>
                 </button>
-            </div >
+            </div>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpPaciente
+                show={showHelp}
+                type="historias"
+                handle_close={handle_close_help}
+            />
         </div >
     )
 }
