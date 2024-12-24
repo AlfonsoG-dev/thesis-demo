@@ -65,6 +65,7 @@ export default function LoginPage() {
         const prev_log_user = localStorage.getItem('log_user')
         const init_url = localStorage.getItem('activeLink') || "/app"
         if(prev_log_user !== null && isCompleted === false) {
+            setIsCompleted(true)
             setLoading(false)
             handle_close_confirm()
             setNotificationType("msg")
@@ -76,6 +77,7 @@ export default function LoginPage() {
                 })
             }, 2000)
         } else {
+            setIsCompleted(false)
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("No hay sesión previa")
@@ -142,6 +144,64 @@ export default function LoginPage() {
         }
     }
 
+    const show_content = () => {
+        if(!isCompleted) {
+            return(
+                <div className="container">
+                    <button className="help" onClick={() => setShowHelp(true)}>
+                        help | ?
+                    </button>
+                    <form onSubmit={handle_show_confirm}>
+                        <h1>Iniciar sesión</h1 >
+                        <label>
+                            <input
+                                name="identificacion"
+                                placeholder="Identificación usuario"
+                                onChange={handle_change}
+                            />
+                        </label>
+                        <label>
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="password"
+                                onChange={handle_change}
+                            />
+                        </label>
+                        <button
+                            type="submit"
+                            disabled={loginData.identificacion === 0 && loginData.password === ""}
+                        >
+                            Iniciar sesión
+                        </button>
+                        <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
+                            Ingresar | <IoIosLogIn />
+                        </button>
+                        {
+                            import.meta.env.VITE_NODE_ENV === "development" && (
+                                <button className="recover-password" onClick={handle_recover_password}>
+                                    Recuperar contraseña
+                                </button >
+                            )
+                        }
+                    </form >
+                    <ModalRegister
+                        show={showConfirm}
+                        message={"Estas iniciando sesión"}
+                        handle_close={handle_close_confirm}
+                        handle_confirm={handle_submit}
+                    />
+                    <HelpLogin
+                        show={showHelp}
+                        handle_close={handle_close_help}
+                    />
+                    <Outlet/>
+                </div>
+            )
+        }
+    }
+
+
     // status component between renders
     if(loading) {
         return<div className="loader"></div>
@@ -154,56 +214,5 @@ export default function LoginPage() {
             handle_close={handle_close_notification}
         />
     }
-    return (
-        <div className="container">
-            <button className="help" onClick={() => setShowHelp(true)}>
-                help | ?
-            </button>
-            <form onSubmit={handle_show_confirm}>
-                <h1>Iniciar sesión</h1 >
-                <label>
-                    <input
-                        name="identificacion"
-                        placeholder="Identificación usuario"
-                        onChange={handle_change}
-                    />
-                </label>
-                <label>
-                    <input
-                        name="password"
-                        type="password"
-                        placeholder="password"
-                        onChange={handle_change}
-                    />
-                </label>
-                <button
-                    type="submit"
-                    disabled={loginData.identificacion === 0 && loginData.password === ""}
-                >
-                    Iniciar sesión
-                </button>
-                <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
-                    Ingresar | <IoIosLogIn />
-                </button>
-                {
-                    import.meta.env.VITE_NODE_ENV === "development" && (
-                        <button className="recover-password" onClick={handle_recover_password}>
-                            Recuperar contraseña
-                        </button >
-                    )
-                }
-            </form >
-            <ModalRegister
-                show={showConfirm}
-                message={"Estas iniciando sesión"}
-                handle_close={handle_close_confirm}
-                handle_confirm={handle_submit}
-            />
-            <HelpLogin
-                show={showHelp}
-                handle_close={handle_close_help}
-            />
-            <Outlet/>
-        </div>
-    )
+    return show_content()
 }
