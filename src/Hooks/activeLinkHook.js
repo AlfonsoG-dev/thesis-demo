@@ -16,5 +16,9 @@ export default function activeLinkReducer(state, action) {
             return {
                 activeHistorias: !state.activeHistorias
             }
+        default: 
+            return {
+                ...state
+            }
     }
 }
