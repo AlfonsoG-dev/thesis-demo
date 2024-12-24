@@ -18,6 +18,7 @@ import eliminar_usuario from "/docs/images/list_pages/usuario/eliminar_usuario.p
 
 // historias
 
+import buscar_historia from "/docs/images/list_pages/historias/buscar_historia.png"
 import registrar_historia_control from "/docs/images/list_pages/historias/registrar_historia_control.png"
 import generar_pdf from "/docs/images/list_pages/historias/generar_pdf.png"
 import ver_historia from "/docs/images/list_pages/historias/ver_historia.png"
@@ -72,16 +73,42 @@ export default function HelpPaciente({show, type, handle_close}) {
         const show_historias = () => {
         return(
             <>
-                <p>En esta sección se encuentra la descripción de las opciones presentes en la página historias.</p>
+                {
+                    type !== "historias" ? 
+                        <h3>Se reutiliza la ayuda proporcionada en la página de historias de un paciente.</h3>
+                        :
+                        <p>En esta sección se encuentra la descripción de las opciones presentes en la página historias.</p>
+                }
                 <ul className="list">
-                    <li>Registrar historia clínica cita de control</li>
-                    <img src={registrar_historia_control} alt="Registrar hoja control"/>
-                    <li>Generar PDF - para cuando el paciente tiene más de una historia clínica</li>
-                    <img src={generar_pdf} alt="Generar pdf"/>
+                    {
+                        type === "historias_page" && (
+                            <>
+                                <li>Buscar historia por ID</li>
+                                <img src={buscar_historia} alt="Buscar por ID"/>
+                            </>
+                        )
+                    }
+                    {
+                        type === "historias" && (
+                            <>
+                                <li>Registrar historia clínica cita de control</li>
+                                <img src={registrar_historia_control} alt="Registrar hoja control"/>
+
+                                <li>Generar PDF - para cuando el paciente tiene más de una historia clínica</li>
+                                <img src={generar_pdf} alt="Generar pdf"/>
+                            </>
+                        )
+                    }
                     <li>Ver el contenido de la historia clínica</li>
                     <img src={ver_historia} alt="Ver historia"/>
-                    <li>Actualizar historia clínica</li>
-                    <img src={actualizar_historia} alt="Actualizar historia"/>
+                    {
+                        type === "historias" || type === "historias_usuario" && (
+                            <>
+                                <li>Actualizar historia clínica</li>
+                                <img src={actualizar_historia} alt="Actualizar historia"/>
+                            </>
+                        )
+                    }
                     <li>Generar PDF de la historia individual, es decir, de cada una</li>
                     <img src={generar_pdf_individual} alt="Generar pdf individual"/>
                 </ul>
@@ -96,6 +123,8 @@ export default function HelpPaciente({show, type, handle_close}) {
                 return show_paciente()
             case "usuario":
                 return show_usuario()
+            case "historias_usuario":
+            case "historias_page":
             case "historias":
                 return show_historias()
         } 

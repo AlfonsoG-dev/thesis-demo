@@ -5,6 +5,7 @@ import {useCallback, useEffect, useState} from "react"
 
 // Components
 import ModalNotification from "../../Components/Modals/ModalNotification"
+import HelpPaciente from "../Help/HelpPaciente"
 
 // Icons
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr"
@@ -36,12 +37,17 @@ export function Component() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage,
     } = useNotificationState()
+
+    const [showHelp, setShowHelp] = useState(false)
+
     const [offset, setOffset] = useState(0)
 
 
     const limit = 10
 
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     const fetch_data = useCallback((page) => {
         setLoading(true)
@@ -162,6 +168,14 @@ export function Component() {
                     <GrFormNextLink/>
                 </button>
             </div>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpPaciente
+                show={showHelp}
+                type="historias_page"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }

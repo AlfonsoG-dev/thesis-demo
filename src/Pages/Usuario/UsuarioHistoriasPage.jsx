@@ -9,6 +9,7 @@ import { FaHospitalUser } from "react-icons/fa"
 // components
 import HistoriaTableComponent from "../../Components/Tables/HistoriaTableComponent"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
+import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
@@ -46,12 +47,15 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
     //quantity of data to show
     const [offset, setOffset] = useState(0)
     const limit = 5
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+    const handle_close_help = () => setShowHelp(false)
 
     // get the data from the end-point of server
     const fetch_data = useCallback((page) => {
@@ -75,7 +79,7 @@ export function Component() {
                 setLoading(false)
             }, 2000)
         }
-    }, [id_usuario])
+    }, [offset, id_usuario])
 
     useEffect(() => {
         fetch_data(offset)
@@ -122,7 +126,15 @@ export function Component() {
                 >
                     <GrFormNextLink/>
                 </button>
-            </div >
+            </div>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
+            <HelpPaciente
+                show={showHelp}
+                type="historias_usuario"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 
