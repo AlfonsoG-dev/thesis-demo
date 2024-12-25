@@ -5,6 +5,8 @@ import crear_historia_paciente from "/docs/images/historia_registro/crear_histor
 import paciente_estado_genero from "/docs/images/historia_registro/paciente_estado_genero.png"
 import paciente_facultad_programa from "/docs/images/historia_registro/paciente_facultad_programa.png"
 import registrar from "/docs/images/historia_registro/registrar_button.png"
+import anamnesis_registro from "/docs/images/historia_registro/anamnesis_registro.png"
+import signos_registro from "/docs/images/historia_registro/signos_registro.png"
 
 // style
 import "../../Styles/HelpModal.css"
@@ -43,7 +45,15 @@ export function HelpCrearHistoria({show, type, handle_close}) {
                             )
                         }
                         <li>Anamnesis: registro de los datos esenciales en la consulta.</li>
+                        <ul>
+                            <li>Para las casillas resaltadas con azul si el paciente no aplica se escribe (NA).</li>
+                        </ul>
+                        <img src={anamnesis_registro}/>
                         <li>Signos Vitales tomados al paciente al momento de ingresar.</li>
+                        <ul>
+                            <li>Los valores de los signos deben ser decimales.</li>
+                        </ul>
+                        <img src={signos_registro}/>
                         <li>Examen físico tomado al paciente al momento de ingresar.</li>
                         <li>Para registrar dar click en el botón de *registro*.</li>
                         <img src={registrar} alt="Registrar button"/>
