@@ -9,6 +9,7 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 
 // Util components
 import ScrollOptions from "../../Components/ScrollOptions"
+import { HelpUpdatePaciente } from "../Help/Paciente/HelpUpdatePaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
@@ -34,6 +35,7 @@ export function Component() {
     const {state} = useLocation()
     const [paciente] = useState(state)
     const [listGenero] = useState(['hombre', 'mujer', 'otro'])
+    const [listEstadoCivil] = useState(['solter@', 'casad@', 'viud@', 'divorciad@', 'otro'])
     const { facultadProgramas } = useCarreraState()
     const [modifiedPaciente, setModifiedPaciente] = useState({
         id_pk: paciente.id_pk,
@@ -54,6 +56,7 @@ export function Component() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage
     } = useNotificationState()
+    const [showHelp, setShowHelp] = useState(false)
 
     // using enable/disable to change form style
     const enable_name = enableBorder === true ? "chk_enable":"chk_disable"
@@ -83,6 +86,8 @@ export function Component() {
 
     // notification modal
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // disable edition change handler
     const handle_change_disable_edition = () => {
@@ -234,9 +239,42 @@ export function Component() {
                                 name="genero1"
                                 placeholder="Genero paciente"
                                 required={true}
+                                disabled={disableEdition}
                                 onChange={handle_change_modified_paciente}
                             />
                         </label>
+                }
+                <label>
+                    Estado civil
+                    {
+                        paciente.estado_civil && (
+                            <select name="estado_civil" onChange={handle_change_modified_paciente} disabled={disableEdition}>
+                                <option key={paciente.estado_civil}>{paciente.estado_civil}</option>
+                                {
+                                    listEstadoCivil.map((i) => (
+                                        i !== paciente.estado_civil && (
+                                            <option key={i}>{i}</option>
+                                        )
+                                    ))
+                                }
+                            </select>
+                        )
+                    }
+                </label>
+                {
+                    modifiedPaciente.estado_civil !== undefined && modifiedPaciente.estado_civil === "otro" && (
+                        <label>
+                            Ingrese el valor para el estado civil
+                            <input
+                                type="text"
+                                name="estado_civil1"
+                                placeholder="Estado civil"
+                                required={true}
+                                disabled={disableEdition}
+                                onChange={handle_change_modified_paciente}
+                            />
+                        </label>
+                    )
                 }
                 <label>
                     Procedencia(departamento)
@@ -379,6 +417,9 @@ export function Component() {
                     <button type="submit" disabled={isComplete}>Actualizar</button>
                 </div>
             </form>
+            <button className="help" onClick={() => setShowHelp(true)}>
+                help | ?
+            </button>
             <ModalRegister
                 show={confirmModal}
                 message={"Estas apunto de actualizar paciente, Confirma esta acción"}
@@ -386,6 +427,11 @@ export function Component() {
                 handle_confirm={handle_submit}
             />
             <ModalBlocker isCompleted={isComplete}/>
+            <HelpUpdatePaciente
+                show={showHelp}
+                type="update"
+                handle_close={handle_close_help}
+            />
         </div>
     )
 }
