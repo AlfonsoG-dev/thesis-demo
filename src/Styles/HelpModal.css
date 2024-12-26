@@ -8,6 +8,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    color: black;
     h3 {
         color: black;
         font-size: 1.3em;
