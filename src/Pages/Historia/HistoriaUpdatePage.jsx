@@ -12,6 +12,7 @@ import ExamenForm from "../../Components/Forms/ExamenForm"
 // Util components
 import ScrollOptions from "../../Components/ScrollOptions"
 import ComputeDate from "../../Utils/ComputeDate"
+import { HelpUpdateHistoria } from "../Help/Historia/HelpUpdateHistoria"
 
 // Modal Component
 import ModalNotification from "../../Components/Modals/ModalNotification"
@@ -71,6 +72,8 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
+    const [showHelp, setShowHelp] = useState(false)
+
 
     // register modal handlers
     const handle_show_confirm = (e) => {
@@ -93,6 +96,8 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
+
+    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
@@ -224,6 +229,7 @@ export function Component() {
                                 type="date"
                                 placeholder="fecha_ingreso"
                                 defaultValue={anamnesis.fecha_ingreso !== null ? ComputeDate(anamnesis.fecha_ingreso) : ""}
+                                disabled={true}
                                 onChange={handle_change_anamnesis}
                             />
                         </label>
@@ -234,6 +240,7 @@ export function Component() {
                                 type="time"
                                 placeholder="hora_ingreso"
                                 defaultValue={anamnesis.hora_ingreso}
+                                disabled={true}
                                 onChange={handle_change_anamnesis}
                             />
                         </label>
@@ -333,6 +340,9 @@ export function Component() {
                         </button>
                     </div>
                 </form>
+                <button className="help" onClick={() => setShowHelp(true)}>
+                    help | ?
+                </button>
                 <ModalRegister
                     show={showConfirmModal}
                     message={"Estas por actualizar la historia, Confirma esta acción"}
@@ -340,6 +350,10 @@ export function Component() {
                     handle_confirm={handle_submit}
                 />
                 <ModalBlocker isCompleted={isCompleted}/>
+                <HelpUpdateHistoria
+                    show={showHelp}
+                    handle_close={handle_close_help}
+                />
             </div>
         )
     } else {
