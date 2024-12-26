@@ -32,10 +32,10 @@ import "./Styles/LoginStyle.css"
 export default function App() {
     const usuario = JSON.parse(localStorage.getItem('log_user')) || users[1]
     const navigate = useNavigate()
+    const location = useLocation()
+
     const get_initial_theme = () => localStorage.getItem('theme') || 'light'
     const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
-
-    const location = useLocation()
 
     const get_initial_active = () => localStorage.getItem('activeLink') || "/app"
     const [activeState, dispatch] = useReducer(activeLinkReducer, {

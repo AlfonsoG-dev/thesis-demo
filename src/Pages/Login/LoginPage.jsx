@@ -56,12 +56,11 @@ export default function LoginPage() {
     const handle_close_help = () => setShowHelp(false)
 
     // notificación modal
-    const handle_close_notification = () => {
-        setNotification(false)
-    }
+    const handle_close_notification = () => setNotification(false)
+
     const fetch_data = () => {
         setLoading(true)
-        // validate previous session on localstorage
+        // validate previous session on local storage
         const prev_log_user = localStorage.getItem('log_user')
         const init_url = localStorage.getItem('activeLink') || "/app"
         if(prev_log_user !== null && isCompleted === false) {
