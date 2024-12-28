@@ -47,12 +47,8 @@ npm run dev
 ```
 
 # TODO
-- [ ] offset not working properly
-- [x] add paciente options
-- [x] add create historia
-- [x] add usuario options
-- [x] add historia options
-- [x] verify **pdf** generation
+- [ ] offset not working properly.
+- [ ] allow group *pdf* generation when there is more than one historia.
 
 ----
 
