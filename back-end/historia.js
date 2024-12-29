@@ -49,12 +49,26 @@ export const historias = [
 ]
 
 export function get_historias_by_user(id_usuario=0, start=0, end=0) {
-    const m = historias.filter(h => h.usuario_id_fk === Number.parseInt(id_usuario)).slice(start, end)
-    return m
+    const m = historias.filter(h => h.usuario_id_fk === Number.parseInt(id_usuario))
+    let pagination = []
+    if(end > m.length) {
+        end = m.length
+    }
+    for(let i=start; i<end; ++i) {
+        pagination.push(m[i])
+    }
+    return pagination
 }
 export function get_historias_by_paciente(id_paciente=0, start=0, end=0) {
-    const m = historias.filter(h => h.paciente_id_fk === Number.parseInt(id_paciente)).slice(start, end)
-    return m
+    const m = historias.filter(h => h.paciente_id_fk === Number.parseInt(id_paciente))
+    let pagination = []
+    if(end > m.length) {
+        end = m.length
+    }
+    for(let i=start; i<end; ++i) {
+        pagination.push(m[i])
+    }
+    return pagination
 }
 export function get_historias(start=0, end=0) {
     let pagination = []

@@ -16,6 +16,7 @@ import HelpPaciente from "../Help/HelpPaciente"
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
+import usePaginationState from "../../Hooks/Form/PaginationHook"
 
 // Utils
 import TitleFormat from "../../Utils/Formats/Title"
@@ -41,7 +42,6 @@ export function Component() {
 
     // navigate system
     const navigate = useNavigate()
-
     //
     const {
         loading, start_operation, end_operation
@@ -58,11 +58,13 @@ export function Component() {
         showHelp, handle_show_help, handle_close_help
     } = useHelpState()
 
-    // TODO: include pagination hook
-
+    const default_limit_value = 2
     // state for quantity of data to show
-    const [offset, setOffset] = useState(0)
-    const limit = 5
+    const {
+        offset, setOffset,
+        limit, setLimit,
+        handle_pagination
+    } = usePaginationState(default_limit_value)
 
     // get the data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -73,13 +75,6 @@ export function Component() {
                 end_operation()
                 setHistorias(response)
             } else {
-                setOffset(() => {
-                    if(offset >= limit) {
-                        return offset-limit
-                    } else {
-                        return 0
-                    }
-                })
                 throw new Error("El paciente no tiene más historias")
             }
         } catch(er) {
@@ -87,19 +82,16 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             show_notification()
+            setOffset((prev) => prev-default_limit_value)
+            setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [id_paciente, offset])
+    }, [end_operation, id_paciente, limit, setLimit, setNotificationType, setOffset, setResponseMessage, show_notification, start_operation])
 
     useEffect(() => {
         fetch_data(offset)
     }, [offset, fetch_data, id_paciente])
 
-    const handle_pagination = (page) => {
-        if(page > 0 || page == 0) {
-            setOffset(page)
-        }
-    }
     const handle_copy_HCE = () => {
         alert("No implementado para esta ¡ demostración !")
     }
@@ -140,7 +132,7 @@ export function Component() {
             <HistoriaTableComponent data={historias} type={"paciente"} isLightTheme={isLightTheme}/>
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button 
-                    onClick={() => handle_pagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
                     disabled={offset==0}
                 >
                     <GrFormPreviousLink/>
@@ -148,7 +140,7 @@ export function Component() {
                 </button>
 
                 <button
-                    onClick={() => handle_pagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
                     disabled={historias.error}
                 >
                     <GrFormNextLink/>
