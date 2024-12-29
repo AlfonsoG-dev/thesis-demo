@@ -45,9 +45,10 @@ export function Component() {
     
     const[showHelp, setShowHelp] = useState(false)
 
+    const default_limit_value = 1
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
-    const limit = 5
+    const [limit, setLimit] = useState(default_limit_value)
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
@@ -62,13 +63,6 @@ export function Component() {
                 setPacientes(response)
                 setLoading(false)
             } else {
-                setOffset(() => {
-                    if(offset >= limit) {
-                        return offset-limit
-                    } else {
-                        return 0
-                    }
-                })
                 throw new Error("No hay pacientes")
             }
         } catch(er) {
@@ -76,17 +70,20 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            setOffset((prev) => prev-default_limit_value)
+            setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [offset])
+    }, [limit, setNotification, setNotificationType, setResponseMessage])
 
     useEffect(() => {
         fetch_data(offset)
     }, [offset, fetch_data])
 
-    const handle_pagination = (page) => {
-        if(page > 0 || page == 0) {
+    const handle_pagination = (page, new_limit) => {
+        if(page >= 0 && new_limit >= 0) {
             setOffset(page)
+            setLimit(new_limit)
         }
     }
 
@@ -160,14 +157,14 @@ export function Component() {
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
                     disabled={offset==0}
                 >
                     <GiPlayerPrevious/>
                 </button>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
                     disabled={pacientes.error}
                 >
                     <GiPlayerNext/>

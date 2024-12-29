@@ -41,8 +41,14 @@ export const pacientes = [
 
 
 export function get_pacientes(start=0, end=0) {
-    const m = pacientes.slice(start, end)
-    return m
+    let pagination = []
+    if(end >= pacientes.length) {
+        end = pacientes.length
+    }
+    for(let i=start; i<end; ++i) {
+        pagination.push(pacientes[i])
+    }
+    return pagination
 }
 
 export function register_paciente(paciente) {

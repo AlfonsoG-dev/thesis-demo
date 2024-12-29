@@ -43,9 +43,11 @@ export function Component() {
 
     const [showHelp, setShowHelp] = useState(false)
 
+
+    const default_limit_value = 2
     // quantity to show
     const [offset, setOffset] = useState(0)
-    const limit = 5
+    const [limit, setLimit] = useState(default_limit_value)
 
     // modal notificación handlers
     const handle_close_notification = () => setNotification(false)
@@ -60,13 +62,6 @@ export function Component() {
                 setUsuarios(response)
                 setLoading(false)
             } else {
-                setOffset(() => {
-                    if(offset >= limit) {
-                        return offset-limit
-                    } else {
-                        return 0
-                    }
-                })
                 throw new Error("No hay usuarios")
             }
         } catch(er) {
@@ -74,9 +69,12 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            // in case of an error reset pagination to default values
+            setOffset(0)
+            setLimit(default_limit_value)
             console.error(er)
         }
-    }, [offset])
+    }, [limit, setNotification, setNotificationType, setResponseMessage])
 
     // activate the fetchData between renders
     useEffect(() => {
@@ -84,9 +82,10 @@ export function Component() {
     }, [offset, fetch_data])
 
     // use pagination with offset to control the quantity of users to show
-    const handle_pagination = (page) => {
-        if(page > 0 || page == 0) {
+    const handle_pagination = (page, new_limit) => {
+        if(page >= 0 && new_limit >= 0) {
             setOffset(page)
+            setLimit(new_limit)
         }
     }
     // search user by identificación
@@ -160,14 +159,14 @@ export function Component() {
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
                     disabled={offset==0}
                 >
                     <GiPlayerPrevious />
                 </button >
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
                     disabled={usuarios.error}
                 >
                     <GiPlayerNext />

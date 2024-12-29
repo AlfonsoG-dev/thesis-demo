@@ -57,7 +57,14 @@ export function get_historias_by_paciente(id_paciente=0, start=0, end=0) {
     return m
 }
 export function get_historias(start=0, end=0) {
-    return historias.slice(start, end)
+    let pagination = []
+    if(end > historias.length) {
+        end = historias.length
+    }
+    for(let i=start; i<end; ++i) {
+        pagination.push(historias[i])
+    }
+    return pagination
 }
 
 export function register_historia(historia, usuario) {

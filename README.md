@@ -47,7 +47,6 @@ npm run dev
 ```
 
 # TODO
-- [ ] offset not working properly.
 - [ ] allow group *pdf* generation when there is more than one historia.
 
 ----

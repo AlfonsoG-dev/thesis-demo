@@ -40,15 +40,17 @@ export function Component() {
 
     const [showHelp, setShowHelp] = useState(false)
 
+    const default_limit_value = 2
     const [offset, setOffset] = useState(0)
+    const [limit, setLimit] = useState(default_limit_value)
 
 
-    const limit = 10
 
     const handle_close_notification = () => setNotification(false)
 
     const handle_close_help = () => setShowHelp(false)
 
+    // page = offset
     const fetch_data = useCallback((page) => {
         setLoading(true)
         try {
@@ -57,13 +59,6 @@ export function Component() {
                 setLoading(false)
                 setHistorias(response)
             } else {
-                setOffset(() => {
-                    if(offset >= limit) {
-                        return offset-limit
-                    } else {
-                        return 0
-                    }
-                })
                 throw new Error("No hay historias")
             }
         } catch(er) {
@@ -71,9 +66,11 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
+            setOffset(0)
+            setLimit(default_limit_value)
             console.error(er)
         }
-    }, [offset])
+    }, [limit, setNotification, setNotificationType, setResponseMessage])
 
     const handle_search_historia = (e) => {
         e.preventDefault()
@@ -95,9 +92,10 @@ export function Component() {
         }
     }
 
-    const handle_pagination = (page) => {
-        if(page > 0 || page === 0) {
+    const handle_pagination = (page, new_limit) => {
+        if(page >= 0 && new_limit >= 0) {
             setOffset(page)
+            setLimit(new_limit)
         }
     }
     const handle_change_searched = (e) => {
@@ -155,14 +153,14 @@ export function Component() {
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset-limit)}
+                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
                     disabled={offset==0}
                 >
                     <GrFormPreviousLink/>
                 </button>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset+limit)}
+                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
                     disabled={historias.error}
                 >
                     <GrFormNextLink/>
