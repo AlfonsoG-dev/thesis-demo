@@ -46,9 +46,9 @@ export function Component() {
     // Modals
     const [showConfirm, setShowConfirm] = useState(false)
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -68,8 +68,6 @@ export function Component() {
         e.preventDefault()
         setShowConfirm(true)
     }
-    // notificación modal handlers
-    const handle_close_notification = () => setNotification(false)
 
     // allow 3 attempts before block page
     const validate_retry = () => {
@@ -78,7 +76,7 @@ export function Component() {
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
         } else {
             setRetry(() => retry+1)
         }
@@ -102,7 +100,7 @@ export function Component() {
                     handle_close_confirm()
                     setNotificationType("message")
                     setResponseMessage("Usuario registrado")
-                    setNotification(true)
+                    show_notification()
                 } else {
                     throw new Error("No se pudo registrar el usuario")
                 }
@@ -115,7 +113,7 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -142,7 +140,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_close_notification}
+                handle_close={close_notification}
             />
         )
     }

@@ -51,7 +51,7 @@ export default function LoginPage() {
         notification,
         notificationType, setNotificationType,
         responseMessage, setResponseMessage,
-        handle_close_notification, handle_show_notification
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -78,7 +78,7 @@ export default function LoginPage() {
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("¡ Bienvenido !")
-            handle_show_notification()
+            show_notification()
             setTimeout(() => {
                 navigate(init_url, {
                     state: JSON.parse(prev_log_user)
@@ -88,7 +88,7 @@ export default function LoginPage() {
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("No hay sesión previa")
-            handle_show_notification()
+            show_notification()
             setTimeout(() => {
                 end_operation()
             }, 2000)
@@ -109,7 +109,7 @@ export default function LoginPage() {
             complete_operation()
             setNotificationType("msg")
             setResponseMessage("! Bienvenido ¡")
-            handle_show_notification()
+            show_notification()
             end_operation()
             setTimeout(() => {
                 navigate("/app")
@@ -119,7 +119,7 @@ export default function LoginPage() {
             setNotificationType("error")
             setResponseMessage(er.toString())
             handle_close_confirm()
-            handle_show_notification()
+            show_notification()
             setTimeout(() => {
                 navigate("/", {
                     replace: true
@@ -219,7 +219,7 @@ export default function LoginPage() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
     return show_content()

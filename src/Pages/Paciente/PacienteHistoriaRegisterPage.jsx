@@ -55,9 +55,9 @@ export function Component() {
     // modals
     const[showConfirm, setShowConfirm] = useState(false)
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
+        notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -85,9 +85,6 @@ export function Component() {
         setShowConfirm(true)
     }
     const handle_close_confirm = () => setShowConfirm(false)
-
-    // notificación modal handlers
-    const handle_close_notification = () => setNotification(false)
 
     // get the paciente data using state.id_pk
     const fetch_data = useCallback(async() => {
@@ -119,7 +116,7 @@ export function Component() {
             setResponseMessage("Se acabaron los intentos intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
         } else {
             setRetry(() => retry+1)
         }
@@ -154,7 +151,7 @@ export function Component() {
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
-                setNotification(true)
+                show_notification()
             } else {
                 throw new Error(response.error)
             }
@@ -164,7 +161,8 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
+            console.error(er)
         }
     }
 
@@ -200,7 +198,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
     return (

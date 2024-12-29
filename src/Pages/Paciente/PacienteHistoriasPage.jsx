@@ -49,21 +49,20 @@ export function Component() {
 
     // Modals
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
         showHelp, handle_show_help, handle_close_help
     } = useHelpState()
 
+    // TODO: include pagination hook
+
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
     const limit = 5
-
-    // notificación modal handlers
-    const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -87,7 +86,7 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }, [id_paciente, offset])
@@ -114,7 +113,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_close_notification}
+                handle_close={close_notification}
             />
         )
     }

@@ -42,9 +42,9 @@ export function Component() {
 
     // modals
     const {
-        notification, setNotification, 
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -58,9 +58,6 @@ export function Component() {
         limit, setLimit,
         handle_pagination
     } = usePaginationState(default_limit_value)
-
-    // notificación modal handlers
-    const handle_close_notification = () => setNotification(false)
 
     // get data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -77,12 +74,12 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             setOffset((prev) => prev-default_limit_value)
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage, start_operation, end_operation])
+    }, [limit, setLimit, setOffset, show_notification, setNotificationType, setResponseMessage, start_operation, end_operation])
 
     useEffect(() => {
         fetch_data(offset)
@@ -105,7 +102,7 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -129,7 +126,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_close_notification}
+                handle_close={close_notification}
             />
         )
     }

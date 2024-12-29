@@ -45,9 +45,9 @@ export function Component() {
 
     // modals
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -57,9 +57,6 @@ export function Component() {
     //quantity of data to show
     const [offset, setOffset] = useState(0)
     const limit = 5
-
-    // notificación modal handlers
-    const handle_close_notification = () => setNotification(false)
 
     // get the data from the end-point of server
     const fetch_data = useCallback((page) => {
@@ -78,7 +75,7 @@ export function Component() {
             })
             setNotificationType("error")
             setResponseMessage("El usuario no tiene historias")
-            setNotification(true)
+            show_notification()
             setTimeout(() => {
                 end_operation()
             }, 2000)
@@ -105,7 +102,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_close_notification}
+                handle_close={close_notification}
             />
         )
     }

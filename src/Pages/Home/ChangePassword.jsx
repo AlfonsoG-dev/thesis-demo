@@ -39,9 +39,9 @@ export function Component() {
 
     const [showConfirm, setShowConfirm] = useState(false)
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
+        notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -69,13 +69,10 @@ export function Component() {
         } else {
             setNotificationType("error")
             setResponseMessage("Habilitar edición para continuar")
-            setNotification(true)
+            show_notification()
             setEditionBorder(true)
         }
     }
-
-    // modal notificación
-    const handle_close_notification = () => setNotification(false)
 
     // user change field handler
     const handle_change_user = (e) => {
@@ -101,7 +98,7 @@ export function Component() {
                     setResponseMessage(change_password_response)
                     setNotificationType("msg")
                     handle_close_confirm()
-                    setNotification(true)
+                    show_notification()
                 } else {
                     throw new Error("No se pudo cambiar la contraseña")
                 }
@@ -113,7 +110,7 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -130,7 +127,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
     return (

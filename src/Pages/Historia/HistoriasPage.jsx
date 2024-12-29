@@ -39,9 +39,9 @@ export function Component() {
         id_pk: 0
     })
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
+        notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -54,8 +54,6 @@ export function Component() {
         limit, setLimit,
         handle_pagination
     } = usePaginationState(default_limit_value)
-
-    const handle_close_notification = () => setNotification(false)
 
     // page = offset
     const fetch_data = useCallback((page) => {
@@ -72,12 +70,12 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             setOffset((prev) => prev-default_limit_value)
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [end_operation, limit, setLimit, setNotification, setNotificationType, setOffset, setResponseMessage, start_operation])
+    }, [end_operation, limit, setLimit, show_notification, setNotificationType, setOffset, setResponseMessage, start_operation])
 
     const handle_search_historia = (e) => {
         e.preventDefault()
@@ -94,7 +92,7 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -121,7 +119,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
 

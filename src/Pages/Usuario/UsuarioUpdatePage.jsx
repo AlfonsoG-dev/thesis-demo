@@ -49,9 +49,9 @@ export function Component() {
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -72,14 +72,10 @@ export function Component() {
         } else {
             setNotificationType("error")
             setResponseMessage("Habilitar edición para continuar")
-            setNotification(true)
+            show_notification()
             setEditionBorder(true)
         }
     }
-
-    // notification modal
-    const handle_close_notification = () => setNotification(false)
-
 
     // enable/disable checkbox
     const handle_change_enable_edition = () => {
@@ -94,7 +90,7 @@ export function Component() {
             setResponseMessage("Intentos agotados, intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
         } else {
             setRetry(() => retry+1)
         }
@@ -122,7 +118,7 @@ export function Component() {
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
-                setNotification(true)
+                show_notification()
             } else {
                 throw new Error(response.error)
             }
@@ -132,7 +128,8 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
+            console.error(er)
         }
     }
     if(loading) {
@@ -143,7 +140,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
             />
     }
     const show_time_limit = () => {

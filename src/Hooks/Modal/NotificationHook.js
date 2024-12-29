@@ -4,14 +4,14 @@ export default function useNotificationState() {
     const [notificationType, setNotificationType] = useState("")
     const [responseMessage, setResponseMessage] = useState("")
 
-    const handle_close_notification = () => setNotification(false)
-    const handle_show_notification = () => setNotification(true)
+    const close_notification = () => setNotification(false)
+    const show_notification = () => setNotification(true)
 
     return {
         notification, setNotification,
         notificationType, setNotificationType,
         responseMessage, setResponseMessage,
-        handle_close_notification, handle_show_notification
+        close_notification, show_notification
     }
 }
 

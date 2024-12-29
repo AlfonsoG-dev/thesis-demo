@@ -26,10 +26,9 @@ export default function LogOut({isLightTheme}) {
     } = useStatusState()
     const [showConfirm, setShowConfirm] = useState(false)
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
+        notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
-
+        show_notification, close_notification
     } = useNotificationState()
 
     const handle_close_confirm = () => setShowConfirm(false)
@@ -37,8 +36,6 @@ export default function LogOut({isLightTheme}) {
         e.preventDefault()
         setShowConfirm(true)
     }
-
-    const handle_close_notification = () => setNotification(false)
 
     const log_out_handler = () => {
         start_operation()
@@ -54,7 +51,7 @@ export default function LogOut({isLightTheme}) {
         setResponseMessage("Cerrando sesión")
         setNotificationType("msg")
         handle_close_confirm()
-        setNotification(true)
+        show_notification()
         setTimeout(() => {
             navigate("/", {
                 replace: true
@@ -78,7 +75,7 @@ export default function LogOut({isLightTheme}) {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
     return (

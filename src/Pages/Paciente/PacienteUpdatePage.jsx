@@ -57,9 +57,9 @@ export function Component() {
     // Modals
     const [confirmModal, setConfirmModal] = useState(false)
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification
     } = useNotificationState()
 
     const {
@@ -86,14 +86,11 @@ export function Component() {
         } else {
             setNotificationType("error")
             setResponseMessage("Habilita edición para continuar")
-            setNotification(true)
+            show_notification()
             setEnableBorder(true)
         }
     }
     const handle_close_confirm = () => setConfirmModal(false)
-
-    // notification modal
-    const handle_close_notification = () => setNotification(false)
 
     // disable edition change handler
     const handle_change_disable_edition = () => {
@@ -108,7 +105,7 @@ export function Component() {
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
         } else {
             setRetry(() => retry+1)
         }
@@ -130,7 +127,7 @@ export function Component() {
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
-                setNotification(true)
+                show_notification()
             } else {
                 throw new Error(response.error)
             }
@@ -140,7 +137,7 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -152,7 +149,7 @@ export function Component() {
             show={notification}
             message={responseMessage}
             type={notificationType}
-            handle_close={handle_close_notification}
+            handle_close={close_notification}
         />
     }
     return (

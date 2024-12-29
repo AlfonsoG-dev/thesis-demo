@@ -40,9 +40,9 @@ export function Component() {
 
     // modal notificación
     const {
-        notification, setNotification,
-        notificationType, setNotificationType,
-        responseMessage, setResponseMessage
+        notification, notificationType, setNotificationType,
+        responseMessage, setResponseMessage,
+        show_notification, close_notification,
     } = useNotificationState()
 
     const {
@@ -56,9 +56,6 @@ export function Component() {
         limit, setLimit,
         handle_pagination
     } = usePaginationState(default_limit_value)
-
-    // modal notificación handlers
-    const handle_close_notification = () => setNotification(false)
 
     // get the users from the end-point in server
     const fetch_data = useCallback((page) => {
@@ -75,13 +72,13 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             // in case of an error reset pagination to default values
             setOffset((prev) => prev-default_limit_value)
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [end_operation, limit, setLimit, setNotification, setNotificationType, setOffset, setResponseMessage, start_operation])
+    }, [end_operation, limit, setLimit, show_notification, setNotificationType, setOffset, setResponseMessage, start_operation])
 
     // activate the fetchData between renders
     useEffect(() => {
@@ -104,7 +101,7 @@ export function Component() {
             end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
-            setNotification(true)
+            show_notification()
             console.error(er)
         }
     }
@@ -129,7 +126,7 @@ export function Component() {
                 show={notification}
                 message={responseMessage}
                 type={notificationType}
-                handle_close={handle_close_notification}
+                handle_close={close_notification}
             />
         )
     }
