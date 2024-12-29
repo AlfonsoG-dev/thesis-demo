@@ -14,6 +14,7 @@ import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import usePaginationState from "../../Hooks/Form/PaginationHook"
 
 // data
 import { get_pacientes } from "../../../back-end/paciente"
@@ -47,8 +48,11 @@ export function Component() {
 
     const default_limit_value = 2
     // state for quantity of data to show
-    const [offset, setOffset] = useState(0)
-    const [limit, setLimit] = useState(default_limit_value)
+    const {
+        offset, setOffset,
+        limit, setLimit,
+        handle_pagination
+    } = usePaginationState(default_limit_value)
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
@@ -74,18 +78,12 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setNotification, setNotificationType, setResponseMessage])
+    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage])
 
     useEffect(() => {
         fetch_data(offset)
     }, [offset, fetch_data])
 
-    const handle_pagination = (page, new_limit) => {
-        if(page >= 0 && new_limit >= 0) {
-            setOffset(page)
-            setLimit(new_limit)
-        }
-    }
 
     // search paciente by identificación
     const handle_search_paciente = async(e) => {

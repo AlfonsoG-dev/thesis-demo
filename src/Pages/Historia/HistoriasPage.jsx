@@ -16,6 +16,7 @@ import { FaBookMedical } from "react-icons/fa"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import usePaginationState from "../../Hooks/Form/PaginationHook"
 
 // data
 import { get_historias } from "../../../back-end/historia"
@@ -41,10 +42,11 @@ export function Component() {
     const [showHelp, setShowHelp] = useState(false)
 
     const default_limit_value = 2
-    const [offset, setOffset] = useState(0)
-    const [limit, setLimit] = useState(default_limit_value)
-
-
+    const {
+        offset, setOffset,
+        limit, setLimit,
+        handle_pagination
+    } = usePaginationState(default_limit_value)
 
     const handle_close_notification = () => setNotification(false)
 
@@ -70,7 +72,7 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setNotification, setNotificationType, setResponseMessage])
+    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage])
 
     const handle_search_historia = (e) => {
         e.preventDefault()
@@ -92,12 +94,6 @@ export function Component() {
         }
     }
 
-    const handle_pagination = (page, new_limit) => {
-        if(page >= 0 && new_limit >= 0) {
-            setOffset(page)
-            setLimit(new_limit)
-        }
-    }
     const handle_change_searched = (e) => {
         e.preventDefault()
         const {name, value} = e.target

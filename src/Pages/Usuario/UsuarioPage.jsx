@@ -14,6 +14,7 @@ import HelpPaciente from "../Help/HelpPaciente.jsx"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import usePaginationState from "../../Hooks/Form/PaginationHook.js"
 
 // data
 import { get_users } from "../../../back-end/user.js"
@@ -43,11 +44,13 @@ export function Component() {
 
     const [showHelp, setShowHelp] = useState(false)
 
-
     const default_limit_value = 2
-    // quantity to show
-    const [offset, setOffset] = useState(0)
-    const [limit, setLimit] = useState(default_limit_value)
+    // quantity of data to show
+    const {
+        offset, setOffset,
+        limit, setLimit,
+        handle_pagination
+    } = usePaginationState(default_limit_value)
 
     // modal notificación handlers
     const handle_close_notification = () => setNotification(false)
@@ -74,20 +77,13 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setNotification, setNotificationType, setResponseMessage])
+    }, [limit, setLimit, setNotification, setNotificationType, setOffset, setResponseMessage])
 
     // activate the fetchData between renders
     useEffect(() => {
         fetch_data(offset)
     }, [offset, fetch_data])
 
-    // use pagination with offset to control the quantity of users to show
-    const handle_pagination = (page, new_limit) => {
-        if(page >= 0 && new_limit >= 0) {
-            setOffset(page)
-            setLimit(new_limit)
-        }
-    }
     // search user by identificación
     const handle_search_user = async(e) => {
         e.preventDefault()
