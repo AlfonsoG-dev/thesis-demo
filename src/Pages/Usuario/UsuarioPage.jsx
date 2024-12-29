@@ -70,8 +70,8 @@ export function Component() {
             setNotificationType("error")
             setNotification(true)
             // in case of an error reset pagination to default values
-            setOffset(0)
-            setLimit(default_limit_value)
+            setOffset((prev) => prev-default_limit_value)
+            setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
     }, [limit, setNotification, setNotificationType, setResponseMessage])

@@ -66,8 +66,8 @@ export function Component() {
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
-            setOffset(0)
-            setLimit(default_limit_value)
+            setOffset((prev) => prev-default_limit_value)
+            setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
     }, [limit, setNotification, setNotificationType, setResponseMessage])
