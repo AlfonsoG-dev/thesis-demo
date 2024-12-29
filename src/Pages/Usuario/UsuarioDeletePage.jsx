@@ -10,6 +10,7 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser.jsx"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import useStatusState from "../../Hooks/Form/StatusHook.js"
 
 // data
 import { delete_user } from "../../../back-end/user.js"
@@ -35,9 +36,12 @@ export function Component() {
     })
 
     //
-    const [loading, setLoading] = useState(false)
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     const [retry, setRetry] = useState(0)
-    const [isCompleted, setIsCompleted] = useState(false)
 
     // Modals
     const [showConfirm, setShowConfirm] = useState(false)
@@ -65,7 +69,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsCompleted(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -77,12 +81,12 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = delete_user(usuario.identificacion, usuario.password)
             if(response.msg) {
-                setLoading(false)
-                setIsCompleted(true)
+                complete_operation()
+                end_operation()
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -91,7 +95,7 @@ export function Component() {
                 throw new Error(response.error)
             } 
         } catch(er) {
-            setLoading(false)
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")

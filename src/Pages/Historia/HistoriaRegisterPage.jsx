@@ -18,6 +18,8 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 import useFormState from "../../Hooks/Form/FormHook.js"
+import useStatusState from "../../Hooks/Form/StatusHook.js"
+
 
 // utils
 import ComputeEdad from "../../Utils/ComputeEdad.js"
@@ -43,11 +45,13 @@ export function Component() {
         anamnesis, setAnamnesis,
         signos, setSignos,
         examen, setExamen,
-        isCompleted, setIsCompleted
     } = useFormState()
 
     // over all state
-    const [loading, setLoading] = useState(false)
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
     const [retry, setRetry] = useState(0)
 
     // Modals
@@ -93,7 +97,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsCompleted(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -105,7 +109,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             if(paciente.genero === "otro") {
                 paciente.genero = paciente.genero1
@@ -138,8 +142,8 @@ export function Component() {
                 const response = register_historia(historia_object, user)
                 if(response.msg !== undefined) {
                     alert("El paciente no existe, será registrado")
-                    setIsCompleted(true)
-                    setLoading(false)
+                    complete_operation()
+                    end_operation()
                     setNotificationType("msg")
                     setResponseMessage(response.msg)
                     handle_close_confirm()
@@ -166,8 +170,8 @@ export function Component() {
                 }
                 const response = register_historia(historia_object)
                 if(response.msg !== undefined) {
-                    setIsCompleted(true)
-                    setLoading(false)
+                    complete_operation()
+                    end_operation()
                     setNotificationType("msg")
                     setResponseMessage(response.msg)
                     handle_close_confirm()
@@ -178,8 +182,7 @@ export function Component() {
                 }
             }
         } catch(er) {
-            setIsCompleted(false)
-            setLoading(false)
+            end_operation()
             validate_retry()
             setNotificationType("error")
             setResponseMessage(er.toString())

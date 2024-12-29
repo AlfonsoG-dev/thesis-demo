@@ -21,6 +21,7 @@ import { HelpCrearHistoria } from "../Help/HelpCrearHistoria"
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import useFormState from "../../Hooks/Form/FormHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { register_historia } from "../../../back-end/historia"
@@ -41,12 +42,14 @@ export function Component() {
         paciente, setPaciente,
         anamnesis, setAnamnesis,
         signos, setSignos,
-        examen, setExamen,
-        isCompleted, setIsCompleted
+        examen, setExamen
     } = useFormState()
 
     //
-    const[loading, setLoading] = useState(false)
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
     const [retry, setRetry] = useState(0)
 
     // modals
@@ -112,13 +115,12 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsCompleted(true)
+            complete_operation()
             setResponseMessage("Se acabaron los intentos intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
             setNotification(true)
         } else {
-            setIsCompleted(false)
             setRetry(() => retry+1)
         }
     }
@@ -128,7 +130,7 @@ export function Component() {
     */
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const historia_object = {
                 paciente: {
@@ -147,8 +149,8 @@ export function Component() {
             }
             const response = register_historia(historia_object, user)
             if(response.msg !== undefined) {
-                setIsCompleted(true)
-                setLoading(false)
+                complete_operation()
+                end_operation()
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -157,7 +159,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")

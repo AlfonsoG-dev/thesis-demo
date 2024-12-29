@@ -15,6 +15,7 @@ import HelpPaciente from "../Help/HelpPaciente"
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
 import usePaginationState from "../../Hooks/Form/PaginationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { get_pacientes } from "../../../back-end/paciente"
@@ -35,7 +36,9 @@ export function Component() {
     const [pacientes, setPacientes] = useState([])
 
     //
-    const [loading, setLoading] = useState(true)
+    const {
+        loading, start_operation, end_operation
+    } = useStatusState()
 
     // modals
     const {
@@ -61,16 +64,17 @@ export function Component() {
 
     // get data from the end-point server
     const fetch_data = useCallback((page) => {
+        start_operation()
         try {
             const response = get_pacientes(page, limit)
             if(response.length > 0) {
+                end_operation()
                 setPacientes(response)
-                setLoading(false)
             } else {
                 throw new Error("No hay pacientes")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
@@ -78,7 +82,7 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage])
+    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage, start_operation, end_operation])
 
     useEffect(() => {
         fetch_data(offset)
@@ -88,17 +92,17 @@ export function Component() {
     // search paciente by identificación
     const handle_search_paciente = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
+                end_operation()
                 setPacientes(response)
-                setLoading(false)
             } else {
                 throw new Error("Paciente no encontrado")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)

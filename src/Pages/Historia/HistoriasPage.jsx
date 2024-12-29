@@ -17,6 +17,7 @@ import { FaBookMedical } from "react-icons/fa"
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import usePaginationState from "../../Hooks/Form/PaginationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { get_historias } from "../../../back-end/historia"
@@ -28,7 +29,11 @@ import "../../Styles/LoadingStyle.css"
 
 export function Component() {
     const [, isLightTheme] = useOutletContext()
-    const [loading, setLoading] = useState(false)
+
+    const {
+        loading, start_operation, end_operation
+    } = useStatusState()
+
     const [historias, setHistorias] = useState([])
     const [buscado, setBuscado] = useState({
         id_pk: 0
@@ -54,17 +59,17 @@ export function Component() {
 
     // page = offset
     const fetch_data = useCallback((page) => {
-        setLoading(true)
+        start_operation()
         try {
             const response = get_historias(page, limit)
             if(response.length > 0) {
-                setLoading(false)
+                end_operation()
                 setHistorias(response)
             } else {
                 throw new Error("No hay historias")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
@@ -72,21 +77,21 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setLimit, setOffset, setNotification, setNotificationType, setResponseMessage])
+    }, [end_operation, limit, setLimit, setNotification, setNotificationType, setOffset, setResponseMessage, start_operation])
 
     const handle_search_historia = (e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = historias.filter(h => h.id_pk === Number.parseInt(buscado.id_pk))
             if(response.length > 0) {
-                setLoading(false)
+                end_operation()
                 setHistorias(response)
             } else {
                 throw new Error("Historia no encontrada")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)

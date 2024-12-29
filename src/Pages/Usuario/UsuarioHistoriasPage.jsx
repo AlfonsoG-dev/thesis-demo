@@ -13,6 +13,7 @@ import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // utils
 import TitleFormat from "../../Utils/Formats/Title"
@@ -38,7 +39,9 @@ export function Component() {
     // list of historias
     const [historias, setHistorias] = useState([])
 
-    const [loading, setLoading] = useState(false)
+    const {
+        loading, start_operation, end_operation
+    } = useStatusState()
 
     // modals
     const {
@@ -59,10 +62,10 @@ export function Component() {
 
     // get the data from the end-point of server
     const fetch_data = useCallback((page) => {
-        setLoading(true)
+        start_operation()
         const m_historias = get_historias_by_user(id_usuario, page, limit)
         if(m_historias.length > 0) {
-            setLoading(false)
+            end_operation()
             setHistorias(m_historias)
         } else {
             setOffset(() => {
@@ -76,10 +79,10 @@ export function Component() {
             setResponseMessage("El usuario no tiene historias")
             setNotification(true)
             setTimeout(() => {
-                setLoading(false)
+                end_operation()
             }, 2000)
         }
-    }, [offset, id_usuario])
+    }, [end_operation, id_usuario, offset, start_operation])
 
     useEffect(() => {
         fetch_data(offset)

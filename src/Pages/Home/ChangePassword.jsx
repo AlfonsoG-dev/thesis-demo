@@ -9,6 +9,7 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // Hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { users, change_password } from "../../../back-end/user"
@@ -25,11 +26,15 @@ export function Component() {
         password: ""
     })
 
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     const [editionBorder, setEditionBorder] = useState(false)
     const [disableEdition, setDisableEdition] = useState(true)
-    const [loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
-    const [isCompleted, setIsCompleted] = useState(false)
+
 
 
     const [showConfirm, setShowConfirm] = useState(false)
@@ -83,15 +88,15 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = users.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
             if(response.length > 0) {
                 const change_password_response = change_password(usuario.identificacion, usuario.password)
                 if(change_password_response !== "") {
                     localStorage.removeItem('change_password')
-                    setIsCompleted(true)
-                    setLoading(false)
+                    complete_operation()
+                    end_operation
                     setResponseMessage(change_password_response)
                     setNotificationType("msg")
                     handle_close_confirm()
@@ -103,8 +108,7 @@ export function Component() {
                 throw new Error("El usuario no existe")
             }
         } catch(er) {
-            setIsCompleted(false)
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()

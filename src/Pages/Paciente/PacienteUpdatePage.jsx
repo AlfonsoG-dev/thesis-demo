@@ -14,6 +14,7 @@ import { HelpUpdatePaciente } from "../Help/Paciente/HelpUpdatePaciente"
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import useCarreraState from "../../Hooks/Form/CarreraHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // Utils
 import ComputeDate from "../../Utils/ComputeDate"
@@ -42,9 +43,13 @@ export function Component() {
         identificacion: paciente.identificacion
     })
 
+
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     // overall status
-    const [isComplete, setIsComplete] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [retry, setRetry] = useState(0)
     const [disableEdition, setDisableEdition] = useState(true)
     const [enableBorder, setEnableBorder] = useState(false)
@@ -98,7 +103,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsComplete(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -110,7 +115,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             paciente.fecha_nacimiento = ComputeDate(paciente.fecha_nacimiento)
             if(modifiedPaciente.genero !== undefined && modifiedPaciente.genero === "otro") {
@@ -119,8 +124,8 @@ export function Component() {
             }
             const response = update_paciente(state.identificacion,modifiedPaciente)
             if(response.msg !== undefined) {
-                setLoading(false)
-                setIsComplete(true)
+                complete_operation()
+                end_operation()
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -129,7 +134,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -414,7 +419,7 @@ export function Component() {
                 }
                 <div className="options">
                     <h1>Opciones</h1>
-                    <button type="submit" disabled={isComplete}>Actualizar</button>
+                    <button type="submit" disabled={isCompleted}>Actualizar</button>
                 </div>
             </form>
             <button className="help" onClick={() => setShowHelp(true)}>
@@ -426,7 +431,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isComplete}/>
+            <ModalBlocker isCompleted={isCompleted}/>
             <HelpUpdatePaciente
                 show={showHelp}
                 type="update"

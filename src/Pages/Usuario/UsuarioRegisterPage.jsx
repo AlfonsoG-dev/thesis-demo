@@ -10,6 +10,7 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import {users, register} from "../../../back-end/user.js"
@@ -34,10 +35,13 @@ export function Component() {
         time_limit: null,
     })
     //
-    const [loading, setLoading] = useState(false)
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     const [retry, setRetry] = useState(0)
     const [showPassword, setShowPassword] = useState(true)
-    const [isCompleted, setIsCompleted] = useState(false)
 
     // Modals
     const [showConfirm, setShowConfirm] = useState(false)
@@ -70,7 +74,7 @@ export function Component() {
     // allow 3 attempts before block page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsCompleted(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -82,7 +86,7 @@ export function Component() {
 
     const handle_submit= (e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const cur_date = new Date(Date.now())
             if(usuario.time_limit !== null && new Date(usuario.time_limit).getTime() < cur_date.getTime()) {
@@ -93,8 +97,8 @@ export function Component() {
                 const result = register(usuario)
                 if(result > 0) {
                     localStorage.removeItem('register_user')
-                    setIsCompleted(true)
-                    setLoading(false)
+                    complete_operation()
+                    end_operation()
                     handle_close_confirm()
                     setNotificationType("message")
                     setResponseMessage("Usuario registrado")
@@ -106,7 +110,7 @@ export function Component() {
                     throw new Error("El usuario ya se encuentra registrado")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")

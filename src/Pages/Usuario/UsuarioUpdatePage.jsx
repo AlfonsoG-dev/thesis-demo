@@ -9,7 +9,8 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 //Hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import {update} from "../../../back-end/user.js"
@@ -34,11 +35,14 @@ export function Component() {
         time_limit: null,
     })
 
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     // 
     const [editionBorder, setEditionBorder] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [retry, setRetry] = useState(0)
-    const [isComplete, setIsComplete] = useState(false)
     const [disableEdition, setDisableEdition] = useState(true)
 
     // Modals
@@ -50,7 +54,11 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp,
+        handle_show_help,
+        handle_close_help
+    } = useHelpState()
 
     // using state to change the style of the page.
     const chk_name = editionBorder === false ? "chk_disable" : "chk_enable"
@@ -72,7 +80,6 @@ export function Component() {
     // notification modal
     const handle_close_notification = () => setNotification(false)
 
-    const handle_close_help = () => setShowHelp(false)
 
     // enable/disable checkbox
     const handle_change_enable_edition = () => {
@@ -83,7 +90,7 @@ export function Component() {
     // allow 3 attempts before block page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsComplete(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -106,12 +113,12 @@ export function Component() {
     // user submit handler
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = update(state.identificacion, modifiedUser)
             if(response.msg !== undefined) {
-                setIsComplete(true)
-                setLoading(false) 
+                complete_operation()
+                end_operation()
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -120,7 +127,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            setLoading(false) 
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -223,10 +230,10 @@ export function Component() {
                 </label>
                 <div className="options">
                     <h1>Opciones</h1>
-                    <button type="submit" disabled={isComplete}>Actualizar</button>
+                    <button type="submit" disabled={isCompleted}>Actualizar</button>
                 </div>
             </form>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ModalRegister 
@@ -235,7 +242,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isComplete}/>
+            <ModalBlocker isCompleted={isCompleted}/>
             <HelpRegisterUser
                 show={showHelp}
                 type="update"

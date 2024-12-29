@@ -23,6 +23,7 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import useFormState from "../../Hooks/Form/FormHook"
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
 import enableEditionReducer from "../../Hooks/Form/updateHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 //styles
 import "../../Styles/Register.css"
@@ -46,13 +47,16 @@ export function Component() {
         paciente, setPaciente,
         anamnesis, setAnamnesis,
         signos, setSignos,
-        examen, setExamen,
-        isCompleted, setIsCompleted
+        examen, setExamen
     } = useFormState()
+
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
 
     // over all state
     const [isUpdateData, setIsUpdateData] = useState(false)
-    const [loading, setLoading] = useState(false)
     const [retry, setRetry] = useState(0)
     const [editionBorder, setEditionBorder] = useState(false)
     const [myState, dispatch] = useReducer(enableEditionReducer, {
@@ -102,7 +106,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            setIsCompleted(true)
+            complete_operation()
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -114,7 +118,7 @@ export function Component() {
 
     // get data from end-point server
     const fetch_data = useCallback(async () => {
-        setLoading(true)
+        start_operation()
         try {
             if(state.update_at === null) {
                 const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(paciente_id_fk))
@@ -125,16 +129,16 @@ export function Component() {
                 setSignos(res_signos)
                 const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(examen_fisico_id_fk))
                 setExamen(res_examen)
-                setLoading(false)
+                end_operation()
             } else {
-                setLoading(false)
+                end_operation()
                 setIsUpdateData(true)
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             console.error(er)
         }
-    }, [anamnesis_id_fk, examen_fisico_id_fk, paciente_id_fk, setAnamnesis, setExamen, setPaciente, setSignos, signos_vitales_id_fk, state.update_at])
+    }, [anamnesis_id_fk, end_operation, examen_fisico_id_fk, paciente_id_fk, setAnamnesis, setExamen, setPaciente, setSignos, signos_vitales_id_fk, start_operation, state.update_at])
 
     useEffect(() => {
         fetch_data()
@@ -142,7 +146,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             anamnesis.fecha_ingreso = ComputeDate(new Date(anamnesis.fecha_ingreso))
             const historia_object = {
@@ -161,8 +165,8 @@ export function Component() {
             }
             const response = update_historia(historia_object, user, state.id_pk)
             if(response.msg !== undefined) {
-                setIsCompleted(true)
-                setLoading(false)
+                complete_operation()
+                end_operation()
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -171,7 +175,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")

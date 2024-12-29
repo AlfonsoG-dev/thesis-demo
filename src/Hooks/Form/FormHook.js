@@ -16,14 +16,12 @@ const useFormState = () => {
     const [anamnesis, setAnamnesis] = useState(default_anamnesis)
     const [signos, setSignos] = useState(default_signos)
     const [examen, setExamen] = useState(default_examen)
-    const [isCompleted, setIsCompleted] = useState(false)
 
     return {
         paciente, setPaciente,
         anamnesis, setAnamnesis,
         signos, setSignos,
-        examen, setExamen,
-        isCompleted, setIsCompleted
+        examen, setExamen
     }
 }
 

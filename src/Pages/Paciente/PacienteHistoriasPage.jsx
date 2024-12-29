@@ -15,6 +15,7 @@ import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // Utils
 import TitleFormat from "../../Utils/Formats/Title"
@@ -42,7 +43,9 @@ export function Component() {
     const navigate = useNavigate()
 
     //
-    const [loading, setLoading] = useState(true)
+    const {
+        loading, start_operation, end_operation
+    } = useStatusState()
 
     // Modals
     const {
@@ -64,11 +67,11 @@ export function Component() {
 
     // get the data from the end-point server
     const fetch_data = useCallback((page) => {
-        setLoading(true)
+        start_operation()
         try {
             const response = get_historias_by_paciente(id_paciente, page, limit)
             if(response.length > 0) {
-                setLoading(false)
+                end_operation()
                 setHistorias(response)
             } else {
                 setOffset(() => {
@@ -81,13 +84,13 @@ export function Component() {
                 throw new Error("El paciente no tiene más historias")
             }
         } catch(er) {
-            setLoading(false)
+            end_operation()
             setResponseMessage(er.toString())
             setNotificationType("error")
             setNotification(true)
             console.error(er)
         }
-    }, [offset])
+    }, [id_paciente, offset])
 
     useEffect(() => {
         fetch_data(offset)

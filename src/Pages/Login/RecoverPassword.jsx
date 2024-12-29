@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 // hooks
-import { Get } from "../../Hooks/Requests"
+import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { users } from "../../../back-end/user"
@@ -13,8 +13,12 @@ import "../../Styles/RecoverPage.css"
 
 export function Component() {
     const navigate = useNavigate()
-    const [isCompleted, setIsCompleted] = useState(false)
-    const [loading, setLoading] = useState(false)
+
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     const [buscado, setBuscado] = useState({
         name: "",
         identificacion: 0
@@ -25,19 +29,18 @@ export function Component() {
 
     const fetch_data = (e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const response = users.filter(u => u.name === buscado.name && u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
-                setIsCompleted(true)
-                setLoading(false)
+                complete_operation()
+                end_operation()
                 setUsuario(response[0])
             } else {
                 throw new Error("Usuario no encontrado")
             }
         } catch(er) {
-            setIsCompleted(true)
-            setLoading(false)
+            end_operation()
             console.error(er)
         }
     }
@@ -94,9 +97,9 @@ export function Component() {
                     <button type="submit" disabled={isCompleted}>recuperar</button>
                     <button onClick={(e) => {
                         e.preventDefault()
-                        setLoading(true)
+                        start_operation()
                         setTimeout(() => {
-                            setLoading(false)
+                            end_operation()
                             navigate("/", {
                                 replace: true
                             })
