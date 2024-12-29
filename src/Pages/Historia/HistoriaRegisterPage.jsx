@@ -16,7 +16,7 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
 import useFormState from "../../Hooks/Form/FormHook.js"
 import useStatusState from "../../Hooks/Form/StatusHook.js"
 
@@ -62,7 +62,9 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     useBeforeUnload(useCallback(() => {
         const historia_object = {
@@ -91,8 +93,6 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
@@ -241,7 +241,7 @@ export function Component() {
     }
     return(
         <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ScrollOptions/>

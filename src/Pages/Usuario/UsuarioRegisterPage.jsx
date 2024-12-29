@@ -9,7 +9,7 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
@@ -51,7 +51,9 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     useBeforeUnload(useCallback(() => {
         localStorage.register_user = JSON.stringify(usuario)
@@ -68,8 +70,6 @@ export function Component() {
     }
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // allow 3 attempts before block page
     const validate_retry = () => {
@@ -222,7 +222,7 @@ export function Component() {
                     </button>
                 </div>
             </form >
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ModalRegister

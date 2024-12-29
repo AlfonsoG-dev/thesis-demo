@@ -15,7 +15,7 @@ import { MdOutlinePersonSearch } from "react-icons/md"
 import { FaBookMedical } from "react-icons/fa"
 
 // Hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import usePaginationState from "../../Hooks/Form/PaginationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
@@ -44,7 +44,9 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     const default_limit_value = 2
     const {
@@ -54,8 +56,6 @@ export function Component() {
     } = usePaginationState(default_limit_value)
 
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // page = offset
     const fetch_data = useCallback((page) => {
@@ -167,7 +167,7 @@ export function Component() {
                     <GrFormNextLink/>
                 </button>
             </div>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <HelpPaciente

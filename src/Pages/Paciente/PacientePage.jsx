@@ -13,7 +13,7 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
 import usePaginationState from "../../Hooks/Form/PaginationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
@@ -46,8 +46,10 @@ export function Component() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage
     } = useNotificationState()
-    
-    const[showHelp, setShowHelp] = useState(false)
+
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     const default_limit_value = 2
     // state for quantity of data to show
@@ -59,8 +61,6 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // get data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -172,7 +172,7 @@ export function Component() {
                     <GiPlayerNext/>
                 </button>
             </div>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <HelpPaciente

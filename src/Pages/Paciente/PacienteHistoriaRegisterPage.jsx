@@ -19,7 +19,7 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import { HelpCrearHistoria } from "../Help/HelpCrearHistoria"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useFormState from "../../Hooks/Form/FormHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
@@ -60,7 +60,9 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     useBeforeUnload(useCallback(() => {
         const historia_object = {
@@ -86,8 +88,6 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // get the paciente data using state.id_pk
     const fetch_data = useCallback(async() => {
@@ -267,7 +267,7 @@ export function Component() {
                     </button>
                 </div>
             </form>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ModalRegister

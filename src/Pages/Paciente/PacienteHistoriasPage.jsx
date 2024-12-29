@@ -14,7 +14,7 @@ import ModalNotification from "../../Components/Modals/ModalNotification"
 import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
 // Utils
@@ -54,7 +54,9 @@ export function Component() {
         responseMessage, setResponseMessage
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
@@ -62,8 +64,6 @@ export function Component() {
 
     // notificación modal handlers
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // get the data from the end-point server
     const fetch_data = useCallback((page) => {
@@ -155,7 +155,7 @@ export function Component() {
                     <GrFormNextLink/>
                 </button>
             </div>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <HelpPaciente

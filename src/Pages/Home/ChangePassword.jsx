@@ -8,7 +8,7 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // Hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
@@ -44,7 +44,10 @@ export function Component() {
         responseMessage, setResponseMessage,
     } = useNotificationState()
 
-    const [showHelp, setShowHelp] = useState(false)
+    const {
+        showHelp,
+        handle_show_help, handle_close_help
+    } = useHelpState()
 
     useBeforeUnload(useCallback(() => {
         localStorage.change_password = JSON.stringify(usuario)
@@ -73,8 +76,6 @@ export function Component() {
 
     // modal notificación
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // user change field handler
     const handle_change_user = (e) => {
@@ -201,7 +202,7 @@ export function Component() {
                     </button>
                 </div>
             </form>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ModalRegister

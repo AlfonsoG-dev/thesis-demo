@@ -12,7 +12,7 @@ import ScrollOptions from "../../Components/ScrollOptions"
 import { HelpUpdatePaciente } from "../Help/Paciente/HelpUpdatePaciente"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useCarreraState from "../../Hooks/Form/CarreraHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
@@ -61,7 +61,10 @@ export function Component() {
         notificationType, setNotificationType,
         responseMessage, setResponseMessage
     } = useNotificationState()
-    const [showHelp, setShowHelp] = useState(false)
+
+    const {
+        showHelp, handle_show_help, handle_close_help
+    } = useHelpState()
 
     // using enable/disable to change form style
     const enable_name = enableBorder === true ? "chk_enable":"chk_disable"
@@ -91,8 +94,6 @@ export function Component() {
 
     // notification modal
     const handle_close_notification = () => setNotification(false)
-
-    const handle_close_help = () => setShowHelp(false)
 
     // disable edition change handler
     const handle_change_disable_edition = () => {
@@ -422,7 +423,7 @@ export function Component() {
                     <button type="submit" disabled={isCompleted}>Actualizar</button>
                 </div>
             </form>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <ModalRegister
