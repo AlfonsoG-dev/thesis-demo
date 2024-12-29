@@ -79,7 +79,7 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [limit, setLimit, setOffset, show_notification, setNotificationType, setResponseMessage, start_operation, end_operation])
+    }, [offset, limit])
 
     useEffect(() => {
         fetch_data(offset)

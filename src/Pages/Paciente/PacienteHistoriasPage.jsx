@@ -86,11 +86,11 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [end_operation, id_paciente, limit, setLimit, setNotificationType, setOffset, setResponseMessage, show_notification, start_operation])
+    }, [offset, limit])
 
     useEffect(() => {
         fetch_data(offset)
-    }, [offset, fetch_data, id_paciente])
+    }, [offset, fetch_data])
 
     const handle_copy_HCE = () => {
         alert("No implementado para esta ¡ demostración !")

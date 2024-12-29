@@ -80,7 +80,7 @@ export function Component() {
                 end_operation()
             }, 2000)
         }
-    }, [end_operation, id_usuario, limit, setLimit, setNotificationType, setOffset, setResponseMessage, show_notification, start_operation])
+    }, [offset, limit])
 
     useEffect(() => {
         fetch_data(offset)

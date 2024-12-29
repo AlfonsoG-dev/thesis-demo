@@ -63,8 +63,8 @@ export function Component() {
         try {
             const response = get_users(page, limit)
             if(response.length > 0) {
+                end_operation()
                 setUsuarios(response)
-                end_operation
             } else {
                 throw new Error("No hay usuarios")
             }
@@ -78,7 +78,7 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [end_operation, limit, setLimit, show_notification, setNotificationType, setOffset, setResponseMessage, start_operation])
+    }, [offset, limit])
 
     // activate the fetchData between renders
     useEffect(() => {

@@ -94,7 +94,7 @@ export function Component() {
                 if(change_password_response !== "") {
                     localStorage.removeItem('change_password')
                     complete_operation()
-                    end_operation
+                    end_operation()
                     setResponseMessage(change_password_response)
                     setNotificationType("msg")
                     handle_close_confirm()

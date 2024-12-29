@@ -75,7 +75,7 @@ export function Component() {
             setLimit((prev) => prev-default_limit_value)
             console.error(er)
         }
-    }, [end_operation, limit, setLimit, show_notification, setNotificationType, setOffset, setResponseMessage, start_operation])
+    }, [offset, limit])
 
     const handle_search_historia = (e) => {
         e.preventDefault()
