@@ -1,6 +1,9 @@
 // Dependencies
 import { useNavigate, useOutletContext } from "react-router-dom"
 
+// Hooks
+import {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
+
 // components
 import { HelpHome } from "../Help/HelpHome"
 
@@ -14,7 +17,6 @@ import { FaDownload } from "react-icons/fa"
 
 // Styles
 import "../../Styles/Home/HomeStyle.css"
-import {useState} from "react"
 
 /**
  * Home page that has the user functions like create user, list historia, etc.
@@ -22,9 +24,11 @@ import {useState} from "react"
 export function Component() {
     const navigate = useNavigate()
     const[usuario, isLightTheme] = useOutletContext()
-    const [showHelp, setShowHelp] = useState(false)
-
-    const handel_close_help = () => setShowHelp(false)
+    const {
+        showHelp,
+        handle_show_help,
+        handle_close_help
+    } = useHelpState()
 
     const handle_download_permission = () => {
         alert("Not implemented in DEMO")
@@ -65,12 +69,12 @@ export function Component() {
                     Descargar permiso <FaDownload/>
                 </button>
             </div>
-            <button className="help" onClick={() => setShowHelp(true)}>
+            <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
             <HelpHome
                 show={showHelp}
-                handle_close={handel_close_help}
+                handle_close={handle_close_help}
             />
         </div>
     )

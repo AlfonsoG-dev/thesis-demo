@@ -11,7 +11,8 @@ import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import { HelpLogin } from "../Help/HelpLogin.jsx"
 
 // hooks
-import useNotificationState from "../../Hooks/Modal/NotificationHook.js"
+import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
+import useStatusState from "../../Hooks/Form/StatusHook.js"
 
 // data
 import {login} from "../../../back-end/user.js"
@@ -28,23 +29,36 @@ import "../../Styles/ErrorStyle.css"
  * if the server is inactive redirects to an error page
 */
 export default function LoginPage() {
+    // navigate system
+    const navigate = useNavigate()
+
+
     const [loginData, setLoginData] = useState({
         identificacion: 0,
         password: ""
     })
-    const [loading, setLoading] = useState(false)
-    const [isCompleted, setIsCompleted] = useState(false)
+
+    const {
+        loading, isCompleted,
+        start_operation, complete_operation, end_operation
+    } = useStatusState()
+
     // modal register
     const [showConfirm, setShowConfirm] = useState(false)
+
     // modal notificación
     const {
-        notification, setNotification,
+        notification,
         notificationType, setNotificationType,
         responseMessage, setResponseMessage,
+        handle_close_notification, handle_show_notification
     } = useNotificationState()
-    const [showHelp, setShowHelp] = useState(false)
-    // navigate system
-    const navigate = useNavigate()
+
+    const {
+        showHelp,
+        handle_show_help,
+        handle_close_help
+    } = useHelpState()
 
     // confirm modal
     const handle_show_confirm = (e) =>{
@@ -53,36 +67,30 @@ export default function LoginPage() {
     }
     const handle_close_confirm = () => setShowConfirm(false)
 
-    const handle_close_help = () => setShowHelp(false)
-
-    // notificación modal
-    const handle_close_notification = () => setNotification(false)
-
     const fetch_data = () => {
-        setLoading(true)
+        start_operation()
         // validate previous session on local storage
         const prev_log_user = localStorage.getItem('log_user')
         const init_url = localStorage.getItem('activeLink') || "/app"
-        if(prev_log_user !== null && isCompleted === false) {
-            setIsCompleted(true)
-            setLoading(false)
+        if(prev_log_user !== null && !isCompleted) {
+            complete_operation()
+            end_operation()
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("¡ Bienvenido !")
-            setNotification(true)
+            handle_show_notification()
             setTimeout(() => {
                 navigate(init_url, {
                     state: JSON.parse(prev_log_user)
                 })
             }, 2000)
         } else {
-            setIsCompleted(false)
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("No hay sesión previa")
-            setNotification(true)
+            handle_show_notification()
             setTimeout(() => {
-                setLoading(false)
+                end_operation()
             }, 2000)
         }
     }
@@ -90,7 +98,7 @@ export default function LoginPage() {
     // submit handler action
     const handle_submit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        start_operation()
         try {
             const user = login(loginData)
             if(user.length === 0) {
@@ -98,18 +106,20 @@ export default function LoginPage() {
             }
             localStorage.setItem('log_user', JSON.stringify(user[0]))
             handle_close_confirm()
-            setIsCompleted(true)
+            complete_operation()
+            setNotificationType("msg")
+            setResponseMessage("! Bienvenido ¡")
+            handle_show_notification()
+            end_operation()
             setTimeout(() => {
-                setLoading(false)
                 navigate("/app")
             }, 2000)
         } catch(er) {
-            setLoading(false)
-            setIsCompleted(false)
+            end_operation()
             setNotificationType("error")
             setResponseMessage(er.toString())
             handle_close_confirm()
-            setNotification(true)
+            handle_show_notification()
             setTimeout(() => {
                 navigate("/", {
                     replace: true
@@ -127,18 +137,17 @@ export default function LoginPage() {
         }))
     }
     const handle_recover_password = () => {
-        setLoading(true)
+        start_operation()
         try {
-            setIsCompleted(true)
+            complete_operation()
             setTimeout(() => {
-                setLoading(false)
+                end_operation()
                 navigate('/password-recover', {
                     replace: true
                 })
             }, 2000)
         } catch(er) {
-            setLoading(false)
-            setIsCompleted(false)
+            end_operation()
             console.error(er)
         }
     }
@@ -147,7 +156,7 @@ export default function LoginPage() {
         if(!isCompleted) {
             return(
                 <div className="container">
-                    <button className="help" onClick={() => setShowHelp(true)}>
+                    <button className="help" onClick={handle_show_help}>
                         help | ?
                     </button>
                     <form onSubmit={handle_show_confirm}>
