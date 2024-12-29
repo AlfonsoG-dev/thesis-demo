@@ -45,7 +45,7 @@ export function Component() {
     
     const[showHelp, setShowHelp] = useState(false)
 
-    const default_limit_value = 1
+    const default_limit_value = 2
     // state for quantity of data to show
     const [offset, setOffset] = useState(0)
     const [limit, setLimit] = useState(default_limit_value)
