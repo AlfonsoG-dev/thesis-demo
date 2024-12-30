@@ -97,8 +97,8 @@ export function register_historia(historia, usuario) {
         anamnesis_id_fk: res_anamnesis.id_pk,
         examen_fisico_id_fk: res_examen.id_pk,
         signos_vitales_id_fk: res_signos.id_pk,
-        referencia: 0,
-        update_by: 0,
+        referencia: null,
+        update_by: null,
         create_at: new Date(Date.now()),
         update_at: null
     }
