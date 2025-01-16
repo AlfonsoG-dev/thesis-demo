@@ -182,7 +182,7 @@ export default function LoginPage() {
                         >
                             Iniciar sesión
                         </button>
-                        <button onClick={fetch_data} disabled={!(loginData.identificacion === 0 && loginData.password === "")}>
+                        <button onClick={fetch_data} disabled={!(localStorage.getItem('log_user'))}>
                             Ingresar | <IoIosLogIn />
                         </button>
                         {
