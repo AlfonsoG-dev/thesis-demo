@@ -38,6 +38,9 @@ export function Component() {
         e.preventDefault()
         start_operation()
         try {
+            if(buscado.identificacion === 0) {
+                throw new Error("Selecciona una identificación")
+            }
             const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 complete_operation()
@@ -75,14 +78,14 @@ export function Component() {
             <form onSubmit={fetch_data}>
                 <label>
                     Identificación
-                    <input
-                        type="number"
-                        name="identificacion"
-                        defaultValue={buscado.identificacion > 0 && buscado.identificacion}
-                        required={true}
-                        disabled={isCompleted}
-                        onChange={handle_recover_change}
-                    />
+                    <select name="identificacion" onChange={handle_recover_change} disabled={isCompleted}>
+                        <option key={"selection"}>Selecciona el usuario...</option>
+                        {
+                            users.map((u) => (
+                                <option key={u.identificacion}>{u.identificacion}</option>
+                            ))
+                        }
+                    </select>
                 </label>
                 <div className="options">
                     <br/>
