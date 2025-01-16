@@ -1,8 +1,12 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
+// modal
+import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
+
 // hooks
 import useStatusState from "../../Hooks/Form/StatusHook"
+import useNotitificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
 import { users } from "../../../back-end/user"
@@ -20,27 +24,35 @@ export function Component() {
     } = useStatusState()
 
     const [buscado, setBuscado] = useState({
-        name: "",
         identificacion: 0
     })
-    const [usuario, setUsuario] = useState({
-        password: ""
-    })
+    const {
+        notification, setNotification,
+        notificationType, setNotificationType,
+        responseMessage, setResponseMessage
+    } = useNotitificationState();
+
+    const handle_close_notification = () => setNotification(false)
 
     const fetch_data = (e) => {
         e.preventDefault()
         start_operation()
         try {
-            const response = users.filter(u => u.name === buscado.name && u.identificacion === Number.parseInt(buscado.identificacion))
+            const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 complete_operation()
                 end_operation()
-                setUsuario(response[0])
+                setNotificationType("msg")
+                setResponseMessage(`La contraseña del usuario "${response[0].name}" es "${response[0].password}"`)
+                setNotification(true)
             } else {
                 throw new Error("Usuario no encontrado")
             }
         } catch(er) {
             end_operation()
+            setNotificationType("error")
+            setResponseMessage(er.toString())
+            setNotification(true)
             console.error(er)
         }
     }
@@ -62,17 +74,6 @@ export function Component() {
             <h1>Recuperar contraseña</h1>
             <form onSubmit={fetch_data}>
                 <label>
-                    Nombre
-                    <input
-                        type="text"
-                        name="name"
-                        defaultValue={buscado.name}
-                        required={true}
-                        disabled={isCompleted}
-                        onChange={handle_recover_change}
-                    />
-                </label>
-                <label>
                     Identificación
                     <input
                         type="number"
@@ -81,15 +82,6 @@ export function Component() {
                         required={true}
                         disabled={isCompleted}
                         onChange={handle_recover_change}
-                    />
-                </label>
-                <label>
-                    Password
-                    <input
-                        type="text"
-                        name="password"
-                        value={usuario.password}
-                        disabled={true}
                     />
                 </label>
                 <div className="options">
@@ -109,6 +101,12 @@ export function Component() {
                     </button>
                 </div>
             </form>
+            <ModalNotification
+                show={notification}
+                message={responseMessage}
+                type={notificationType}
+                handle_close={handle_close_notification}
+            />
         </div>
     )
 }
