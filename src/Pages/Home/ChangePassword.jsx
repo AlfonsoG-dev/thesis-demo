@@ -36,7 +36,6 @@ export function Component() {
     const [showPassword, setShowPassword] = useState(false)
 
 
-
     const [showConfirm, setShowConfirm] = useState(false)
     const {
         notification, notificationType, setNotificationType,
@@ -149,23 +148,11 @@ export function Component() {
                 </label>
                 <br/>
                 <label>
-                    Usuario
-                    <input
-                        type="text"
-                        name="name"
-                        value={usuario.name}
-                        placeholder="nombre usuario"
-                        onChange={handle_change_user}
-                        required={true}
-                        disabled={disableEdition}
-                    />
-                </label>
-                <label>
                     Identificación
                     <input
                         type="number"
                         name="identificacion"
-                        value={usuario.identificacion}
+                        defaultValue={usuario.identificacion > 0 ? usuario.identificacion : null}
                         placeholder="Identificación del usuario"
                         onChange={handle_change_user}
                         required={true}
@@ -185,7 +172,7 @@ export function Component() {
                     <input
                         type={showPassword === true ? "text":"password"}
                         name="password"
-                        value={usuario.password}
+                        defaultValue={usuario.password}
                         placeholder="contraseña"
                         onChange={handle_change_user}
                         required={true}
