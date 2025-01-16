@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 // data
 import ingreso from "/docs/images/login/ingreso.png"
 import saltar_login from "/docs/images/login/saltar_login.png"
+
 import recuperar_password from "/docs/images/login/recuperar_password.png"
 import credenciales_recuperar from "/docs/images/login/credenciales_recuperar.png"
 import mostrar_contraseña from "/docs/images/login/mostrar_contraseña.png"
@@ -32,7 +33,7 @@ export function HelpLogin({show, handle_close}) {
                         <li>Recuperar contraseña: te envía a una página donde puedes recuperar tu contraseña</li>
                         <img src={recuperar_password} alt="Recuperar contraseña"/>
                         <ul>
-                            <li>Debes ingresar los credenciales del usuario para recuperar tu contraseña</li>
+                            <li>Debes seleccionar la identificación del usuario para recuperar tu contraseña</li>
                             <img src={credenciales_recuperar} alt="Credenciales del usuario"/>
                             <li>Da click en recuperar para tener la constraseña</li>
                             <img src={mostrar_contraseña} alt="Recuperada"/>
