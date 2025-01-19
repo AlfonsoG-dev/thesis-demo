@@ -26,6 +26,7 @@ export function Component() {
     const [buscado, setBuscado] = useState({
         identificacion: 0
     })
+    const [usuario, setUsuario] = useState({})
     const {
         notification, setNotification,
         notificationType, setNotificationType,
@@ -43,6 +44,7 @@ export function Component() {
             }
             const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
+                setUsuario(response[0])
                 complete_operation()
                 end_operation()
                 setNotificationType("msg")
@@ -60,6 +62,32 @@ export function Component() {
         }
     }
 
+    const handle_login = (e) => {
+        e.preventDefault()
+        start_operation()
+        try {
+            localStorage.setItem('log_user', JSON.stringify(usuario))
+            complete_operation()
+            setNotificationType("msg")
+            setResponseMessage("! Bienvenido ¡")
+            end_operation()
+            setNotification(true)
+            setTimeout(() => {
+                navigate("/app")
+            }, 2000)
+        } catch(er) {
+            end_operation()
+            setNotificationType("error")
+            setResponseMessage(er.toString())
+            setNotification(false)
+            setTimeout(() => {
+                navigate("/", {
+                    replace: true
+                })
+            }, 2000)
+            console.error(er)
+        }
+    }
 
     const handle_recover_change = (e) => {
         const {name, value} = e.target
@@ -69,13 +97,21 @@ export function Component() {
         }))
     }
 
+    if(notification) {
+        return <ModalNotification
+                show={notification}
+                message={responseMessage}
+                type={notificationType}
+                handle_close={handle_close_notification}
+        />
+    }
     if(loading) {
         return <div className="loader"></div>
     }
     return (
         <div className="recover">
             <h1>Recuperar contraseña</h1>
-            <form onSubmit={fetch_data}>
+            <form onSubmit={handle_login}>
                 <label>
                     Usuario
                     <select name="identificacion" onChange={handle_recover_change} disabled={isCompleted}>
@@ -89,27 +125,12 @@ export function Component() {
                 </label>
                 <div className="options">
                     <br/>
-                    <button type="submit" disabled={isCompleted}>recuperar</button>
-                    <button onClick={(e) => {
-                        e.preventDefault()
-                        start_operation()
-                        setTimeout(() => {
-                            end_operation()
-                            navigate("/", {
-                                replace: true
-                            })
-                        }, 2000)
-                    }}>
+                    <button type="button" disabled={isCompleted} onClick={fetch_data}>recuperar</button>
+                    <button type="submit">
                         Login
                     </button>
                 </div>
             </form>
-            <ModalNotification
-                show={notification}
-                message={responseMessage}
-                type={notificationType}
-                handle_close={handle_close_notification}
-            />
         </div>
     )
 }
