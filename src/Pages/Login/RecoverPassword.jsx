@@ -47,7 +47,7 @@ export function Component() {
                 setUsuario(response[0])
                 end_operation()
                 setNotificationType("msg")
-                setResponseMessage(`La contraseña del usuario "${response[0].name}" es "${response[0].password}"`)
+                setResponseMessage(`La contraseña del usuario "${usuario.name}" es "${usuario.password}"`)
                 setNotification(true)
             } else {
                 throw new Error("Usuario no encontrado")
@@ -94,6 +94,9 @@ export function Component() {
             ...prev,
             [name]: value
         }))
+
+        const [response] = users.filter(u => u[name] === Number.parseInt(value))
+        setUsuario(response)
     }
 
     if(notification) {
