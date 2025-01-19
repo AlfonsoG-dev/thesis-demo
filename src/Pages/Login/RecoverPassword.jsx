@@ -45,7 +45,6 @@ export function Component() {
             const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setUsuario(response[0])
-                complete_operation()
                 end_operation()
                 setNotificationType("msg")
                 setResponseMessage(`La contraseña del usuario "${response[0].name}" es "${response[0].password}"`)
@@ -115,9 +114,15 @@ export function Component() {
                 <label>
                     Usuario
                     <select name="identificacion" onChange={handle_recover_change} disabled={isCompleted}>
-                        <option key={"selection"}>Selecciona el usuario...</option>
                         {
-                            users.map((u) => (
+                            usuario.identificacion !== undefined ? (
+                                <option key={usuario.identificacion}>{usuario.identificacion} {usuario.rol}</option>
+                            ):(
+                                <option key={"selection"}>Selecciona el usuario...</option>
+                            )
+                        }
+                        {
+                            users.filter((u) => u.identificacion !== Number.parseInt(usuario.identificacion)).map((u) => (
                                 <option key={u.identificacion}>{u.identificacion} {u.rol}</option>
                             ))
                         }
