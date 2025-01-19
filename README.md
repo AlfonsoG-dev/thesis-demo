@@ -46,11 +46,7 @@ npm run dev
 }
 ```
 
-# TODO
-- [ ] allow group *pdf* generation when there is more than one historia.
-
 ----
-
 
 # Disclaimer
 - This project is for educational purposes.

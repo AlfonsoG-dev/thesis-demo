@@ -13,6 +13,15 @@ import "../../Styles/TableStyle.css"
 export default function UsuarioTableComponent({data, isLightTheme}) {
     const [notification, setNotification] = useState(true)
     const handle_close_notification = () => setNotification(false)
+    const isDue = (time_limit = new Date()) => {
+        const l = new Date(time_limit)
+        const n = new Date(Date.now())
+        if(l.getTime() < n.getTime()) {
+            return true
+        } else {
+            return false
+        }
+    }
     if(data.error) {
         return(
             <ModalNotification
@@ -53,7 +62,7 @@ export default function UsuarioTableComponent({data, isLightTheme}) {
                             <td>{item.name}</td>
                             <td>{item.identificacion}</td>
                             <td>{item.rol}</td>
-                            <td>{item.time_limit !== null && new Date(item.time_limit).toLocaleString()}</td>
+                            <td style={isDue(item.time_limit !== null) ? {color:"red"}:{}}>{item.time_limit !== null && new Date(item.time_limit).toLocaleString()}</td>
                             <td>{new Date(item.create_at).toLocaleDateString()}</td>
                             <td>{item.update_at !== null && new Date(item.update_at).toLocaleDateString()}</td>
                             <td>
