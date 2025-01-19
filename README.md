@@ -45,7 +45,6 @@ npm run dev
     "password": "abc",
 }
 ```
-
 ----
 
 # Disclaimer
