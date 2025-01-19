@@ -77,12 +77,12 @@ export function Component() {
             <h1>Recuperar contraseña</h1>
             <form onSubmit={fetch_data}>
                 <label>
-                    Identificación
+                    Usuario
                     <select name="identificacion" onChange={handle_recover_change} disabled={isCompleted}>
                         <option key={"selection"}>Selecciona el usuario...</option>
                         {
                             users.map((u) => (
-                                <option key={u.identificacion}>{u.identificacion}</option>
+                                <option key={u.identificacion}>{u.identificacion} {u.rol}</option>
                             ))
                         }
                     </select>
