@@ -13,6 +13,15 @@ import "../../Styles/TableStyle.css"
 export default function UsuarioTableComponent({data, isLightTheme}) {
     const [notification, setNotification] = useState(true)
     const handle_close_notification = () => setNotification(false)
+    const isDue = (time_limit = new Date()) => {
+        const l = new Date(time_limit)
+        const n = new Date(Date.now())
+        if(l.getTime() < n.getTime()) {
+            return true
+        } else {
+            return false
+        }
+    }
     if(data.error) {
         return(
             <ModalNotification

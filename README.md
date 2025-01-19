@@ -48,6 +48,7 @@ npm run dev
 
 # TODO
 - [ ] allow group *pdf* generation when there is more than one historia.
+- [ ] width: 60% when the resolution or display size doesn't match.
 
 ----
 
