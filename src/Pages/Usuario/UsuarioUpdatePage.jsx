@@ -11,6 +11,7 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 //Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
+import useConstantState from "../../Hooks/Form/ConstantsHook"
 
 // data
 import {update} from "../../../back-end/user.js"
@@ -27,7 +28,7 @@ export function Component() {
     const [, isLightTheme] = useOutletContext()
     // usuario
     const {state} = useLocation()
-    const [roles] = useState(['admin', 'personal', 'transitorio'])
+    const {listRol} = useConstantState()
     const [usuario] = useState(state)
     const [modifiedUser, setModifiedUser] = useState({
         id_pk: usuario.id_pk,
@@ -216,10 +217,11 @@ export function Component() {
                             <select name="rol" onChange={handle_change_modified_user} disabled={disableEdition}>
                                 <option key={usuario.rol}>{usuario.rol}</option>
                                 {
-                                    roles.map((r) => (
-                                    r !== usuario.rol &&
-                                        <option key={r}>{r}</option>
-                                    ))
+                                    listRol
+                                        .filter(r => r !== usuario.rol && r !== "select...")
+                                        .map((r) => (
+                                            <option key={r}>{r}</option>
+                                        ))
                                 }
                             </select>
                     }

@@ -11,6 +11,7 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
+import useConstantState from "../../Hooks/Form/ConstantsHook"
 
 // data
 import {users, register} from "../../../back-end/user.js"
@@ -34,6 +35,7 @@ export function Component() {
         rol: "",
         time_limit: null,
     })
+    const {listRol} = useConstantState()
     //
     const {
         loading, isCompleted,
@@ -195,10 +197,25 @@ export function Component() {
                     <label>
                         Rol
                         <select name="rol" onChange={handle_change_user}>
-                            <option>{usuario.rol !== "" ? usuario.rol : "select a rol..."}</option >
-                            <option key={"admin"}>admin</option >
-                            <option key={"personal"}>personal</option >
-                            <option key={"transitorio"}>transitorio</option >
+                            {
+                                usuario.rol === "" ? (
+                                    listRol
+                                    .map((r) => (
+                                        <option key={r}>{r}</option>
+                                    ))
+                                ):(
+                                    <>
+                                        <option key={usuario.rol}>{usuario.rol}</option>
+                                        {
+                                            listRol
+                                                .filter(r => r !== usuario.rol && r !== "select...")
+                                                .map((r) => (
+                                                    <option key={r}>{r}</option>
+                                                ))
+                                        }
+                                    </>
+                                )
+                            }
                         </select>
                         {
                             usuario.rol === "transitorio" && 

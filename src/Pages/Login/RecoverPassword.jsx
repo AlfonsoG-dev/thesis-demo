@@ -125,9 +125,11 @@ export function Component() {
                             )
                         }
                         {
-                            users.filter((u) => u.identificacion !== Number.parseInt(usuario.identificacion)).map((u) => (
-                                <option key={u.identificacion}>{u.identificacion} {u.rol}</option>
-                            ))
+                            users
+                                .filter((u) => u.identificacion !== Number.parseInt(usuario.identificacion))
+                                .map((u) => (
+                                    <option key={u.identificacion}>{u.identificacion} {u.rol}</option>
+                                ))
                         }
                     </select>
                 </label>

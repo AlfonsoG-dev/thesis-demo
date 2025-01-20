@@ -1,12 +1,14 @@
-import useCarreraState from "../../../Hooks/Form/CarreraHook"
+import useConstantState from "../../../Hooks/Form/ConstantsHook"
 
 import ComputeDate from "../../../Utils/ComputeDate"
 
 import PropTypes from "prop-types"
 export default function PacienteForm({paciente, onChangeHandler}) {
     const {
-        facultadProgramas
-    } = useCarreraState()
+        facultadProgramas,
+        listGenero,
+        listEstadoCivil
+    } = useConstantState()
     return(
         <>
             <label>
@@ -56,17 +58,30 @@ export default function PacienteForm({paciente, onChangeHandler}) {
             <label>
                 Estado civil
                 <select name="estado_civil" onChange={onChangeHandler}>
-                    <option>select...</option>
-                    <option key={"solter@"}>solter@</option>
-                    <option key={"casad@"}>casad@</option>
-                    <option key={"viud@"}>viud@</option>
-                    <option key={"divorciad@"}>divorciad@</option>
-                    <option key={"otr@"}>otr@</option>
+                    {
+                        paciente.estado_civil === "" ? (
+                            listEstadoCivil
+                            .map((e) => (
+                                <option key={e}>{e}</option>
+                            ))
+                        ) : (
+                            <>
+                                <option key={paciente.estado_civil}>{paciente.estado_civil}</option>
+                                {
+                                    listEstadoCivil
+                                        .filter(e => e !== paciente.estado_civil && e !== "select...")
+                                        .map((e) => (
+                                            <option key={e}>{e}</option>
+                                        ))
+                                }
+                            </>
+                        )
+                    }
                 </select>
             </label>
             { /* input for genero when is otro*/}
             {
-                paciente.estado_civil === "otr@" &&
+                paciente.estado_civil === "otro" &&
                     <label>
                         Ingresa el estado civil
                         <input
@@ -79,10 +94,24 @@ export default function PacienteForm({paciente, onChangeHandler}) {
             <label>
                 Genero
                 <select name="genero" onChange={onChangeHandler}>
-                    <option>select...</option>
-                    <option key={"hombre"}>hombre</option>
-                    <option key={"mujer"}>mujer</option>
-                    <option key={"otro"}>otro</option>
+                    {
+                        paciente.genero === "" ? (
+                            listGenero.map((g) => (
+                                <option key={g}>{g}</option>
+                            ))
+                        ):(
+                            <>
+                                <option key={paciente.genero}>{paciente.genero}</option>
+                                {
+                                    listGenero
+                                        .filter(g => g !== paciente.genero && g !== "select...")
+                                        .map((g) => (
+                                            <option key={g}>{g}</option>
+                                        ))
+                                }
+                            </>
+                        )
+                    }
                 </select>
             </label>
             { /* input for genero when is otro*/}
@@ -156,9 +185,10 @@ export default function PacienteForm({paciente, onChangeHandler}) {
                 Facultad
                 <select name='facultad' onChange={onChangeHandler}>
                     {
-                        Object.keys(facultadProgramas).map((i) => (
-                            <option key={i}>{i}</option>
-                        ))
+                        Object.keys(facultadProgramas)
+                            .map((i) => (
+                                <option key={i}>{i}</option>
+                            ))
                     }
                 </select >
             </label>
@@ -168,9 +198,10 @@ export default function PacienteForm({paciente, onChangeHandler}) {
                             Programa
                             <select name="programa" onChange={onChangeHandler}>
                                 {
-                                    facultadProgramas[`${paciente.facultad}`].map((i) => (
-                                        <option key={i}>{i}</option>
-                                    ))
+                                    facultadProgramas[`${paciente.facultad}`]
+                                        .map((i) => (
+                                            <option key={i}>{i}</option>
+                                        ))
                                 }
                             </select>
                         </label>

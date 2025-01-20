@@ -13,7 +13,7 @@ import { HelpUpdatePaciente } from "../Help/Paciente/HelpUpdatePaciente"
 
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import useCarreraState from "../../Hooks/Form/CarreraHook"
+import useConstantState from "../../Hooks/Form/ConstantsHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 
 // Utils
@@ -35,15 +35,11 @@ export function Component() {
     // data state
     const {state} = useLocation()
     const [paciente] = useState(state)
-    const [listGenero] = useState(['hombre', 'mujer', 'otro'])
-    const [listEstadoCivil] = useState(['solter@', 'casad@', 'viud@', 'divorciad@', 'otro'])
-    const { facultadProgramas } = useCarreraState()
+    const { facultadProgramas, listGenero, listEstadoCivil } = useConstantState()
     const [modifiedPaciente, setModifiedPaciente] = useState({
         id_pk: paciente.id_pk,
         identificacion: paciente.identificacion
     })
-
-
     const {
         loading, isCompleted,
         start_operation, complete_operation, end_operation
@@ -216,49 +212,17 @@ export function Component() {
                     />
                 </label>
                 <label>
-                    Genero
-                    {
-                        paciente.genero &&
-                            <select name="genero"
-                                onChange={handle_change_modified_paciente}
-                                disabled={disableEdition}
-                            >
-                                <option key={paciente.genero}>{paciente.genero}</option>
-                                {
-                                    listGenero.map((i) => (
-                                    i !== paciente.genero &&
-                                        <option key={i}>{i}</option>
-                                    ))
-                                }
-                            </select>
-                    }
-                </label>
-                {
-                    modifiedPaciente.genero !== undefined && modifiedPaciente.genero === "otro" &&
-                        <label>
-                            Ingrese el valor para el genero:
-                            <input
-                                type="text"
-                                name="genero1"
-                                placeholder="Genero paciente"
-                                required={true}
-                                disabled={disableEdition}
-                                onChange={handle_change_modified_paciente}
-                            />
-                        </label>
-                }
-                <label>
                     Estado civil
                     {
                         paciente.estado_civil && (
                             <select name="estado_civil" onChange={handle_change_modified_paciente} disabled={disableEdition}>
                                 <option key={paciente.estado_civil}>{paciente.estado_civil}</option>
                                 {
-                                    listEstadoCivil.map((i) => (
-                                        i !== paciente.estado_civil && (
+                                    listEstadoCivil
+                                        .filter(e => e !== paciente.estado_civil && e !== "select...")
+                                        .map((i) => (
                                             <option key={i}>{i}</option>
-                                        )
-                                    ))
+                                        ))
                                 }
                             </select>
                         )
@@ -278,6 +242,39 @@ export function Component() {
                             />
                         </label>
                     )
+                }
+                <label>
+                    Genero
+                    {
+                        paciente.genero &&
+                            <select name="genero"
+                                onChange={handle_change_modified_paciente}
+                                disabled={disableEdition}
+                            >
+                                <option key={paciente.genero}>{paciente.genero}</option>
+                                {
+                                    listGenero
+                                        .filter(g => g !== paciente.genero && g !== "select...")
+                                        .map((i) => (
+                                            <option key={i}>{i}</option>
+                                        ))
+                                }
+                            </select>
+                    }
+                </label>
+                {
+                    modifiedPaciente.genero !== undefined && modifiedPaciente.genero === "otro" &&
+                        <label>
+                            Ingrese el valor para el genero:
+                            <input
+                                type="text"
+                                name="genero1"
+                                placeholder="Genero paciente"
+                                required={true}
+                                disabled={disableEdition}
+                                onChange={handle_change_modified_paciente}
+                            />
+                        </label>
                 }
                 <label>
                     Procedencia(departamento)
@@ -344,10 +341,11 @@ export function Component() {
                             >
                                 <option key={paciente.facultad}>{paciente.facultad}</option>
                                 {
-                                    Object.keys(facultadProgramas).map((i) => (
-                                        i !== paciente.facultad && i !== "select..." &&
+                                    Object.keys(facultadProgramas)
+                                        .filter(f => f !== paciente.facultad && f !== "select...")
+                                        .map((i) => (
                                             <option key={i}>{i}</option>
-                                    ))
+                                        ))
                                 }
                             </select >
                     }
@@ -361,22 +359,27 @@ export function Component() {
                                 disabled={disableEdition}
                             >
                                 {
-                                    modifiedPaciente.facultad === undefined &&
+                                    modifiedPaciente.facultad === undefined && (
                                         <option key={paciente.programa}>{paciente.programa}</option>
+                                    )
                                 }
                                 {
-                                    modifiedPaciente.facultad === undefined &&
-                                        facultadProgramas[`${paciente.facultad}`].map((i) => (
-                                    i !== paciente.programa && i !== "select..." &&
-                                        <option key={i}>{i}</option>
-                                    ))
-                                }
-                                {
-                                    modifiedPaciente.facultad && facultadProgramas[`${modifiedPaciente.facultad}`]
+                                    modifiedPaciente.facultad === undefined && (
+                                        facultadProgramas[`${paciente.facultad}`]
+                                        .filter(p => p !== paciente.programa && p !== "select...")
                                         .map((i) => (
-                                            i !== paciente.programa &&
+                                            <option key={i}>{i}</option>
+                                        ))
+                                    )
+                                }
+                                {
+                                    modifiedPaciente.facultad && (
+                                        facultadProgramas[`${modifiedPaciente.facultad}`]
+                                        .filter(p => p !== paciente.programa)
+                                        .map((i) => (
                                                 <option key={i}>{i}</option>
                                         ))
+                                    )
                                 }
                             </select>
                     }
