@@ -111,7 +111,7 @@ export function Component() {
             if(paciente.genero === "otro") {
                 paciente.genero = paciente.genero1
             }
-            if(paciente.estado_civil === "otr@") {
+            if(paciente.estado_civil === "otro") {
                 paciente.estado_civil = paciente.estado_civil1
             }
             delete paciente.genero1
@@ -137,18 +137,17 @@ export function Component() {
                     }
                 }
                 const response = register_historia(historia_object, user)
-                if(response.msg !== undefined) {
-                    alert("El paciente no existe, será registrado")
-                    complete_operation()
-                    end_operation()
-                    setNotificationType("msg")
-                    setResponseMessage(response.msg)
-                    handle_close_confirm()
-                    show_notification()
-                    localStorage.removeItem('register_historia')
-                } else {
+                if(response.error) {
                     throw new Error(response.error)
                 }
+                alert("El paciente no existe, será registrado")
+                complete_operation()
+                end_operation()
+                setNotificationType("msg")
+                setResponseMessage(response.msg)
+                handle_close_confirm()
+                show_notification()
+                localStorage.removeItem('register_historia')
             } else {
                 alert("El paciente ya existe, solo se registra la historia")
                 const historia_object = {
@@ -166,17 +165,16 @@ export function Component() {
                     }
                 }
                 const response = register_historia(historia_object)
-                if(response.msg !== undefined) {
-                    complete_operation()
-                    end_operation()
-                    setNotificationType("msg")
-                    setResponseMessage(response.msg)
-                    handle_close_confirm()
-                    show_notification()
-                    localStorage.removeItem('register_historia')
-                } else {
+                if(response.error) {
                     throw new Error(response.error)
                 }
+                complete_operation()
+                end_operation()
+                setNotificationType("msg")
+                setResponseMessage(response.msg)
+                handle_close_confirm()
+                show_notification()
+                localStorage.removeItem('register_historia')
             }
         } catch(er) {
             end_operation()
