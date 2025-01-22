@@ -116,7 +116,7 @@ export function Component() {
             if(response.msg !== undefined) {
                 complete_operation()
                 end_operation()
-                setResponseMessage(response.msg)
+                setResponseMessage(response.msg | "Usuario actualizado")
                 setNotificationType("msg")
                 handle_close_confirm()
                 show_notification()
