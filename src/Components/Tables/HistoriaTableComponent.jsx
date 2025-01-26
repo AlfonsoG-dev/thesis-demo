@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import PropTypes from "prop-types"
 
 //Icons
 import { VscOpenPreview } from "react-icons/vsc"
@@ -7,8 +8,6 @@ import { VscGitPullRequestGoToChanges } from "react-icons/vsc"
 import { PiFilePdfFill } from "react-icons/pi"
 
 import ModalNotification from "../Modals/ModalNotification"
-
-import PropTypes from "prop-types"
 
 export default function HistoriaTableComponent({data, type, isLightTheme}) {
     const [notification, setNotification] = useState(false)
