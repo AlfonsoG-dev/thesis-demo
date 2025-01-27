@@ -1,5 +1,6 @@
 import { useState } from "react"
-const DEFAULT_LIMIT = 2
+import {users} from "../../back-end/user"
+const DEFAULT_LIMIT = 5
 export default function useDataState(listData=[]) {
     const [elements, setElements] = useState(listData)
     const [limit, setLimit] = useState(DEFAULT_LIMIT)
@@ -29,9 +30,18 @@ export default function useDataState(listData=[]) {
         }
     }
     function addElement(element) {
-        const c = [...elements]
-        c.push(element)
-        setElements(c)
+        const now = new Date(Date.now())
+        const tomorrow = new Date(now.getDate()+1)
+
+        const m_time_limit = element.rol === 'transitorio' ? tomorrow : null
+        const comp_user = {
+            id_pk: elements.length + 1,
+            ...element,
+            time_limit: m_time_limit,
+            create_at: new Date(Date.now()),
+            update_at: null
+        }
+        setElements(elements.push(comp_user))
         return elements.length
     }
     return  {

@@ -12,9 +12,10 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
 import useConstantState from "../../Hooks/Form/ConstantsHook"
+import useDataState from "../../Hooks/DataHook"
 
 // data
-import {users, register} from "../../../back-end/user.js"
+import {users} from "../../../back-end/user.js"
 
 // styles
 import "../../Styles/ErrorStyle.css"
@@ -36,6 +37,9 @@ export function Component() {
         time_limit: null,
     })
     const {listRol} = useConstantState()
+    const {
+        elements, addElement
+    } = useDataState(users)
     //
     const {
         loading, isCompleted,
@@ -92,9 +96,10 @@ export function Component() {
             if(usuario.time_limit !== null && new Date(usuario.time_limit).getTime() < cur_date.getTime()) {
                 throw new Error("Fecha limite incorrecta")
             }
-            const search_user = users.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
+            // FIXME: search don't work it allows to add the same user with the same *identificacion* 
+            const search_user = elements.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
             if(search_user.length === 0 && usuario.rol !== ''){
-                const result = register(usuario)
+                const result = addElement(usuario)
                 if(result > 0) {
                     localStorage.removeItem('register_user')
                     complete_operation()
