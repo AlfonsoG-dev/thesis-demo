@@ -12,11 +12,11 @@ import ModalNotification from "../Modals/ModalNotification"
 export default function HistoriaTableComponent({data, type, isLightTheme}) {
     const [notification, setNotification] = useState(false)
     const handle_close_notification = () => setNotification(false)
-    if(data.error) {
+    if(data.length === 0) {
         return(
             <ModalNotification
                 show={notification}
-                message={data.error}
+                message={"No hay datos"}
                 type={"error"}
                 handle_close={handle_close_notification}
             />

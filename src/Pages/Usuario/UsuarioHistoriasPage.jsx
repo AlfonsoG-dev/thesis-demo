@@ -1,5 +1,4 @@
 // Dependencies
-import { useCallback, useEffect, useState } from "react"
 import { useParams, useLocation, useOutletContext } from "react-router-dom"
 
 //Icons
@@ -8,19 +7,17 @@ import { FaHospitalUser } from "react-icons/fa"
 
 // components
 import HistoriaTableComponent from "../../Components/Tables/HistoriaTableComponent"
-import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
-import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook"
-import usePaginationState from "../../Hooks/Form/PaginationHook"
+import  {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
+import useDataState from "../../Hooks/DataHook"
 
 // utils
 import TitleFormat from "../../Utils/Formats/Title"
 
 // data
-import { get_historias_by_user } from "../../../back-end/historia"
+import { historias } from "../../../back-end/historia"
 
 // style
 import "../../Styles/TableStyle.css"
@@ -37,86 +34,35 @@ export function Component() {
     const {state} = useLocation()
     const user_name = TitleFormat(state.name)
 
-    // list of historias
-    const [historias, setHistorias] = useState([])
-
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
-
-    // modals
-    const {
-        notification, notificationType, setNotificationType,
-        responseMessage, setResponseMessage,
-        show_notification, close_notification
-    } = useNotificationState()
 
     const {
         showHelp, handle_show_help, handle_close_help
     } = useHelpState()
 
-    const default_limit_value = 2
-    //quantity of data to show
     const {
-        offset, setOffset,
-        limit, setLimit,
-        handle_pagination
-    } = usePaginationState(default_limit_value)
+        getElements, limit, offset, handleNext, handlePrev
+    } = useDataState(historias)
 
-    // get the data from the end-point of server
-    const fetch_data = useCallback((page) => {
-        start_operation()
-        const m_historias = get_historias_by_user(id_usuario, page, limit)
-        if(m_historias.length > 0) {
-            end_operation()
-            setHistorias(m_historias)
-        } else {
-            setNotificationType("error")
-            setResponseMessage("El usuario no tiene historias")
-            show_notification()
-            setOffset((prev) => prev-default_limit_value)
-            setLimit((prev) => prev-default_limit_value)
-            setTimeout(() => {
-                end_operation()
-            }, 2000)
-        }
-    }, [offset, limit])
+    const elements = getElements(offset, limit).filter(h => h.usuario_id_fk === Number.parseInt(id_usuario))
 
-    useEffect(() => {
-        fetch_data(offset)
-    }, [offset, fetch_data])
-
-    if(loading) {
-        return <div className="loader"></div>
-    }
-    if(notification) {
-        return(
-            <ModalNotification
-                show={notification}
-                message={responseMessage}
-                type={notificationType}
-                handle_close={close_notification}
-            />
-        )
-    }
     return(
         <div className="table-page">
             <br/>
             <h1>Historia clínica | <FaHospitalUser/></h1>
             <h2>{user_name}</h2>
             <br/>
-            <HistoriaTableComponent data={historias} type={"usuario"} isLightTheme={isLightTheme}/>
+            <HistoriaTableComponent data={elements} type={"usuario"} isLightTheme={isLightTheme}/>
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button 
-                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
-                    disabled={offset==0}
+                    onClick={handlePrev}
+                    disabled={offset===0}
                 >
                     <GrFormPreviousLink/>
                 </button>
 
                 <button
-                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
-                    disabled={historias.error}
+                    onClick={handleNext}
+                    disabled={elements.length === 0}
                 >
                     <GrFormNextLink/>
                 </button>

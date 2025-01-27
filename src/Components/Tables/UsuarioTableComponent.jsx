@@ -13,11 +13,11 @@ import "../../Styles/TableStyle.css"
 export default function UsuarioTableComponent({data, isLightTheme}) {
     const [notification, setNotification] = useState(true)
     const handle_close_notification = () => setNotification(false)
-    if(data.error) {
+    if(data.length === 0) {
         return(
             <ModalNotification
                 show={notification}
-                message={data.error}
+                message={"No hay datos"}
                 type={"error"}
                 handle_close={handle_close_notification}
             />

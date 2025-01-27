@@ -1,7 +1,7 @@
 // Dependencies
 import PropTypes from "prop-types"
 import { useOutletContext, Link } from "react-router-dom"
-import {useCallback, useEffect, useState} from "react"
+import {useState} from "react"
 
 // Components
 import ModalNotification from "../../Components/Modals/ModalNotification"
@@ -16,11 +16,11 @@ import { FaBookMedical } from "react-icons/fa"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import usePaginationState from "../../Hooks/Form/PaginationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
+import useDataState from "../../Hooks/DataHook"
 
 // data
-import { get_historias } from "../../../back-end/historia"
+import { historias } from "../../../back-end/historia"
 
 // Style
 import "../../Styles/TableStyle.css"
@@ -34,7 +34,6 @@ export function Component() {
         loading, start_operation, end_operation
     } = useStatusState()
 
-    const [historias, setHistorias] = useState([])
     const [buscado, setBuscado] = useState({
         id_pk: 0
     })
@@ -48,34 +47,11 @@ export function Component() {
         showHelp, handle_show_help, handle_close_help
     } = useHelpState()
 
-    const default_limit_value = 2
     const {
-        offset, setOffset,
-        limit, setLimit,
-        handle_pagination
-    } = usePaginationState(default_limit_value)
+        setElements, getElements, limit, offset, handleNext, handlePrev
+    } = useDataState(historias)
 
-    // page = offset
-    const fetch_data = useCallback((page) => {
-        start_operation()
-        try {
-            const response = get_historias(page, limit)
-            if(response.length > 0) {
-                end_operation()
-                setHistorias(response)
-            } else {
-                throw new Error("No hay historias")
-            }
-        } catch(er) {
-            end_operation()
-            setResponseMessage(er.toString())
-            setNotificationType("error")
-            show_notification()
-            setOffset((prev) => prev-default_limit_value)
-            setLimit((prev) => prev-default_limit_value)
-            console.error(er)
-        }
-    }, [offset, limit])
+    const elements = getElements(offset, limit)
 
     const handle_search_historia = (e) => {
         e.preventDefault()
@@ -84,7 +60,7 @@ export function Component() {
             const response = historias.filter(h => h.id_pk === Number.parseInt(buscado.id_pk))
             if(response.length > 0) {
                 end_operation()
-                setHistorias(response)
+                setElements(response)
             } else {
                 throw new Error("Historia no encontrada")
             }
@@ -105,10 +81,6 @@ export function Component() {
             [name]: value
         }))
     }
-
-    useEffect(() => {
-        fetch_data(offset)
-    }, [fetch_data, offset])
 
     if(loading) {
         return <div className="loader"> </div>
@@ -146,21 +118,21 @@ export function Component() {
             </div>
             <h1>Historias clínicas | <FaBookMedical/></h1>
             <HistoriasTableComponent
-                historias={historias}
+                historias={elements}
                 isLightTheme={isLightTheme}
             />
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
-                    disabled={offset==0}
+                    onClick={handlePrev}
+                    disabled={offset===0}
                 >
                     <GrFormPreviousLink/>
                 </button>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
-                    disabled={historias.error}
+                    onClick={handleNext}
+                    disabled={elements.length === 0}
                 >
                     <GrFormNextLink/>
                 </button>

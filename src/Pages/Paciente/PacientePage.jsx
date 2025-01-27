@@ -1,5 +1,5 @@
 // Dependencies
-import {useCallback, useEffect,useState} from "react"
+import {useState} from "react"
 import { useOutletContext } from "react-router-dom"
 
 //Icons
@@ -14,11 +14,11 @@ import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import usePaginationState from "../../Hooks/Form/PaginationHook"
 import useStatusState from "../../Hooks/Form/StatusHook"
+import useDataState from "../../Hooks/DataHook"
 
 // data
-import { get_pacientes } from "../../../back-end/paciente"
+import { pacientes } from "../../../back-end/paciente"
 
 // style 
 import "../../Styles/Paciente.css"
@@ -28,12 +28,20 @@ import "../../Styles/LoadingStyle.css"
  * Page that list the pacientes in the system and some functions to perform.
 */
 export function Component() {
+
     const [,isLightTheme] = useOutletContext()
+
     // form-state: paciente
     const [buscado, setBuscado] = useState({
         identificacion: 0
     })
-    const [pacientes, setPacientes] = useState([])
+
+    const {
+        setElements, getElements, limit, offset, handleNext, handlePrev
+    } = useDataState(pacientes)
+
+    // init the data
+    const elements = getElements(offset, limit)
 
     //
     const {
@@ -51,41 +59,6 @@ export function Component() {
         showHelp, handle_show_help, handle_close_help
     } = useHelpState()
 
-    const default_limit_value = 2
-    // state for quantity of data to show
-    const {
-        offset, setOffset,
-        limit, setLimit,
-        handle_pagination
-    } = usePaginationState(default_limit_value)
-
-    // get data from the end-point server
-    const fetch_data = useCallback((page) => {
-        start_operation()
-        try {
-            const response = get_pacientes(page, limit)
-            if(response.length > 0) {
-                end_operation()
-                setPacientes(response)
-            } else {
-                throw new Error("No hay pacientes")
-            }
-        } catch(er) {
-            end_operation()
-            setResponseMessage(er.toString())
-            setNotificationType("error")
-            show_notification()
-            setOffset((prev) => prev-default_limit_value)
-            setLimit((prev) => prev-default_limit_value)
-            console.error(er)
-        }
-    }, [offset, limit])
-
-    useEffect(() => {
-        fetch_data(offset)
-    }, [offset, fetch_data])
-
-
     // search paciente by identificación
     const handle_search_paciente = async(e) => {
         e.preventDefault()
@@ -94,7 +67,7 @@ export function Component() {
             const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 end_operation()
-                setPacientes(response)
+                setElements(response)
             } else {
                 throw new Error("Paciente no encontrado")
             }
@@ -152,19 +125,19 @@ export function Component() {
                 </form>
             </div>
             <h1><FaUserInjured/> Pacientes</h1>
-            <PacienteTableComponent data={pacientes} isLightTheme={isLightTheme}/>
+            <PacienteTableComponent data={elements} isLightTheme={isLightTheme}/>
             <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset-default_limit_value, limit-default_limit_value)}
-                    disabled={offset==0}
+                    onClick={handlePrev}
+                    disabled={offset===0}
                 >
                     <GiPlayerPrevious/>
                 </button>
                 <button
                     type="button"
-                    onClick={() => handle_pagination(offset+default_limit_value, limit+default_limit_value)}
-                    disabled={pacientes.error}
+                    onClick={handleNext}
+                    disabled={elements.length === 0}
                 >
                     <GiPlayerNext/>
                 </button>
