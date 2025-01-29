@@ -133,13 +133,13 @@ export function Component() {
                         }
                     </select>
                 </label>
-                <div className="options">
-                    <br/>
+                <br/>
+                <section className="options">
                     <button type="button" disabled={isCompleted} onClick={fetch_data}>recuperar</button>
                     <button type="submit">
                         Login
                     </button>
-                </div>
+                </section>
             </form>
         </div>
     )

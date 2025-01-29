@@ -26,7 +26,7 @@ export function HelpUpdatePaciente({show, type, handle_close}) {
         }
     }
     return(
-        <div className={show_hidden}>
+        <footer className={show_hidden}>
             <section className="help-modal-main">
                 <span className="close" onClick={handle_close}>
                     <GoEyeClosed />
@@ -38,7 +38,7 @@ export function HelpUpdatePaciente({show, type, handle_close}) {
                     </ul>
                 </div>
             </section>
-        </div>
+        </footer>
     )
 }
 

@@ -52,7 +52,7 @@ export function Component() {
             <h2>{user_name}</h2>
             <br/>
             <HistoriaTableComponent data={elements} type={"usuario"} isLightTheme={isLightTheme}/>
-            <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
+            <section className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button 
                     onClick={handlePrev}
                     disabled={offset===0}
@@ -66,7 +66,7 @@ export function Component() {
                 >
                     <GrFormNextLink/>
                 </button>
-            </div>
+            </section>
             <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>

@@ -34,7 +34,7 @@ export default function ScrollOptions() {
         my_handler()
     }, [])
     return(
-        <div className="">
+        <footer>
             {
                 showScrollToTop &&
                     <span className="arrow" onClick={handle_go_top}>
@@ -48,6 +48,6 @@ export default function ScrollOptions() {
                         <BsFileArrowDownFill/>
                     </span>
             }
-        </div>
+        </footer>
     )
 }

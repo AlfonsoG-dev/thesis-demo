@@ -132,21 +132,22 @@ export function Component() {
     return (
         <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <form onSubmit={handle_show_confirm}>
-                <h2>Cambiar de contraseña</h2>
-                <label className={editionBorder === true ? "chk_enable":""}>
-                    Habilitar edición
-                    <input
-                        type="checkbox"
-                        name="enable_edition"
-                        value={disableEdition}
-                        checked={!disableEdition}
-                        onChange={handle_disable_edition}
-                    />
-                    <span>
-                        {editionBorder && "<- selecciona esta opción"}
-                    </span>
-                </label>
-                <br/>
+                <section>
+                    <h2>Cambiar de contraseña</h2>
+                    <label className={editionBorder === true ? "chk_enable":""}>
+                        Habilitar edición
+                        <input
+                            type="checkbox"
+                            name="enable_edition"
+                            value={disableEdition}
+                            checked={!disableEdition}
+                            onChange={handle_disable_edition}
+                        />
+                        <span>
+                            {editionBorder && "<- selecciona esta opción"}
+                        </span>
+                    </label>
+                </section>
                 <label>
                     Identificación
                     <input
@@ -179,12 +180,12 @@ export function Component() {
                         disabled={disableEdition}
                     />
                 </label>
-                <div className="options">
+                <section className="options">
                     <h1>Opciones</h1>
                     <button type="submit" disabled={isCompleted}>
                         Actualizar
                     </button>
-                </div>
+                </section>
             </form>
             <button className="help" onClick={handle_show_help}>
                 help | ?

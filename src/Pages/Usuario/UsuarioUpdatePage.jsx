@@ -227,10 +227,10 @@ export function Component() {
                     }
                     {show_time_limit()}
                 </label>
-                <div className="options">
+                <section className="options">
                     <h1>Opciones</h1>
                     <button type="submit" disabled={isCompleted}>Actualizar</button>
-                </div>
+                </section>
             </form>
             <button className="help" onClick={handle_show_help}>
                 help | ?

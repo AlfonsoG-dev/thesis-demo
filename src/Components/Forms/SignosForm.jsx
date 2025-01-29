@@ -1,7 +1,8 @@
 import PropTypes from "prop-types"
 export default function SignosForm({signos, isDisable, onChangeHandler}) {
     return(
-        <div>
+        <section>
+            <h1>Signos vitales</h1>
             <label>
                 Tensión arterial
                 <input
@@ -92,7 +93,7 @@ export default function SignosForm({signos, isDisable, onChangeHandler}) {
                     disabled={isDisable}
                 />
             </label>
-        </div>
+        </section>
     )
 }
 SignosForm.propTypes = {

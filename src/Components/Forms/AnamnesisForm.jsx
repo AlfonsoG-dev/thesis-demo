@@ -1,7 +1,8 @@
 import PropTypes from "prop-types"
 export default function AnamnesisForm({anamnesis, isDisable, onChangeHandler}) {
     return(
-        <>
+        <section>
+            <h1>Anamnesis</h1>
             <label>
                 Motivo consulta
                 <textarea
@@ -67,7 +68,7 @@ export default function AnamnesisForm({anamnesis, isDisable, onChangeHandler}) {
                     disabled={isDisable}
                 />
             </label>
-        </>
+        </section>
     )
 }
 AnamnesisForm.propTypes = {

@@ -35,7 +35,7 @@ export function Component() {
     }
     return(
         <div className="card-container">
-            <div className={`create-${isLightTheme ? 'light':'dark'} options`}>
+            <section className={`create-${isLightTheme ? 'light':'dark'} options`}>
                 <h1>Opciones | <FaUsersCog/></h1>
                 {
                     usuario.rol === "admin" &&
@@ -68,7 +68,7 @@ export function Component() {
                 <button className="btn-option" onClick={handle_download_permission}>
                     Descargar permiso <FaDownload/>
                 </button>
-            </div>
+            </section>
             <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>

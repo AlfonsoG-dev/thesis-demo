@@ -221,7 +221,7 @@ export function Component() {
             <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
                 <ScrollOptions/>
                 <form onSubmit={handle_show_confirm}>
-                    <div className="atencion">
+                    <section className="atencion">
                         <h1>Atención</h1>
                         <label>
                             Fecha ingreso
@@ -245,20 +245,18 @@ export function Component() {
                                 onChange={handle_change_anamnesis}
                             />
                         </label>
-                    </div>
-                    <h1>Encabezado</h1>
+                    </section>
                     <EncabezadoForm
                         encabezado={paciente}
                         isDisable={true}
                         onChangeHandler={() => {}}
                     />
-                    <h1>Paciente</h1>
                     <PacienteForm 
                         paciente={paciente}
                         isDisable={true}
                         onChangeHandler={() => {}}
                     />
-                    <div className="enable-options">
+                    <section className="enable-options">
                         <br/>
                         <label className={chk_name}>
                             Habilitar anamnesis
@@ -276,7 +274,6 @@ export function Component() {
                         {/* enable anamnesis component */}
                         {
                             myState.enableAnamnesis && <>
-                                <h1>Anamnesis</h1>
                                 <AnamnesisForm
                                     anamnesis={anamnesis}
                                     isDisable={!myState.enableAnamnesis}
@@ -300,7 +297,6 @@ export function Component() {
                         {/* enable signos component */}
                         {
                             myState.enableSignos && <>
-                                <h1>Signos vitales</h1>
                                 <SignosForm
                                     signos={signos}
                                     isDisable={!myState.enableSignos}
@@ -324,7 +320,6 @@ export function Component() {
                         {/* enable examen físico component */}
                         {
                             myState.enableExamen && <>
-                                <h1>Examen Físico</h1>
                                 <ExamenForm
                                     examen={examen}
                                     isDisable={!myState.enableExamen}
@@ -332,14 +327,14 @@ export function Component() {
                                 />
                             </>
                         }
-                    </div>
+                    </section>
 
-                    <div className="options">
+                    <section className="options">
                         <h1>Opciones</h1>
                         <button type="submit" disabled={isCompleted}>
                             Actualizar
                         </button>
-                    </div>
+                    </section>
                 </form>
                 <button className="help" onClick={handle_show_help}>
                     help | ?
@@ -359,9 +354,9 @@ export function Component() {
         )
     } else {
         return (
-            <div className="">
+            <section className="">
                 <h1>No se puede actualizar esta historia</h1>
-            </div>
+            </section>
         )
     }
 }

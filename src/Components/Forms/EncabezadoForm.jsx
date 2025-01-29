@@ -1,7 +1,8 @@
 import PropTypes from "prop-types"
 export default function EncabezadoForm({encabezado: paciente, isDisable, onChangeHandler}) {
     return(
-        <>
+        <section>
+            <h1>Encabezado</h1>
             <label>
                 Facultad
                 <input
@@ -33,7 +34,7 @@ export default function EncabezadoForm({encabezado: paciente, isDisable, onChang
                     disabled={isDisable}
                 />
             </label>
-        </>
+        </section>
     )
 }
 

@@ -106,7 +106,7 @@ export function Component() {
     return (
         <div className="table-page">
             <br/>
-            <div className={`search-${isLightTheme ? 'light' : 'dark'}`}>
+            <section className={`search-${isLightTheme ? 'light' : 'dark'}`}>
                 <form onSubmit={handle_search_paciente}>
                     <input
                         name="identificacion"
@@ -123,10 +123,10 @@ export function Component() {
                         <MdOutlinePersonSearch />
                     </button>
                 </form>
-            </div>
+            </section>
             <h1><FaUserInjured/> Pacientes</h1>
             <PacienteTableComponent data={elements} isLightTheme={isLightTheme}/>
-            <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
+            <section className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button
                     type="button"
                     onClick={handlePrev}
@@ -141,7 +141,7 @@ export function Component() {
                 >
                     <GiPlayerNext/>
                 </button>
-            </div>
+            </section>
             <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>

@@ -63,8 +63,8 @@ export default function App() {
 
     return(
         <div className="app-container">
-            <div className="navbar">
-                <div className={link_theme_name}>
+            <header className="navbar">
+                <section className={link_theme_name}>
                     <span onClick={handle_change_theme} className="theme-changer">
                         {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                     </span>
@@ -101,11 +101,11 @@ export default function App() {
                             </span>
                         )
                     }
-                </div>
+                </section>
                 <LogOut
                     isLightTheme={isLightTheme}
                 />
-            </div>
+            </header>
             <Outlet context={[usuario, isLightTheme]} />
         </div>
     )

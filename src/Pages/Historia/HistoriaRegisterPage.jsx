@@ -236,12 +236,14 @@ export function Component() {
     }
     return(
         <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
-            <button className="help" onClick={handle_show_help}>
-                help | ?
-            </button>
-            <ScrollOptions/>
+            <section>
+                <button className="help" onClick={handle_show_help}>
+                    help | ?
+                </button>
+                <ScrollOptions/>
+            </section>
             <form onSubmit={handle_show_confirm}>
-                <div className="atencion">
+                <section className="atencion">
                     <h1>Atención</h1>
                     <label>
                         Fecha ingreso
@@ -251,6 +253,7 @@ export function Component() {
                             placeholder="fecha_ingreso"
                             defaultValue={anamnesis.fecha_ingreso !== null ? ComputeDate(anamnesis.fecha_ingreso) : ""}
                             onChange={handle_change_anamnesis}
+                            required={true}
                         />
                     </label>
                     <label>
@@ -261,40 +264,37 @@ export function Component() {
                             placeholder="hora_ingreso"
                             defaultValue={anamnesis.hora_ingreso}
                             onChange={handle_change_anamnesis}
+                            required={true}
                         />
                     </label>
-                </div>
-                <h1>Paciente</h1>
+                </section>
                 <PacienteForm
                     paciente={paciente}
                     onChangeHandler={handle_change_paciente}
                 />
-                <h1>Anamnesis</h1>
                 <AnamnesisForm 
                     anamnesis={anamnesis}
                     isDisable={false}
                     onChangeHandler={handle_change_anamnesis}
                 />
-                <h1>Signos vitales</h1>
                 <SignosForm
                     signos={signos}
                     isDisable={false}
                     onChangeHandler={handle_change_signos}
                 />
-                <h1>Examen Físico</h1>
                 <ExamenForm
                     examen={examen}
                     isDisable={false}
                     onChangeHandler={handle_change_examen}
                 />
-                <div className="options">
+                <section className="options">
                     <h1>Opciones</h1>
                     <button 
                         type="submit" disabled={isCompleted}
                     >
                         Registrar
                     </button>
-                </div>
+                </section>
             </form>
             <ModalRegister
                 show={showConfirm}

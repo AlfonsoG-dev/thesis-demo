@@ -186,7 +186,7 @@ export function Component() {
         </Document>
     )
     return (
-        <div style={{textAlign: "center"}}>
+        <section style={{textAlign: "center"}}>
             <PDFViewer>
                 <MyDocument/>
             </PDFViewer >
@@ -194,6 +194,6 @@ export function Component() {
             <PDFDownloadLink document={<MyDocument/>} style={{fontSize: 30}} fileName="ejm.pdf">
                 !Descargar PDF¡
             </PDFDownloadLink>
-        </div>
+        </section>
     )
 }

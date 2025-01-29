@@ -155,7 +155,7 @@ export function Component() {
         <div className={`form-container-${isLightTheme ? 'light':'dark'} form-container`}>
             <h1>Crear usuario</h1>
             <form onSubmit={handle_show_confirm}>
-                <div className="usuario">
+                <section className="usuario">
                     <label>
                         Nombre
                         <input
@@ -234,13 +234,13 @@ export function Component() {
                                 </label>
                         }
                     </label>
-                </div>
-                <div className="options">
+                </section>
+                <section className="options">
                     <h1>Opciones</h1>
                     <button type="submit">
                         Registrar
                     </button>
-                </div>
+                </section>
             </form >
             <button className="help" onClick={handle_show_help}>
                 help | ?

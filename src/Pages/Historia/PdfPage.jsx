@@ -224,8 +224,7 @@ export function Component() {
     )
 
     return (
-        <>
-
+        <section>
             <div style={{textAlign: "center"}}>
                 <PDFViewer>
                     <MyDocument/>
@@ -235,7 +234,7 @@ export function Component() {
                     !Descargar PDF¡
                 </PDFDownloadLink>
             </div>
-        </>
+        </section>
     )
 
 }

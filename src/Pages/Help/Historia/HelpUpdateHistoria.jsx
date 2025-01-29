@@ -14,7 +14,7 @@ export function HelpUpdateHistoria({show, handle_close}) {
     const show_hidden = show ? "modal display-block" : "modal display-none"
 
     return(
-        <div className={show_hidden}>
+        <footer className={show_hidden}>
             <section className="help-modal-main">
                 <span className="close" onClick={handle_close}>
                     <GoEyeClosed />
@@ -40,7 +40,7 @@ export function HelpUpdateHistoria({show, handle_close}) {
                     </ul>
                 </div>
             </section>
-        </div>
+        </footer>
     )
 }
 

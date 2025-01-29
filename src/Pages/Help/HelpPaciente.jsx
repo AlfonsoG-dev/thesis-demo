@@ -131,7 +131,7 @@ export default function HelpPaciente({show, type, handle_close}) {
     }
 
     return(
-        <div className={show_hidden}>
+        <footer className={show_hidden}>
             <section className="help-modal-main">
                 <div className="content">
                     <span className="close" onClick={handle_close}>
@@ -141,7 +141,7 @@ export default function HelpPaciente({show, type, handle_close}) {
                     {type_union()}
                 </div>
             </section>
-        </div>
+        </footer>
     )
 }
 

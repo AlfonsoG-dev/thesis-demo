@@ -27,7 +27,7 @@ export function HelpHome({show, handle_close}) {
     const [user] = useOutletContext()
 
     return(
-        <div className={show_hidden}>
+        <footer className={show_hidden}>
             <section className="help-modal-main">
                 <div className="content">
                     <span className="close" onClick={handle_close}>
@@ -76,7 +76,7 @@ export function HelpHome({show, handle_close}) {
                     </ul>
                 </div>
             </section>
-        </div>
+        </footer>
     )
 }
 

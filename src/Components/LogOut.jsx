@@ -79,7 +79,7 @@ export default function LogOut({isLightTheme}) {
         />
     }
     return (
-        <>
+        <section>
             <form onSubmit={handle_show_confirm}>
                 <button 
                     type="submit"
@@ -88,7 +88,7 @@ export default function LogOut({isLightTheme}) {
                     Salir | <IoIosLogOut />
                 </button>
             </form>
-        </>
+        </section>
     )
 }
 

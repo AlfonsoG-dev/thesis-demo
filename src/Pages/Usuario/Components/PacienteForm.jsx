@@ -10,7 +10,8 @@ export default function PacienteForm({paciente, onChangeHandler}) {
         listEstadoCivil
     } = useConstantState()
     return(
-        <>
+        <section>
+            <h1>Paciente</h1>
             <label>
                 Identificación
                 <input
@@ -217,7 +218,7 @@ export default function PacienteForm({paciente, onChangeHandler}) {
                     onChange={onChangeHandler}
                 />
             </label>
-        </>
+        </section>
     )
 }
 

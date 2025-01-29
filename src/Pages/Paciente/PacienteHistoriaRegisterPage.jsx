@@ -205,7 +205,7 @@ export function Component() {
         <div className={`form-container-${isLIghtTheme ? 'light': 'dark'} form-container`}>
             <ScrollOptions/>
             <form onSubmit={handle_show_confirm}>
-                <div className="atencion">
+                <section className="atencion">
                     <h1>Atención</h1>
                     <label>
                         Fecha ingreso
@@ -227,43 +227,37 @@ export function Component() {
                             onChange={handle_change_anamnesis}
                         />
                     </label>
-                </div>
-                <h1>Encabezado</h1>
+                </section>
                 <EncabezadoForm
                     encabezado={paciente} isDisable={true}
                 />
-                <h1>Paciente</h1>
-                    <PacienteForm
-                        paciente={paciente}
-                        isDisable={true} onChangeHandler={() => {}}
+                <PacienteForm
+                    paciente={paciente}
+                    isDisable={true} onChangeHandler={() => {}}
                 />
-                <h1>Anamnesis</h1>
                 <AnamnesisForm
                     anamnesis={anamnesis}
                     isDisable={false}
                     onChangeHandler={handle_change_anamnesis}
                 />
-                <h1>Signos vitales</h1>
                 <SignosForm
                     signos={signos}
                     isDisable={false}
                     onChangeHandler={handle_change_signos}
                 />
-                <h1>Examen Físico</h1>
                 <ExamenForm
                     examen={examen}
                     isDisable={false}
                     onChangeHandler={handle_change_examen}
                 />
-
-                <div className="options">
+                <section className="options">
                     <h1>Opciones</h1>
                     <button 
                         type="submit" disabled={isCompleted}
                     >
                         Registrar
                     </button>
-                </div>
+                </section>
             </form>
             <button className="help" onClick={handle_show_help}>
                 help | ?

@@ -1,5 +1,4 @@
 import { useState } from "react"
-import {users} from "../../back-end/user"
 const DEFAULT_LIMIT = 5
 export default function useDataState(listData=[]) {
     const [elements, setElements] = useState(listData)
@@ -34,6 +33,7 @@ export default function useDataState(listData=[]) {
         const tomorrow = new Date(now.getDate()+1)
 
         const m_time_limit = element.rol === 'transitorio' ? tomorrow : null
+        // TODO: allow it to be more general don't use model specific data
         const comp_user = {
             id_pk: elements.length + 1,
             ...element,

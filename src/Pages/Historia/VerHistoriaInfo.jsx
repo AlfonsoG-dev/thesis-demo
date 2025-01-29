@@ -109,7 +109,7 @@ export function Component() {
             </button>
             <form>
                 { anamnesis.fecha_ingreso !== null && anamnesis.hora_ingreso !== null &&
-                    <div className="atencion">
+                    <section className="atencion">
                         <h1>Atención</h1>
                         <label>
                             Fecha ingreso
@@ -131,34 +131,19 @@ export function Component() {
                                 disabled={true}
                             />
                         </label>
-                    </div>
+                    </section>
                 }
-                <div>
-                    <h1>Encabezado</h1>
-                    <EncabezadoForm encabezado={encabezado} isDisable={true}/>
-                </div>
-                <div>
-                    <h1>Paciente</h1>
-                    <PacienteForm paciente={paciente} isDisable={true}/>
-                </div>
-                <div>
-                    <h1>Anamnesis</h1>
-                    <AnamnesisForm 
-                        anamnesis={anamnesis} isDisable={true} onChangeHandler={() => {}}
-                    />
-                </div>
-                <div>
-                    <h1>Signos vitales</h1>
-                    <SignosForm
-                        signos={signos} isDisable={true} onChangeHandler={() => {}}
-                    />
-                </div>
-                <div>
-                    <h1>Examen Físico</h1>
-                    <ExamenForm
-                        examen={examen} isDisable={true} onChangeHandler={() => {}}
-                    />
-                </div>
+                <EncabezadoForm encabezado={encabezado} isDisable={true}/>
+                <PacienteForm paciente={paciente} isDisable={true}/>
+                <AnamnesisForm 
+                    anamnesis={anamnesis} isDisable={true} onChangeHandler={() => {}}
+                />
+                <SignosForm
+                    signos={signos} isDisable={true} onChangeHandler={() => {}}
+                />
+                <ExamenForm
+                    examen={examen} isDisable={true} onChangeHandler={() => {}}
+                />
             </form>
             <Outlet/>
         </div>

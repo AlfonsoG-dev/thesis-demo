@@ -4,7 +4,8 @@ import ComputeDate from "../../Utils/ComputeDate.js"
 import PropTypes from "prop-types"
 export default function PacienteForm({paciente, isDisable, onChangeHandler}) {
     return (
-        <>
+        <section>
+            <h1>Paciente</h1>
             <label>
                 Identificación
                 <input
@@ -137,7 +138,7 @@ export default function PacienteForm({paciente, isDisable, onChangeHandler}) {
                     disabled={isDisable}
                 />
             </label>
-        </>
+        </section>
     )
 }
 PacienteForm.propTypes = {

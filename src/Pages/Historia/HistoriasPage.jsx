@@ -98,7 +98,7 @@ export function Component() {
     return (
         <div className="table-page">
             <br/>
-            <div className={`search-${isLightTheme ? 'light':'dark'}`}>
+            <section className={`search-${isLightTheme ? 'light':'dark'}`}>
                 <form onSubmit={handle_search_historia}>
                     <input
                         name="id_pk"
@@ -115,7 +115,7 @@ export function Component() {
                         <MdOutlinePersonSearch/>
                     </button>
                 </form >
-            </div>
+            </section>
             <h1>Historias clínicas | <FaBookMedical/></h1>
             <HistoriasTableComponent
                 historias={elements}

@@ -143,10 +143,10 @@ export function Component() {
                         disabled={true}
                     />
                 </label>
-                <div className="options">
+                <section className="options">
                     <h1>Opciones</h1>
                     <button onClick={handle_show_confirm} disabled={isCompleted}>Eliminar</button>
-                </div>
+                </section>
             </form >
             <button className="help" onClick={handle_show_help}>
                 help | ?

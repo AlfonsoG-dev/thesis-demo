@@ -58,7 +58,7 @@ export function Component() {
     return(
         <div className="">
             <br/>
-            <div className="table-page">
+            <section className="table-page">
                 <button className="button-option" onClick={() => {
                     navigate("/app/paciente/historia/registro", {
                         state: state
@@ -74,9 +74,9 @@ export function Component() {
                 }
                 <h1>Historia clínica | <FaHospitalUser/></h1>
                 <h2>{h1_text}</h2>
-            </div>
+            </section>
             <HistoriaTableComponent data={elements} type={"paciente"} isLightTheme={isLightTheme}/>
-            <div className={`pagination-${isLightTheme ? 'light':'dark'}`}>
+            <section className={`pagination-${isLightTheme ? 'light':'dark'}`}>
                 <button 
                     onClick={handlePrev}
                     disabled={offset === 0}
@@ -91,7 +91,7 @@ export function Component() {
                 >
                     <GrFormNextLink/>
                 </button>
-            </div>
+            </section>
             <button className="help" onClick={handle_show_help}>
                 help | ?
             </button>
@@ -100,6 +100,6 @@ export function Component() {
                 type="historias"
                 handle_close={handle_close_help}
             />
-        </div >
+        </div>
     )
 }

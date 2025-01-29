@@ -1,7 +1,8 @@
 import PropTypes from "prop-types"
 export default function ExamenForm({examen, isDisable, onChangeHandler}) {
     return(
-        <>
+        <section>
+            <h1>Examen Físico</h1>
             <label>
                 Piel
                 <input
@@ -187,7 +188,7 @@ export default function ExamenForm({examen, isDisable, onChangeHandler}) {
                     disabled={isDisable}
                 />
             </label>
-        </>
+        </section>
     )
 }
 ExamenForm.propTypes = {
