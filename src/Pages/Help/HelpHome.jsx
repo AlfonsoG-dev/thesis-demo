@@ -33,7 +33,7 @@ export function HelpHome({show, handle_close}) {
                     <span className="close" onClick={handle_close}>
                         <GoEyeClosed />
                     </span>
-                    <h1>Ayuda página Home</h1>
+                    <h1>Ayuda</h1>
                     <p>En esta sección se encuentran las opciones de navegación y opciones para el proceso de atención.</p>
                     <ul className="list">
                         <li>En la navegación se presentan las distintas páginas a las que se puede acceder</li>
