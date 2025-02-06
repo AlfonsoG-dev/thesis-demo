@@ -18,7 +18,6 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker.jsx"
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
 import useFormState from "../../Hooks/Form/FormHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook.js"
 
 
 // utils
@@ -48,10 +47,7 @@ export function Component() {
     } = useFormState()
 
     // over all state
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
     const [retry, setRetry] = useState(0)
 
     // Modals
@@ -94,7 +90,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -106,7 +102,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             if(paciente.genero === "otro") {
                 paciente.genero = paciente.genero1
@@ -141,8 +137,7 @@ export function Component() {
                     throw new Error(response.error)
                 }
                 alert("El paciente no existe, será registrado")
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setNotificationType("msg")
                 setResponseMessage(response.msg)
                 handle_close_confirm()
@@ -168,8 +163,7 @@ export function Component() {
                 if(response.error) {
                     throw new Error(response.error)
                 }
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setNotificationType("msg")
                 setResponseMessage(response.msg)
                 handle_close_confirm()
@@ -177,7 +171,7 @@ export function Component() {
                 localStorage.removeItem('register_historia')
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setNotificationType("error")
             setResponseMessage(er.toString())
@@ -187,13 +181,13 @@ export function Component() {
         }
     }
     useEffect(() => {
-        if(!isCompleted && localStorage.getItem("register_historia") !== null) {
+        if(status !== "completed" && localStorage.getItem("register_historia") !== null) {
             setPaciente(JSON.parse(localStorage.getItem("register_historia")).paciente)
             setAnamnesis(JSON.parse(localStorage.getItem("register_historia")).anamnesis)
             setSignos(JSON.parse(localStorage.getItem("register_historia")).signos_vitales)
             setExamen(JSON.parse(localStorage.getItem("register_historia")).examen_fisico)
         }
-    }, [isCompleted, setAnamnesis, setExamen, setPaciente, setSignos])
+    }, [status, setAnamnesis, setExamen, setPaciente, setSignos])
 
     const handle_change_anamnesis = (e) => {
         const {name, value} = e.target
@@ -223,7 +217,7 @@ export function Component() {
             [name]: value
         }))
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -290,7 +284,7 @@ export function Component() {
                 <section className="options">
                     <h1>Opciones</h1>
                     <button 
-                        type="submit" disabled={isCompleted}
+                        type="submit" disabled={status === "completed"}
                     >
                         Registrar
                     </button>
@@ -302,7 +296,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpCrearHistoria 
                 show={showHelp}
                 type="historia"

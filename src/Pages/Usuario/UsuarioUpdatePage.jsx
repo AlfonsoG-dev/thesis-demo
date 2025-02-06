@@ -10,7 +10,6 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 //Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 import useConstantState from "../../Hooks/Form/ConstantsHook"
 
 // data
@@ -36,10 +35,7 @@ export function Component() {
         time_limit: null,
     })
 
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     // 
     const [editionBorder, setEditionBorder] = useState(false)
@@ -87,7 +83,7 @@ export function Component() {
     // allow 3 attempts before block page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -110,12 +106,11 @@ export function Component() {
     // user submit handler
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = update(state.identificacion, modifiedUser)
             if(response.msg !== undefined) {
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setResponseMessage(response.msg || "Usuario actualizado")
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -124,7 +119,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -133,7 +128,7 @@ export function Component() {
             console.error(er)
         }
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -229,7 +224,7 @@ export function Component() {
                 </label>
                 <section className="options">
                     <h1>Opciones</h1>
-                    <button type="submit" disabled={isCompleted}>Actualizar</button>
+                    <button type="submit" disabled={status === "completed"}>Actualizar</button>
                 </section>
             </form>
             <button className="help" onClick={handle_show_help}>
@@ -241,7 +236,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpRegisterUser
                 show={showHelp}
                 type="update"

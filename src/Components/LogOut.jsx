@@ -6,9 +6,6 @@ import { useNavigate } from "react-router-dom"
 // icons
 import { IoIosLogOut } from "react-icons/io"
 
-// Hooks
-import useStatusState from "../Hooks/Form/StatusHook"
-
 // modal Component
 import ModalRegister from "./Modals/ModalRegister"
 import ModalNotification from "./Modals/ModalNotification"
@@ -21,9 +18,7 @@ export default function LogOut({isLightTheme}) {
 
     const navigate = useNavigate()
 
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
     const [showConfirm, setShowConfirm] = useState(false)
     const {
         notification, notificationType, setNotificationType,
@@ -38,7 +33,7 @@ export default function LogOut({isLightTheme}) {
     }
 
     const log_out_handler = () => {
-        start_operation()
+        setStatus("loading")
 
         if(localStorage.getItem('activeLink') !== null) {
             localStorage.removeItem('activeLink')
@@ -47,7 +42,7 @@ export default function LogOut({isLightTheme}) {
         if(localStorage.getItem('log_user') !== null) {
             localStorage.removeItem('log_user')
         }
-        end_operation()
+        setStatus("completed")
         setResponseMessage("Cerrando sesión")
         setNotificationType("msg")
         handle_close_confirm()
@@ -59,7 +54,7 @@ export default function LogOut({isLightTheme}) {
         }, 2000)
     }
 
-    if (loading) {
+    if (status === "loading") {
         return <div className="loader"></div>
     }
     if(showConfirm) {

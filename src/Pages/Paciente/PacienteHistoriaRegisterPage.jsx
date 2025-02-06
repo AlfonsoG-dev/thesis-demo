@@ -21,7 +21,6 @@ import { HelpCrearHistoria } from "../Help/HelpCrearHistoria"
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useFormState from "../../Hooks/Form/FormHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { register_historia } from "../../../back-end/historia"
@@ -46,10 +45,7 @@ export function Component() {
     } = useFormState()
 
     //
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
     const [retry, setRetry] = useState(0)
 
     // modals
@@ -102,17 +98,17 @@ export function Component() {
 
     useEffect(() => {
         fetch_data()
-        if(!isCompleted && localStorage.getItem("paciente_register_historia") !== null) {
+        if(status !== "completed" && localStorage.getItem("paciente_register_historia") !== null) {
             setAnamnesis(JSON.parse(localStorage.getItem("paciente_register_historia")).anamnesis)
             setSignos(JSON.parse(localStorage.getItem("paciente_register_historia")).signos_vitales)
             setExamen(JSON.parse(localStorage.getItem("paciente_register_historia")).examen_fisico)
         }
-    }, [fetch_data, isCompleted, setAnamnesis, setExamen, setSignos])
+    }, [status, fetch_data, setAnamnesis, setExamen, setSignos])
 
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Se acabaron los intentos intenta recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -127,7 +123,7 @@ export function Component() {
     */
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const historia_object = {
                 paciente: {
@@ -146,8 +142,7 @@ export function Component() {
             }
             const response = register_historia(historia_object, user)
             if(response.msg !== undefined) {
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -156,7 +151,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -190,7 +185,7 @@ export function Component() {
             [name]: value
         }))
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div >
     }
     if(notification) {
@@ -253,7 +248,7 @@ export function Component() {
                 <section className="options">
                     <h1>Opciones</h1>
                     <button 
-                        type="submit" disabled={isCompleted}
+                        type="submit" disabled={status === "completed"}
                     >
                         Registrar
                     </button>
@@ -268,7 +263,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpCrearHistoria
                 show={showHelp}
                 type="paciente"

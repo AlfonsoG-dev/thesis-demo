@@ -18,7 +18,6 @@ import ComputeDate from "../../Utils/ComputeDate"
 
 // Hooks
 import useFormState from "../../Hooks/Form/FormHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { pacientes } from "../../../back-end/paciente"
@@ -57,14 +56,12 @@ export function Component() {
     const navigate = useNavigate()
     
     // overall state
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
 
     // get data from end-point server
     const fetch_data = useCallback(() => {
-        start_operation()
+        setStatus("loading")
         try {
             if(historia.paciente_if_fk !== null) {
                 const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(historia.paciente_id_fk))
@@ -83,18 +80,18 @@ export function Component() {
                 const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(historia.examen_fisico_id_fk))
                 setExamen(res_examen)
             }
-            end_operation()
+            setStatus("completed")
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             console.error(er)
         }
-    }, [end_operation, historia.anamnesis_id_fk, historia.examen_fisico_id_fk, historia.paciente_id_fk, historia.paciente_if_fk, historia.signos_vitales_id_fk, setAnamnesis, setExamen, setPaciente, setSignos, start_operation])
+    }, [historia.anamnesis_id_fk, historia.examen_fisico_id_fk, historia.paciente_id_fk, historia.paciente_if_fk, historia.signos_vitales_id_fk, setAnamnesis, setExamen, setPaciente, setSignos])
 
     useEffect(() => {
         fetch_data()
     }, [fetch_data])
 
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     return(

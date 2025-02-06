@@ -14,7 +14,6 @@ import HelpPaciente from "../Help/HelpPaciente"
 
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook"
 import useDataState from "../../Hooks/DataHook"
 
 // data
@@ -44,9 +43,7 @@ export function Component() {
     const elements = getElements(offset, limit)
 
     //
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     // modals
     const {
@@ -62,17 +59,17 @@ export function Component() {
     // search paciente by identificación
     const handle_search_paciente = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
-                end_operation()
+                setStatus("completed")
                 setElements(response)
             } else {
                 throw new Error("Paciente no encontrado")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setResponseMessage(er.toString())
             setNotificationType("error")
             show_notification()
@@ -88,8 +85,7 @@ export function Component() {
         }))
     }
 
-    if(loading) {
-        console.errorer
+    if(status === "completed") {
         return <div className="loader"></div>
     }
 

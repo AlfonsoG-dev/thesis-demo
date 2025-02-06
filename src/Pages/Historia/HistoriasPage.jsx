@@ -16,7 +16,6 @@ import { FaBookMedical } from "react-icons/fa"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 import useDataState from "../../Hooks/DataHook"
 
 // data
@@ -30,9 +29,7 @@ import "../../Styles/LoadingStyle.css"
 export function Component() {
     const [, isLightTheme] = useOutletContext()
 
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const [buscado, setBuscado] = useState({
         id_pk: 0
@@ -55,17 +52,17 @@ export function Component() {
 
     const handle_search_historia = (e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = historias.filter(h => h.id_pk === Number.parseInt(buscado.id_pk))
             if(response.length > 0) {
-                end_operation()
+                setStatus("completed")
                 setElements(response)
             } else {
                 throw new Error("Historia no encontrada")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setResponseMessage(er.toString())
             setNotificationType("error")
             show_notification()
@@ -82,7 +79,7 @@ export function Component() {
         }))
     }
 
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"> </div>
     }
 

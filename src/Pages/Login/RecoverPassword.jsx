@@ -5,7 +5,6 @@ import { useState } from "react"
 import ModalNotification from "../../Components/Modals/ModalNotification.jsx"
 
 // hooks
-import useStatusState from "../../Hooks/Form/StatusHook"
 import useNotitificationState from "../../Hooks/Modal/NotificationHook.js"
 
 // data
@@ -18,10 +17,7 @@ import "../../Styles/RecoverPage.css"
 export function Component() {
     const navigate = useNavigate()
 
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const [buscado, setBuscado] = useState({
         identificacion: 0
@@ -37,7 +33,7 @@ export function Component() {
 
     const fetch_data = (e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             if(buscado.identificacion === 0) {
                 throw new Error("Selecciona una identificación")
@@ -45,7 +41,7 @@ export function Component() {
             const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setUsuario(response[0])
-                end_operation()
+                setStatus("completed")
                 setNotificationType("msg")
                 setResponseMessage(`La contraseña del usuario "${usuario.name}" es "${usuario.password}"`)
                 setNotification(true)
@@ -53,7 +49,7 @@ export function Component() {
                 throw new Error("Usuario no encontrado")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setNotificationType("error")
             setResponseMessage(er.toString())
             setNotification(true)
@@ -63,19 +59,18 @@ export function Component() {
 
     const handle_login = (e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             localStorage.setItem('log_user', JSON.stringify(usuario))
-            complete_operation()
+            setStatus("completed")
             setNotificationType("msg")
             setResponseMessage("! Bienvenido ¡")
-            end_operation()
             setNotification(true)
             setTimeout(() => {
                 navigate("/app")
             }, 2000)
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setNotificationType("error")
             setResponseMessage(er.toString())
             setNotification(false)
@@ -107,7 +102,7 @@ export function Component() {
                 handle_close={handle_close_notification}
         />
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     return (
@@ -116,7 +111,7 @@ export function Component() {
             <form onSubmit={handle_login}>
                 <label>
                     Usuario
-                    <select name="identificacion" onChange={handle_recover_change} disabled={isCompleted}>
+                    <select name="identificacion" onChange={handle_recover_change} disabled={status === "completed"}>
                         {
                             usuario.identificacion !== undefined ? (
                                 <option key={usuario.identificacion}>{usuario.identificacion} {usuario.rol}</option>
@@ -135,7 +130,7 @@ export function Component() {
                 </label>
                 <br/>
                 <section className="options">
-                    <button type="button" disabled={isCompleted} onClick={fetch_data}>recuperar</button>
+                    <button type="button" disabled={status === "completed"} onClick={fetch_data}>recuperar</button>
                     <button type="submit">
                         Login
                     </button>

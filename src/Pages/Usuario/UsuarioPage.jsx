@@ -14,7 +14,6 @@ import HelpPaciente from "../Help/HelpPaciente.jsx"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook.js"
 import useDataState from "../../Hooks/DataHook.js"
 
 // data
@@ -33,9 +32,7 @@ export function Component() {
     // list of users, and searched user
     const [buscado, setBuscado] = useState({ identificacion: 0 })
 
-    const {
-        loading, start_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const {
         setElements, getElements, limit, offset, handleNext, handlePrev
@@ -58,17 +55,17 @@ export function Component() {
     // search user by identificación
     const handle_search_user = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = users.filter(u => u.rol !== "admin" && u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setElements(response)
-                end_operation()
+                setStatus("completed")
             } else {
                 throw new Error("Usuario no encontrado")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setResponseMessage(er.toString())
             setNotificationType("error")
             show_notification()
@@ -87,7 +84,7 @@ export function Component() {
     }
 
     // state between renders
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {

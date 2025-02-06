@@ -12,7 +12,6 @@ import { HelpLogin } from "../Help/HelpLogin.jsx"
 
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook.js"
 
 // data
 import {login} from "../../../back-end/user.js"
@@ -38,10 +37,7 @@ export default function LoginPage() {
         password: ""
     })
 
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     // modal register
     const [showConfirm, setShowConfirm] = useState(false)
@@ -68,13 +64,12 @@ export default function LoginPage() {
     const handle_close_confirm = () => setShowConfirm(false)
 
     const fetch_data = () => {
-        start_operation()
+        setStatus("loading")
         // validate previous session on local storage
         const prev_log_user = localStorage.getItem('log_user')
         const init_url = localStorage.getItem('activeLink') || "/app"
-        if(prev_log_user !== null && !isCompleted) {
-            complete_operation()
-            end_operation()
+        if(prev_log_user !== null && status !== "completed") {
+            setStatus("completed")
             handle_close_confirm()
             setNotificationType("msg")
             setResponseMessage("¡ Bienvenido !")
@@ -90,7 +85,7 @@ export default function LoginPage() {
             setResponseMessage("No hay sesión previa")
             show_notification()
             setTimeout(() => {
-                end_operation()
+                setStatus("completed")
             }, 2000)
         }
     }
@@ -98,7 +93,7 @@ export default function LoginPage() {
     // submit handler action
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const user = login(loginData)
             if(user.length === 0) {
@@ -106,16 +101,15 @@ export default function LoginPage() {
             }
             localStorage.setItem('log_user', JSON.stringify(user[0]))
             handle_close_confirm()
-            complete_operation()
+            setStatus("completed")
             setNotificationType("msg")
             setResponseMessage("! Bienvenido ¡")
             show_notification()
-            end_operation()
             setTimeout(() => {
                 navigate("/app")
             }, 2000)
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setNotificationType("error")
             setResponseMessage(er.toString())
             handle_close_confirm()
@@ -137,23 +131,22 @@ export default function LoginPage() {
         }))
     }
     const handle_recover_password = () => {
-        start_operation()
+        setStatus("loading")
         try {
-            complete_operation()
             setTimeout(() => {
-                end_operation()
+                setStatus("completed")
                 navigate('/password-recover', {
                     replace: true
                 })
             }, 2000)
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             console.error(er)
         }
     }
 
     const show_content = () => {
-        if(!isCompleted) {
+        if(status !== "completed") {
             return(
                 <div className="container">
                     <button className="help" onClick={handle_show_help}>
@@ -211,7 +204,7 @@ export default function LoginPage() {
 
 
     // status component between renders
-    if(loading) {
+    if(status === "loading") {
         return<div className="loader"></div>
     }
     if(notification) {

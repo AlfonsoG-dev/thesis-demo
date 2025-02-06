@@ -10,7 +10,6 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser.jsx"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook.js"
-import useStatusState from "../../Hooks/Form/StatusHook.js"
 
 // data
 import { delete_user } from "../../../back-end/user.js"
@@ -36,10 +35,7 @@ export function Component() {
     })
 
     //
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const [retry, setRetry] = useState(0)
 
@@ -66,7 +62,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -78,12 +74,11 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = delete_user(usuario.identificacion, usuario.password)
             if(response.msg) {
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -92,7 +87,7 @@ export function Component() {
                 throw new Error(response.error)
             } 
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -101,7 +96,7 @@ export function Component() {
             console.error(er)
         }
     }
-    if(loading) {
+    if(status === "completed") {
         return <div className="loader"></div> 
     }
     if(notification) {
@@ -145,7 +140,7 @@ export function Component() {
                 </label>
                 <section className="options">
                     <h1>Opciones</h1>
-                    <button onClick={handle_show_confirm} disabled={isCompleted}>Eliminar</button>
+                    <button onClick={handle_show_confirm} disabled={status === "completed"}>Eliminar</button>
                 </section>
             </form >
             <button className="help" onClick={handle_show_help}>
@@ -157,7 +152,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpRegisterUser
                 show={showHelp}
                 type="delete"

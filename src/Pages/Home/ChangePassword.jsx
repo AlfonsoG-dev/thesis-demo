@@ -9,7 +9,6 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 
 // data
 import { users, change_password } from "../../../back-end/user"
@@ -26,10 +25,7 @@ export function Component() {
         password: ""
     })
 
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const [editionBorder, setEditionBorder] = useState(false)
     const [disableEdition, setDisableEdition] = useState(true)
@@ -85,15 +81,14 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const response = users.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
             if(response.length > 0) {
                 const change_password_response = change_password(usuario.identificacion, usuario.password)
                 if(change_password_response !== "") {
                     localStorage.removeItem('change_password')
-                    complete_operation()
-                    end_operation()
+                    setStatus("completed")
                     setResponseMessage(change_password_response)
                     setNotificationType("msg")
                     handle_close_confirm()
@@ -105,7 +100,7 @@ export function Component() {
                 throw new Error("El usuario no existe")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             setResponseMessage(er.toString())
             setNotificationType("error")
             handle_close_confirm()
@@ -114,11 +109,11 @@ export function Component() {
         }
     }
     useEffect(() => {
-        if(!isCompleted && localStorage.getItem("change_password") !== null) {
+        if(status !== "completed" && localStorage.getItem("change_password") !== null) {
             setUsuario(JSON.parse(localStorage.getItem("change_password")))
         }
-    }, [isCompleted])
-    if(loading) {
+    }, [status])
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -182,7 +177,7 @@ export function Component() {
                 </label>
                 <section className="options">
                     <h1>Opciones</h1>
-                    <button type="submit" disabled={isCompleted}>
+                    <button type="submit" disabled={status === "completed"}>
                         Actualizar
                     </button>
                 </section>
@@ -196,7 +191,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpRegisterUser
                 show={showHelp}
                 type="update_password"

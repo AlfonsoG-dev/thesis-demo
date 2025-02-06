@@ -10,7 +10,6 @@ import { HelpRegisterUser } from "../Help/usuario/HelpRegisterUser"
 
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 import useConstantState from "../../Hooks/Form/ConstantsHook"
 import useDataState from "../../Hooks/DataHook"
 
@@ -41,10 +40,7 @@ export function Component() {
         elements, addElement
     } = useDataState(users)
     //
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     const [retry, setRetry] = useState(0)
     const [showPassword, setShowPassword] = useState(true)
@@ -78,7 +74,7 @@ export function Component() {
     // allow 3 attempts before block page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -90,7 +86,7 @@ export function Component() {
 
     const handle_submit= (e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             const cur_date = new Date(Date.now())
             if(usuario.time_limit !== null && new Date(usuario.time_limit).getTime() < cur_date.getTime()) {
@@ -102,8 +98,7 @@ export function Component() {
                 const result = addElement(usuario)
                 if(result > 0) {
                     localStorage.removeItem('register_user')
-                    complete_operation()
-                    end_operation()
+                    setStatus("completed")
                     handle_close_confirm()
                     setNotificationType("message")
                     setResponseMessage("Usuario registrado")
@@ -115,7 +110,7 @@ export function Component() {
                     throw new Error("El usuario ya se encuentra registrado")
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -125,10 +120,10 @@ export function Component() {
         }
     }
     useEffect(() => {
-        if(!isCompleted && localStorage.getItem("register_user") !== null) {
+        if(status !== "completed" && localStorage.getItem("register_user") !== null) {
             setUsuario(JSON.parse(localStorage.getItem("register_user")))
         }
-    }, [isCompleted])
+    }, [status])
 
     const handle_change_user = (e) => {
         e.preventDefault()
@@ -138,7 +133,7 @@ export function Component() {
             [name]: value
         }))
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -237,7 +232,7 @@ export function Component() {
                 </section>
                 <section className="options">
                     <h1>Opciones</h1>
-                    <button type="submit">
+                    <button type="submit" disabled={status === "completed"}>
                         Registrar
                     </button>
                 </section>
@@ -251,7 +246,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            {<ModalBlocker isCompleted={isCompleted}/>}
+            {<ModalBlocker isCompleted={status}/>}
             <HelpRegisterUser
                 show={showHelp}
                 type="register"

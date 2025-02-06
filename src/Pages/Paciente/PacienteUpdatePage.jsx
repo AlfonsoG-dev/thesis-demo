@@ -14,7 +14,6 @@ import { HelpUpdatePaciente } from "../Help/Paciente/HelpUpdatePaciente"
 // hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import useConstantState from "../../Hooks/Form/ConstantsHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 
 // Utils
 import ComputeDate from "../../Utils/ComputeDate"
@@ -40,10 +39,7 @@ export function Component() {
         id_pk: paciente.id_pk,
         identificacion: paciente.identificacion
     })
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     // overall status
     const [retry, setRetry] = useState(0)
@@ -97,7 +93,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -109,7 +105,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             paciente.fecha_nacimiento = ComputeDate(paciente.fecha_nacimiento)
             if(modifiedPaciente.genero !== undefined && modifiedPaciente.genero === "otro") {
@@ -118,8 +114,7 @@ export function Component() {
             }
             const response = update_paciente(state.identificacion,modifiedPaciente)
             if(response.msg !== undefined) {
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -128,7 +123,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -137,7 +132,7 @@ export function Component() {
             console.error(er)
         }
     }
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -420,7 +415,7 @@ export function Component() {
                 }
                 <div className="options">
                     <h1>Opciones</h1>
-                    <button type="submit" disabled={isCompleted}>Actualizar</button>
+                    <button type="submit" disabled={status === "completed"}>Actualizar</button>
                 </div>
             </form>
             <button className="help" onClick={handle_show_help}>
@@ -432,7 +427,7 @@ export function Component() {
                 handle_close={handle_close_confirm}
                 handle_confirm={handle_submit}
             />
-            <ModalBlocker isCompleted={isCompleted}/>
+            <ModalBlocker isCompleted={status}/>
             <HelpUpdatePaciente
                 show={showHelp}
                 type="update"

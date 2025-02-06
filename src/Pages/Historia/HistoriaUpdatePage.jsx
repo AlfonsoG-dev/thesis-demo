@@ -23,7 +23,6 @@ import ModalBlocker from "../../Components/Modals/ModalBlocker"
 import useFormState from "../../Hooks/Form/FormHook"
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
 import enableEditionReducer from "../../Hooks/Form/updateHook"
-import useStatusState from "../../Hooks/Form/StatusHook"
 
 //styles
 import "../../Styles/Register.css"
@@ -50,10 +49,7 @@ export function Component() {
         examen, setExamen
     } = useFormState()
 
-    const {
-        loading, isCompleted,
-        start_operation, complete_operation, end_operation
-    } = useStatusState()
+    const [status, setStatus] = useState("loading" | "completed")
 
     // over all state
     const [isUpdateData, setIsUpdateData] = useState(false)
@@ -103,7 +99,7 @@ export function Component() {
     // allow 3 attempts before blocking the page
     const validate_retry = () => {
         if(retry === 3) {
-            complete_operation()
+            setStatus("completed")
             setResponseMessage("Intentos agotados, prueba recargando la página")
             setNotificationType("error")
             handle_close_confirm()
@@ -115,7 +111,7 @@ export function Component() {
 
     // get data from end-point server
     const fetch_data = useCallback(async () => {
-        start_operation()
+        setStatus("loading")
         try {
             if(state.update_at === null) {
                 const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(paciente_id_fk))
@@ -126,16 +122,16 @@ export function Component() {
                 setSignos(res_signos)
                 const [res_examen] = examenes.filter(e => e.id_pk === Number.parseInt(examen_fisico_id_fk))
                 setExamen(res_examen)
-                end_operation()
+                setStatus("completed")
             } else {
-                end_operation()
+                setStatus("completed")
                 setIsUpdateData(true)
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             console.error(er)
         }
-    }, [anamnesis_id_fk, end_operation, examen_fisico_id_fk, paciente_id_fk, setAnamnesis, setExamen, setPaciente, setSignos, signos_vitales_id_fk, start_operation, state.update_at])
+    }, [anamnesis_id_fk, examen_fisico_id_fk, paciente_id_fk, setAnamnesis, setExamen, setPaciente, setSignos, signos_vitales_id_fk, state.update_at])
 
     useEffect(() => {
         fetch_data()
@@ -143,7 +139,7 @@ export function Component() {
 
     const handle_submit = async(e) => {
         e.preventDefault()
-        start_operation()
+        setStatus("loading")
         try {
             anamnesis.fecha_ingreso = ComputeDate(new Date(anamnesis.fecha_ingreso))
             const historia_object = {
@@ -162,8 +158,7 @@ export function Component() {
             }
             const response = update_historia(historia_object, user, state.id_pk)
             if(response.msg !== undefined) {
-                complete_operation()
-                end_operation()
+                setStatus("completed")
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
                 handle_close_confirm()
@@ -172,7 +167,7 @@ export function Component() {
                 throw new Error(response.error)
             }
         } catch(er) {
-            end_operation()
+            setStatus("completed")
             validate_retry()
             setResponseMessage(er.toString())
             setNotificationType("error")
@@ -204,7 +199,7 @@ export function Component() {
         }))
     }
 
-    if(loading) {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
     if(notification) {
@@ -331,7 +326,7 @@ export function Component() {
 
                     <section className="options">
                         <h1>Opciones</h1>
-                        <button type="submit" disabled={isCompleted}>
+                        <button type="submit" disabled={status === "completed"}>
                             Actualizar
                         </button>
                     </section>
@@ -345,7 +340,7 @@ export function Component() {
                     handle_close={handle_close_confirm}
                     handle_confirm={handle_submit}
                 />
-                <ModalBlocker isCompleted={isCompleted}/>
+                <ModalBlocker isCompleted={status}/>
                 <HelpUpdateHistoria
                     show={showHelp}
                     handle_close={handle_close_help}
