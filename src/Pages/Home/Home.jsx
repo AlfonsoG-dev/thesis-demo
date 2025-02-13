@@ -31,7 +31,7 @@ export function Component() {
     } = useHelpState()
 
     const handle_download_permission = () => {
-        alert("Not implemented in DEMO")
+        alert("¡ No implementado para esta demostración !")
     }
     return(
         <div className="card-container">
