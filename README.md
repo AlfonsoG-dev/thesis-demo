@@ -13,16 +13,11 @@ git clone https://gihub.com/AlfonsoG-dev/thesis-demo
 ```shell
 npm install
 ```
-3. create environment variables.
->- In the root folder create the file: **.env** file.
-```env
-VITE_APP_API='HOST_NAME:PORT' # server URL or domain
-```
-4. start the project
+3. start the project
 ```shell
 npm run dev
 ```
-5. Use one of the following users in the login.
+4. Use one of the following users in the login.
 >- Remember that each one of the users have different roles.
 ```json
 {
@@ -45,6 +40,7 @@ npm run dev
     "password": "abc",
 }
 ```
+
 ----
 
 # Disclaimer
