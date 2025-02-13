@@ -10,7 +10,7 @@ import { PiFilePdfFill } from "react-icons/pi"
 import ModalNotification from "../Modals/ModalNotification"
 
 export default function HistoriaTableComponent({data, type, isLightTheme}) {
-    const [notification, setNotification] = useState(false)
+    const [notification, setNotification] = useState(true)
     const handle_close_notification = () => setNotification(false)
     if(data.length === 0) {
         return(
