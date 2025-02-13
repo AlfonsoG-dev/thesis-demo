@@ -35,7 +35,7 @@ export function Component() {
     })
 
     //
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const [retry, setRetry] = useState(0)
 

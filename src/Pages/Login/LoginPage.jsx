@@ -37,7 +37,7 @@ export default function LoginPage() {
         password: ""
     })
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     // modal register
     const [showConfirm, setShowConfirm] = useState(false)

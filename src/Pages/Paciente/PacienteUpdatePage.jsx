@@ -39,7 +39,7 @@ export function Component() {
         id_pk: paciente.id_pk,
         identificacion: paciente.identificacion
     })
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     // overall status
     const [retry, setRetry] = useState(0)

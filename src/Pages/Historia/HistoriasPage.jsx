@@ -29,7 +29,7 @@ import "../../Styles/LoadingStyle.css"
 export function Component() {
     const [, isLightTheme] = useOutletContext()
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const [buscado, setBuscado] = useState({
         id_pk: 0

@@ -47,7 +47,7 @@ export function Component() {
     } = useFormState()
 
     // over all state
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
     const [retry, setRetry] = useState(0)
 
     // Modals

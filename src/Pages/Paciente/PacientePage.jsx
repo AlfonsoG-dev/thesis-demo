@@ -43,7 +43,7 @@ export function Component() {
     const elements = getElements(offset, limit)
 
     //
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     // modals
     const {

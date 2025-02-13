@@ -40,7 +40,7 @@ export function Component() {
         elements, addElement
     } = useDataState(users)
     //
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const [retry, setRetry] = useState(0)
     const [showPassword, setShowPassword] = useState(true)

@@ -17,7 +17,7 @@ import "../../Styles/RecoverPage.css"
 export function Component() {
     const navigate = useNavigate()
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const [buscado, setBuscado] = useState({
         identificacion: 0

@@ -16,7 +16,7 @@ export default function ModalBlocker({isCompleted}) {
     const blocker = useBlocker(
         ({currentLocation, nextLocation}) => currentLocation.pathname !== nextLocation.pathname && nextLocation.pathname !== "/"
     )
-    if (blocker.state === "blocked" && !isCompleted) {
+    if (blocker.state === "blocked" && isCompleted !== "completed") {
         return (
             <div className="modal display-block">
                 <section className="modal-main">
@@ -32,11 +32,11 @@ export default function ModalBlocker({isCompleted}) {
         );
     }
 
-    if(isCompleted) {
+    if(isCompleted === "completed") {
         blocker.proceed?.()
     }
 }
 
 ModalBlocker.propTypes = {
-    isCompleted: PropTypes.bool
+    isCompleted: PropTypes.string
 }

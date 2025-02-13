@@ -32,7 +32,7 @@ export function Component() {
     // list of users, and searched user
     const [buscado, setBuscado] = useState({ identificacion: 0 })
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const {
         setElements, getElements, limit, offset, handleNext, handlePrev
@@ -57,7 +57,7 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
-            const response = users.filter(u => u.rol !== "admin" && u.identificacion === Number.parseInt(buscado.identificacion))
+            const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
             if(response.length > 0) {
                 setElements(response)
                 setStatus("completed")

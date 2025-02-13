@@ -25,7 +25,7 @@ export function Component() {
         password: ""
     })
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     const [editionBorder, setEditionBorder] = useState(false)
     const [disableEdition, setDisableEdition] = useState(true)

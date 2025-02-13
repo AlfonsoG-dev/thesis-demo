@@ -35,7 +35,7 @@ export function Component() {
         time_limit: null,
     })
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     // 
     const [editionBorder, setEditionBorder] = useState(false)

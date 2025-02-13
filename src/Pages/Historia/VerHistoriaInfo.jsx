@@ -56,7 +56,7 @@ export function Component() {
     const navigate = useNavigate()
     
     // overall state
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
 
     // get data from end-point server

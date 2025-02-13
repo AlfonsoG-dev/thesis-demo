@@ -49,7 +49,7 @@ export function Component() {
         examen, setExamen
     } = useFormState()
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
 
     // over all state
     const [isUpdateData, setIsUpdateData] = useState(false)

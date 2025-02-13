@@ -18,7 +18,7 @@ export default function LogOut({isLightTheme}) {
 
     const navigate = useNavigate()
 
-    const [status, setStatus] = useState("loading" | "completed")
+    const [status, setStatus] = useState("")
     const [showConfirm, setShowConfirm] = useState(false)
     const {
         notification, notificationType, setNotificationType,

@@ -14,11 +14,11 @@ export default function ModalNotification({show, message, type, handle_close}) {
         if (show) {
             if (type === "error") {
                 timer = setTimeout(() => {
-                    handle_close();
+                    handle_close()
                 }, 3000);
             } else if (type === "msg") {
                 timer = setTimeout(() => {
-                    handle_close();
+                    handle_close()
                 }, 2000);
             }
         }
