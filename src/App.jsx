@@ -8,7 +8,7 @@ import { FaUserInjured } from "react-icons/fa"
 import { FaUserMd } from "react-icons/fa"
 import { MdLightMode } from "react-icons/md"
 import { MdDarkMode } from "react-icons/md"
-import { PiFolderSimpleUserFill } from "react-icons/pi"
+import { PiFolderSimpleUserFill, PiVault } from "react-icons/pi"
 import { WiTime10 } from "react-icons/wi"
 
 // compoenents
@@ -61,52 +61,65 @@ export default function App() {
         dispatch({type: location.pathname})
     }, [isLightTheme, location.pathname])
 
-    return(
-        <div className="app-container">
-            <header className="navbar">
-                <section className={link_theme_name}>
-                    <span onClick={handle_change_theme} className="theme-changer">
-                        {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
-                    </span>
-                    <button className={activeState.activeHome ? 'link-active':'link'} onClick={() => {
-                        navigate("/app")
-                    }}>
-                        Home | <FaHome />
-                    </button>
-                    <button className={activeState.activePaciente ? 'link-active':'link'} onClick={() => {
-                        navigate("/app/paciente")
-                    }}>
-                        Pacientes | <FaUserInjured />
-                    </button>
-                    {
-                        usuario.rol === "admin" && 
-                        (
-                            <button className={activeState.activeUsuario ? 'link-active':'link'} onClick={() => {
-                                navigate("/app/usuario")
-                            }}>
-                                Usuarios | <FaUserMd />
-                            </button>
-                        )
-                    }
-                    <button className={activeState.activeHistorias ? 'link-active':'link'} onClick={() => {
-                        navigate("/app/historias")
-                    }}>
-                        Historias | <PiFolderSimpleUserFill/>
-                    </button>
-                    {
-                        usuario.rol === "transitorio" && (
-                            <span className={`time-${isLightTheme ? 'light':'dark'} time-frame`}>
-                                <WiTime10 className="time-icon"/>
-                                <p>{new Date(usuario.time_limit).toLocaleString()}</p>
+    const validate_session = () => {
+        const session_data = localStorage.getItem('log_user')
+        if(session_data !== null) {
+            return(
+                <div className="app-container">
+                    <header className="navbar">
+                        <section className={link_theme_name}>
+                            <span onClick={handle_change_theme} className="theme-changer">
+                                {isLightTheme ? <MdDarkMode/> : <MdLightMode/>}
                             </span>
-                        )
-                    }
-                </section>
-                <LogOut
-                    isLightTheme={isLightTheme}
-                />
-            </header>
-            <Outlet context={[usuario, isLightTheme]} />
-        </div>
-    )
+                            <button className={activeState.activeHome ? 'link-active':'link'} onClick={() => {
+                                navigate("/app")
+                            }}>
+                                Home | <FaHome />
+                            </button>
+                            <button className={activeState.activePaciente ? 'link-active':'link'} onClick={() => {
+                                navigate("/app/paciente")
+                            }}>
+                                Pacientes | <FaUserInjured />
+                            </button>
+                            {
+                                usuario.rol === "admin" && 
+                                    (
+                                        <button className={activeState.activeUsuario ? 'link-active':'link'} onClick={() => {
+                                            navigate("/app/usuario")
+                                        }}>
+                                            Usuarios | <FaUserMd />
+                                        </button>
+                                    )
+                            }
+                            <button className={activeState.activeHistorias ? 'link-active':'link'} onClick={() => {
+                                navigate("/app/historias")
+                            }}>
+                                Historias | <PiFolderSimpleUserFill/>
+                            </button>
+                            {
+                                usuario.rol === "transitorio" && (
+                                    <span className={`time-${isLightTheme ? 'light':'dark'} time-frame`}>
+                                        <WiTime10 className="time-icon"/>
+                                        <p>{new Date(usuario.time_limit).toLocaleString()}</p>
+                                    </span>
+                                )
+                            }
+                        </section>
+                        <LogOut
+                            isLightTheme={isLightTheme}
+                        />
+                    </header>
+                    <Outlet context={[usuario, isLightTheme]} />
+                </div>
+
+            )
+        } else {
+            return(
+                <span className="error">
+                    <p>No se ha iniciado sesión</p>
+                </span>
+            )
+        }
+    }
+    return(validate_session())
 }

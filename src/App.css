@@ -47,6 +47,18 @@ body.light {
         color: #535bf2;
     }
 }
+.error {
+    width: 100%;
+    position: fixed;
+    top: 50%;
+    p {
+        text-align: center;
+        margin: auto;
+        width: 300px;
+        font-size: 1.3em;
+        border: 2px solid red;
+    }
+}
 .navbar {
     margin-top: 20px;
     text-align: center;
