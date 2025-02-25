@@ -8,7 +8,7 @@ import { FaUserInjured } from "react-icons/fa"
 import { FaUserMd } from "react-icons/fa"
 import { MdLightMode } from "react-icons/md"
 import { MdDarkMode } from "react-icons/md"
-import { PiFolderSimpleUserFill, PiVault } from "react-icons/pi"
+import { PiFolderSimpleUserFill } from "react-icons/pi"
 import { WiTime10 } from "react-icons/wi"
 
 // compoenents
