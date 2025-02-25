@@ -57,6 +57,10 @@ body.light {
         width: 300px;
         font-size: 1.3em;
         border: 2px solid red;
+        padding: 10px;
+        button {
+            margin: 10px;
+        }
     }
 }
 .navbar {

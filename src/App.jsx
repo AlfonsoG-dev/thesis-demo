@@ -116,7 +116,15 @@ export default function App() {
         } else {
             return(
                 <span className="error">
-                    <p>No se ha iniciado sesión</p>
+                    <p>
+                        No se ha iniciado sesión
+                        <button className="" onClick={() => {
+                            navigate("/")
+                        }}>
+                            Login
+                        </button>
+                    </p>
+
                 </span>
             )
         }
