@@ -92,23 +92,21 @@ export function Component() {
             if(usuario.time_limit !== null && new Date(usuario.time_limit).getTime() < cur_date.getTime()) {
                 throw new Error("Fecha limite incorrecta")
             }
-            // FIXME: search don't work it allows to add the same user with the same *identificacion* 
+            // FIXME: search don't work, it allows to add the same user with the same *identificacion*
             const search_user = elements.filter(u => u.identificacion === Number.parseInt(usuario.identificacion))
-            if(search_user.length === 0 && usuario.rol !== ''){
-                const result = addElement(usuario)
-                if(result > 0) {
-                    localStorage.removeItem('register_user')
-                    setStatus("completed")
-                    handle_close_confirm()
-                    setNotificationType("message")
-                    setResponseMessage("Usuario registrado")
-                    show_notification()
-                } else {
-                    throw new Error("No se pudo registrar el usuario")
-                }
-            } else {
-                    throw new Error("El usuario ya se encuentra registrado")
+            if(search_user.length > 0) {
+                throw new Error("El usuario ya se encuentra registrado")
             }
+            const result = addElement(usuario)
+            if(result === 0) {
+                throw new Error("No se pudo registrar el usuario")
+            }
+            localStorage.removeItem('register_user')
+            setStatus("completed")
+            handle_close_confirm()
+            setNotificationType("message")
+            setResponseMessage("Usuario registrado")
+            show_notification()
         } catch(er) {
             setStatus("completed")
             validate_retry()

@@ -38,6 +38,7 @@ export default function LoginPage() {
     })
 
     const [status, setStatus] = useState("")
+    const [retry, setRetry] = useState(0)
 
     // modal register
     const [showConfirm, setShowConfirm] = useState(false)
@@ -62,6 +63,20 @@ export default function LoginPage() {
         setShowConfirm(true)
     }
     const handle_close_confirm = () => setShowConfirm(false)
+
+
+    const validate_retry = () => {
+        if(retry === 3) {
+            setStatus("completed")
+            setResponseMessage("Intentos agotados, prueba recargando la página")
+            setNotificationType("error")
+            handle_close_confirm()
+            show_notification()
+        } else {
+            setStatus("progress")
+            setRetry(() => retry+1)
+        }
+    }
 
     const fetch_data = () => {
         setStatus("loading")
@@ -97,7 +112,7 @@ export default function LoginPage() {
         try {
             const user = login(loginData)
             if(user.length === 0) {
-                throw new Error("User not found")
+                throw new Error("Usuario no encontrado")
             }
             localStorage.setItem('log_user', JSON.stringify(user[0]))
             handle_close_confirm()
@@ -110,8 +125,9 @@ export default function LoginPage() {
             }, 2000)
         } catch(er) {
             setStatus("completed")
-            setNotificationType("error")
+            validate_retry()
             setResponseMessage(er.toString())
+            setNotificationType("error")
             handle_close_confirm()
             show_notification()
             setTimeout(() => {
@@ -154,6 +170,14 @@ export default function LoginPage() {
                     </button>
                     <form onSubmit={handle_show_confirm}>
                         <h1>Iniciar sesión</h1 >
+                        <span className="counter">
+                            {
+                                retry === 3 && (<p>Intentos agotados</p>)
+                            }
+                            {
+                                retry > 0 && retry < 3 && (<p>{3-retry}</p>)
+                            }
+                        </span>
                         <label>
                             <input
                                 name="identificacion"
@@ -171,7 +195,7 @@ export default function LoginPage() {
                         </label>
                         <button
                             type="submit"
-                            disabled={loginData.identificacion === 0 && loginData.password === ""}
+                            disabled={(loginData.identificacion === 0 && loginData.password === "") || (retry === 3)}
                         >
                             Iniciar sesión
                         </button>

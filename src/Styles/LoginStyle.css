@@ -26,6 +26,10 @@
         width: 450px;
         margin: 0 auto;
         background: #4397d1;
+        span {
+            font-size: 1.3em;
+            text-decoration: underline;
+        }
         h1 {
             color: white;
             text-align: center;
