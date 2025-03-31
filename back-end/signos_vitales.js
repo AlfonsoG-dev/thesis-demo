@@ -1,7 +1,7 @@
 export const signos_list = [
     {
         id_pk: 1,
-        ta: 30.0,
+        ta: "120/75",
         fc: 40.0,
         p: 60.0,
         r: 30.0,
@@ -11,7 +11,7 @@ export const signos_list = [
     },
     {
         id_pk: 2,
-        ta: 35.0,
+        ta: "100/80",
         fc: 35.0,
         p: 57.0,
         r: 33.0,
@@ -21,7 +21,7 @@ export const signos_list = [
     },
     {
         id_pk: 3,
-        ta: 33.2,
+        ta: "120/100",
         fc: 30.0,
         p: 32.0,
         r: 60.0,

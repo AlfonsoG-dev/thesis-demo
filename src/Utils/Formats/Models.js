@@ -50,7 +50,7 @@ export const anamnesis_model = {
 }
 
 export const signos_model = {
-    ta: 0.0,
+    ta: null,
     fc: 0.0,
     p: 0.0,
     r: 0.0,

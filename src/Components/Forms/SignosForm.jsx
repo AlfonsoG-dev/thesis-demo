@@ -7,10 +7,10 @@ export default function SignosForm({signos, isDisable, onChangeHandler}) {
                 Tensión arterial
                 <input
                     name="ta"
-                    type="number"
+                    type="text"
                     required={true}
-                    placeholder="Milímetros de mercurio"
-                    defaultValue={signos.ta > 0 ? signos.ta : ""}
+                    placeholder="sistólica/diastólica"
+                    defaultValue={signos.ta}
                     onChange={onChangeHandler}
                     disabled={isDisable}
                 />
