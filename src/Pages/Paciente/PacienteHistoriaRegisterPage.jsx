@@ -23,7 +23,8 @@ import useNotificationState, {useHelpState} from "../../Hooks/Modal/Notification
 import useFormState from "../../Hooks/Form/FormHook"
 
 // data
-import { register_historia } from "../../../back-end/historia"
+import { register_historia, historias } from "../../../back-end/historia"
+import { anamnesis_list } from "../../../back-end/anamnesis"
 import { pacientes } from "../../../back-end/paciente"
 
 // styles
@@ -82,19 +83,32 @@ export function Component() {
     }
     const handle_close_confirm = () => setShowConfirm(false)
 
+    const autocomplete_anamnesis = useCallback((paciente_id) => {
+        const last_historia_by_paciente = historias.filter(h => h.paciente_id_fk === Number.parseInt(paciente_id))
+        const anamnesis_last_id = last_historia_by_paciente[last_historia_by_paciente.length-1].anamnesis_id_fk
+        const res_anamnesis = anamnesis_list.filter(a => a.id_pk === Number.parseInt(anamnesis_last_id))
+        console.log(res_anamnesis)
+        if(res_anamnesis.length > 0) {
+            res_anamnesis[0].motivo_consulta = null
+            setAnamnesis(res_anamnesis[0])
+        }
+    }, [])
+
     // get the paciente data using state.id_pk
-    const fetch_data = useCallback(async() => {
+    const fetch_data = useCallback(() => {
         try {
             if(state.paciente_id_fk !== undefined) {
                 const [res_paciente] = pacientes.filter(p => p.id_pk === Number.parseInt(state.paciente_id_fk))
                 setPaciente(res_paciente)
+                autocomplete_anamnesis(res_paciente.id_pk)
             } else {
                 setPaciente(state)
+                autocomplete_anamnesis(state.id_pk)
             }
         } catch(er) {
             console.error(er)
         }
-    }, [setPaciente, state])
+    }, [setPaciente, state, autocomplete_anamnesis])
 
     useEffect(() => {
         fetch_data()
