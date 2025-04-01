@@ -1,6 +1,6 @@
 // Dependencies
 import PropTypes from "prop-types"
-import { useOutletContext, Link } from "react-router-dom"
+import { useOutletContext, Link, useNavigate } from "react-router-dom"
 import {useState} from "react"
 
 // Components
@@ -13,6 +13,7 @@ import { VscOpenPreview } from "react-icons/vsc"
 import { PiFilePdfFill } from "react-icons/pi"
 import { MdOutlinePersonSearch } from "react-icons/md"
 import { FaBookMedical } from "react-icons/fa"
+import { VscNewFile } from "react-icons/vsc"
 
 // Hooks
 import useNotificationState, {useHelpState} from "../../Hooks/Modal/NotificationHook"
@@ -27,6 +28,7 @@ import "../../Styles/Paciente.css"
 import "../../Styles/LoadingStyle.css"
 
 export function Component() {
+    const navigate = useNavigate()
     const [, isLightTheme] = useOutletContext()
 
     const [status, setStatus] = useState("")
@@ -113,6 +115,9 @@ export function Component() {
                     </button>
                 </form >
             </section>
+            <button className="opt-registro" onClick={() => {navigate("/app/historia/registro")}}>
+                Crear historia | <VscNewFile/>
+            </button>
             <h1>Historias clínicas | <FaBookMedical/></h1>
             <HistoriasTableComponent
                 historias={elements}
