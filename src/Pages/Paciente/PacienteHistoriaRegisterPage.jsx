@@ -87,7 +87,6 @@ export function Component() {
         const last_historia_by_paciente = historias.filter(h => h.paciente_id_fk === Number.parseInt(paciente_id))
         const anamnesis_last_id = last_historia_by_paciente[last_historia_by_paciente.length-1].anamnesis_id_fk
         const res_anamnesis = anamnesis_list.filter(a => a.id_pk === Number.parseInt(anamnesis_last_id))
-        console.log(res_anamnesis)
         if(res_anamnesis.length > 0) {
             res_anamnesis[0].motivo_consulta = null
             setAnamnesis(res_anamnesis[0])
