@@ -61,6 +61,9 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
+            if(Object.keys(usuario).length === 0) {
+                throw new Error("Selecciona un usuario")
+            }
             localStorage.setItem('log_user', JSON.stringify(usuario))
             setStatus("completed")
             setNotificationType("msg")
@@ -73,12 +76,7 @@ export function Component() {
             setStatus("completed")
             setNotificationType("error")
             setResponseMessage(er.toString())
-            setNotification(false)
-            setTimeout(() => {
-                navigate("/", {
-                    replace: true
-                })
-            }, 2000)
+            setNotification(true)
             console.error(er)
         }
     }
