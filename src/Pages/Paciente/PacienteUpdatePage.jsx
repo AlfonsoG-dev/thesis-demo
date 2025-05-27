@@ -316,7 +316,7 @@ export function Component() {
                     />
                 </label>
                 <label>
-                    Acudiente parentesco
+                     Parentesco Acudiente
                     <input
                         type="text"
                         name="parentesco"

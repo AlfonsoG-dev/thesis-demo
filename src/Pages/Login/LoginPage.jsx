@@ -205,7 +205,7 @@ export default function LoginPage() {
                         {
                             import.meta.env.VITE_NODE_ENV === "development" && (
                                 <button className="recover-password" onClick={handle_recover_password}>
-                                    Recuperar contraseña
+                                    Inicio sesión asistida
                                 </button >
                             )
                         }
