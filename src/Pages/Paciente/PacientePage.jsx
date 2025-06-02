@@ -62,12 +62,11 @@ export function Component() {
         setStatus("loading")
         try {
             const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
-            if(response.length > 0) {
-                setStatus("completed")
-                setElements(response)
-            } else {
+            if(response.length === 0) {
                 throw new Error("Paciente no encontrado")
             }
+            setStatus("completed")
+            setElements(response)
         } catch(er) {
             setStatus("completed")
             setResponseMessage(er.toString())
@@ -85,7 +84,7 @@ export function Component() {
         }))
     }
 
-    if(status === "completed") {
+    if(status === "loading") {
         return <div className="loader"></div>
     }
 

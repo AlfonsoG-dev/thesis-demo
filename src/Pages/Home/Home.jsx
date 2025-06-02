@@ -68,6 +68,9 @@ export function Component() {
                 <button className="btn-option" onClick={handle_download_permission}>
                     Descargar permiso <FaDownload/>
                 </button>
+                <button className="btn-option" onClick={handle_download_permission}>
+                    Copia de seguridad <FaDownload/>
+                </button>
             </section>
             <button className="help" onClick={handle_show_help}>
                 help | ?

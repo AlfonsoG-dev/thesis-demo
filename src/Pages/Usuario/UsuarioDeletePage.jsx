@@ -96,7 +96,7 @@ export function Component() {
             console.error(er)
         }
     }
-    if(status === "completed") {
+    if(status === "loading") {
         return <div className="loader"></div> 
     }
     if(notification) {
