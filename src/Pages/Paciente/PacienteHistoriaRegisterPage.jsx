@@ -155,6 +155,7 @@ export function Component() {
             }
             const response = register_historia(historia_object, user)
             if(response.msg !== undefined) {
+                localStorage.removeItem('paciente_register_historia')
                 setStatus("completed")
                 setResponseMessage(response.msg)
                 setNotificationType("msg")
