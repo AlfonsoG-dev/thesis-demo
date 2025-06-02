@@ -11,6 +11,7 @@ export default function SignosForm({signos, isDisable, onChangeHandler}) {
                     required={true}
                     placeholder="sistólica/diastólica"
                     defaultValue={signos.ta}
+                    maxLength={7}
                     onChange={onChangeHandler}
                     disabled={isDisable}
                 />

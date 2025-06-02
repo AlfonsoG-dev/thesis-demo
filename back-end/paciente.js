@@ -12,8 +12,8 @@ export const pacientes = [
         acudiente: "Pedro Pupiales",
         celular: 3221927262,
         parentesco: "Papá",
-        facultad: "ingenieria",
-        programa: "sistemas",
+        facultad: "Ingenieria",
+        programa: "Sistemas",
         eps: "sanitas",
         create_at: new Date("04-11-2024 16:22:50"),
         update_at: null
@@ -31,8 +31,8 @@ export const pacientes = [
         acudiente: "Maria Timana",
         celular: 3161825264,
         parentesco: "Mamá",
-        facultad: "humanidades",
-        programa: "derecho",
+        facultad: "Humanidades",
+        programa: "Derecho",
         eps: "nuevaEPS",
         create_at: new Date("12-11-2024 12:00:30"),
         update_at: null
