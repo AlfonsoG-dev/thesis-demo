@@ -41,6 +41,9 @@ npm run dev
 }
 ```
 
+# TODO
+- [ ] Change `useState` for `useRef` where the state doesn't need a `re-render` phase.
+
 ----
 
 # Disclaimer

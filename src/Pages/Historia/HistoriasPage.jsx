@@ -1,7 +1,7 @@
 // Dependencies
 import PropTypes from "prop-types"
 import { useOutletContext, Link, useNavigate } from "react-router-dom"
-import {useState} from "react"
+import {useState, useRef} from "react"
 
 // Components
 import ModalNotification from "../../Components/Modals/ModalNotification"
@@ -33,9 +33,7 @@ export function Component() {
 
     const [status, setStatus] = useState("")
 
-    const [buscado, setBuscado] = useState({
-        id_pk: 0
-    })
+    const search_ref = useRef({id_pk: 0});
     const {
         notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
@@ -56,7 +54,7 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
-            const response = historias.filter(h => h.id_pk === Number.parseInt(buscado.id_pk))
+            const response = historias.filter(h => h.id_pk === Number.parseInt(search_ref.current.id_pk))
             if(response.length > 0) {
                 setStatus("completed")
                 setElements(response)
@@ -72,13 +70,10 @@ export function Component() {
         }
     }
 
-    const handle_change_searched = (e) => {
+    const handle_search_ref = (e) => {
         e.preventDefault()
         const {name, value} = e.target
-        setBuscado((prev) => ({
-            ...prev,
-            [name]: value
-        }))
+        search_ref.current = {[name]: value}
     }
 
     if(status === "loading") {
@@ -100,16 +95,17 @@ export function Component() {
             <section className={`search-${isLightTheme ? 'light':'dark'}`}>
                 <form onSubmit={handle_search_historia}>
                     <input
+                        ref={search_ref}
                         name="id_pk"
                         type="number"
-                        defaultValue={buscado.id_pk > 0 && buscado.id_pk}
+                        defaultValue={search_ref.current.id_pk > 0 && search_ref.current.id_pk}
                         placeholder="ID"
-                        onChange={handle_change_searched}
+                        onChange={handle_search_ref}
                         autoFocus={true}
                     />
                     <button
                         type="submit"
-                        disabled={buscado.id_pk === 0 && true}
+                        disabled={search_ref.current.id_pk === 0}
                     >
                         <MdOutlinePersonSearch/>
                     </button>
