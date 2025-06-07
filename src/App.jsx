@@ -29,6 +29,15 @@ import "./Styles/LoginStyle.css"
  * main app that represents the navigation bar with options.
  * it has home as default page
 */
+
+function get_initial_state(active_link) {
+    return {
+        activeHome: active_link() === '/app',
+        activePaciente: active_link() === '/app/paciente',
+        activeUsuario: active_link() === '/app/usuario',
+        activeHistorias: active_link() === '/app/historias'
+    }
+}
 export default function App() {
     const usuario = JSON.parse(localStorage.getItem('log_user')) || users[1]
     const navigate = useNavigate()
@@ -38,12 +47,7 @@ export default function App() {
     const [isLightTheme, setIsLightTheme] = useState(get_initial_theme() === 'light')
 
     const get_initial_active = () => localStorage.getItem('activeLink') || "/app"
-    const [activeState, dispatch] = useReducer(activeLinkReducer, {
-        activeHome: get_initial_active() === '/app',
-        activePaciente: get_initial_active() === '/app/paciente',
-        activeUsuario: get_initial_active() === '/app/usuario',
-        activeHistorias: get_initial_active() === '/app/historias'
-    })
+    const [activeState, dispatch] = useReducer(activeLinkReducer, get_initial_active, get_initial_state)
 
     const handle_change_theme = () => {
         setIsLightTheme((prev) => {

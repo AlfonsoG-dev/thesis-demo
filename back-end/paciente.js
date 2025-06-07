@@ -12,7 +12,7 @@ export const pacientes = [
         acudiente: "Pedro Pupiales",
         celular: 3221927262,
         parentesco: "Papá",
-        facultad: "Ingenieria",
+        facultad: "Ingeniería",
         programa: "Sistemas",
         eps: "sanitas",
         create_at: new Date("04-11-2024 16:22:50"),

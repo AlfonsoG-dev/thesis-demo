@@ -43,6 +43,7 @@ npm run dev
 
 # TODO
 - [ ] Change `useState` for `useRef` where the state doesn't need a `re-render` phase.
+- [ ] Use more `useReducer` for state management where it can be applied.
 
 ----
 

@@ -326,7 +326,7 @@ export function Component() {
 
                     <section className="options">
                         <h1>Opciones</h1>
-                        <button type="submit" disabled={status === "completed"}>
+                        <button type="submit">
                             Actualizar
                         </button>
                     </section>
