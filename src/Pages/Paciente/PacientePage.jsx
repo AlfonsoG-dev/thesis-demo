@@ -1,5 +1,5 @@
 // Dependencies
-import {useState} from "react"
+import {useRef, useState} from "react"
 import { useOutletContext } from "react-router-dom"
 
 //Icons
@@ -31,9 +31,7 @@ export function Component() {
     const [,isLightTheme] = useOutletContext()
 
     // form-state: paciente
-    const [buscado, setBuscado] = useState({
-        identificacion: 0
-    })
+    const search_ref = useRef(null)
 
     const {
         setElements, getElements, limit, offset, handleNext, handlePrev
@@ -61,7 +59,10 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
-            const response = pacientes.filter(p => p.identificacion === Number.parseInt(buscado.identificacion))
+            if(search_ref.current === null || search_ref.current.identificacion === undefined) {
+                throw new Error("Digita el número de identificación del paciente")
+            }
+            const response = pacientes.filter(p => p.identificacion === Number.parseInt(search_ref.current.identificacion))
             if(response.length === 0) {
                 throw new Error("Paciente no encontrado")
             }
@@ -79,9 +80,7 @@ export function Component() {
     const handle_change_searched = (e) => {
         e.preventDefault()
         const {name, value} = e.target
-        setBuscado(() => ({
-            [name]: value
-        }))
+        search_ref.current = {[name]: value}
     }
 
     if(status === "loading") {
@@ -104,16 +103,16 @@ export function Component() {
             <section className={`search-${isLightTheme ? 'light' : 'dark'}`}>
                 <form onSubmit={handle_search_paciente}>
                     <input
+                        ref={search_ref}
                         name="identificacion"
                         type="number"
                         placeholder="Identificación del paciente"
-                        value={buscado.identificacion > 0 && buscado.identificacion}
+                        defaultValue={search_ref.current !== null}
                         onChange={handle_change_searched}
                         autoFocus={true}
                     />
                     <button
                         type="submit" 
-                        disabled={buscado.identificacion===0 && true}
                     >
                         <MdOutlinePersonSearch />
                     </button>

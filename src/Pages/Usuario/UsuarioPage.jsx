@@ -1,5 +1,5 @@
 // Dependencies
-import {useState} from "react"
+import {useRef, useState} from "react"
 import { useOutletContext } from "react-router-dom"
 
 //Icons
@@ -30,7 +30,7 @@ import '../../Styles/LoadingStyle.css'
 export function Component() {
     const [, isLightTheme] = useOutletContext()
     // list of users, and searched user
-    const [buscado, setBuscado] = useState({ identificacion: 0 })
+    const search_ref = useRef(null)
 
     const [status, setStatus] = useState("")
 
@@ -57,7 +57,10 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
-            const response = users.filter(u => u.identificacion === Number.parseInt(buscado.identificacion))
+            if(search_ref.current === null || search_ref.current.identificacion === undefined) {
+                throw new Error("Digita el número de identificación del usuario")
+            }
+            const response = users.filter(u => u.identificacion === Number.parseInt(search_ref.current.identificacion))
             if(response.length > 0) {
                 setElements(response)
                 setStatus("completed")
@@ -77,10 +80,7 @@ export function Component() {
     const handle_change_searched = (e) => {
         e.preventDefault()
         const {name, value} = e.target
-        setBuscado(prev => ({
-            ...prev,
-            [name]: value
-        }))
+        search_ref.current = { [name]: value }
     }
 
     // state between renders
@@ -105,14 +105,13 @@ export function Component() {
                     <input
                         name="identificacion"
                         type="number"
-                        value={buscado.identificacion > 0 && buscado.identificacion}
+                        defaultValue={search_ref.current !== null}
                         placeholder="Identificación del usuario"
                         onChange={handle_change_searched}
                         autoFocus={true}
                     />
                     <button
                         type="submit"
-                        disabled={buscado.identificacion === 0 && true}
                     >
                         <MdOutlinePersonSearch/>
                     </button>

@@ -33,7 +33,7 @@ export function Component() {
 
     const [status, setStatus] = useState("")
 
-    const search_ref = useRef({id_pk: 0});
+    const search_ref = useRef(null);
     const {
         notification, notificationType, setNotificationType,
         responseMessage, setResponseMessage,
@@ -54,6 +54,9 @@ export function Component() {
         e.preventDefault()
         setStatus("loading")
         try {
+            if(search_ref.current === null || search_ref.current.id_pk === undefined) {
+                throw new Error("Digita el número de ID de la historia clínica")
+            }
             const response = historias.filter(h => h.id_pk === Number.parseInt(search_ref.current.id_pk))
             if(response.length > 0) {
                 setStatus("completed")
@@ -88,7 +91,6 @@ export function Component() {
             handle_close={close_notification}
         />
     }
-
     return (
         <div className="table-page">
             <br/>
@@ -98,14 +100,13 @@ export function Component() {
                         ref={search_ref}
                         name="id_pk"
                         type="number"
-                        defaultValue={search_ref.current.id_pk > 0 && search_ref.current.id_pk}
+                        defaultValue={search_ref.current !== null}
                         placeholder="ID"
                         onChange={handle_search_ref}
                         autoFocus={true}
                     />
                     <button
                         type="submit"
-                        disabled={search_ref.current.id_pk === 0}
                     >
                         <MdOutlinePersonSearch/>
                     </button>
